@@ -8,7 +8,14 @@ export default {
       container: {
         center: true,
         padding: '1rem'
-      }
+      },
+      colors: {
+        primary: '#ffffff',
+        secondary: '#638889',
+        third: '#F9EFDB',
+        input_font: '#9BA5B7',
+        font:'#415656'
+      },
     },
     screens: {
       lg: '1280px',
@@ -22,7 +29,7 @@ export default {
     themes: [
       {
         mytheme: {
-          primary: '#ffffff',
+          primary: '#415656',
 
           secondary: '#638889',
 

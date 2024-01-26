@@ -1,0 +1,53 @@
+name: PetZone CICD
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  Run-ESLint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install Dependencies
+        run: |
+          echo "npm 版本： $(npm -v)"
+          echo "node 版本： $(node -v)"
+          npm install -g pnpm
+          echo "pnpm 版本： $(pnpm -v)"
+          npm install
+
+      - name: Run ESLint
+        run: |
+          echo "====== Lint 檢查 ======"
+          npm run lint
+
+  Run-Test:
+    needs: Run-ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+
+      - name: Install Dependencies
+        run: |
+          echo "npm 版本： $(npm -v)"
+          echo "node 版本： $(node -v)"
+          npm install -g pnpm
+          echo "pnpm 版本： $(pnpm -v)"
+          npm install
+
+      - name: Run Unit Tests
+        run: pnpm run lint

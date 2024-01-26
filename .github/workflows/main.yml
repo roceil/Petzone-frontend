@@ -1,39 +1,47 @@
-name: CI Pipeline
-
+name: Petzone CICD
 on:
-  pull_request:
-    branches:
-      - test # 只有當有 PR 到 test 分支時觸發
+  push:
+    branches: ["test"]
 
 jobs:
-  build-and-test:
+  build:
+    name: build
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout to Repo Directory
+        uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '18.x' # 使用 Node.js 18 的最新次版本
-          cache: 'pnpm' # 啟用 pnpm 的緩存
+          node-version: '18.16.0'
+          cache: 'pnpm'
 
-      - name: Install pnpm
-        run: |
-          echo "====== Installing pnpm ======"
-          npm install -g pnpm
+      - name: Install Dependencies with pnpm
+        run: pnpm install
 
-      - name: Install dependencies
-        run: |
-          echo "====== Installing dependencies ======"
-          pnpm install
+  unittest:
+    name: Run UnitTest
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout to Repo Directory
+        uses: actions/checkout@v2
 
-      - name: Run ESLint
-        run: |
-          echo "====== Run ESLint ======"
-          pnpm run lint
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18.16.0'
+          cache: 'pnpm'
 
-      - name: Run Unit Test
-        run: |
-          echo "====== Run Unit Test ======"
-          pnpm run test
+      - name: Install Dependencies with pnpm
+        run: pnpm install
+
+      - name: Run Unit Test with pnpm
+        run: pnpm run test:coverage
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: ${{ github.workspace }}/coverage

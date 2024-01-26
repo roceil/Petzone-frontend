@@ -1,4 +1,4 @@
-name: Petzone CICD
+name: PetZone CICD
 on:
   push:
     branches: ["test"]
@@ -17,6 +17,9 @@ jobs:
           node-version: '18.16.0'
           cache: 'pnpm'
 
+      - name: Install pnpm
+        run: npm install -g pnpm
+
       - name: Install Dependencies with pnpm
         run: pnpm install
 
@@ -33,6 +36,9 @@ jobs:
         with:
           node-version: '18.16.0'
           cache: 'pnpm'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
 
       - name: Install Dependencies with pnpm
         run: pnpm install

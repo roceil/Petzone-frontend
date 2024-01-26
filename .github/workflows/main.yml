@@ -16,6 +16,7 @@ jobs:
 
   build:
     name: build
+    needs: install
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to Repo Directory

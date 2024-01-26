@@ -1,5 +1,9 @@
 <script setup>
+import WaterFall from '@/containers/WaterFall.vue'
 import Footer from '../components/Footer.vue'
+import { blocks } from '@/constants'
+
+
 </script>
 
 <template>
@@ -45,7 +49,10 @@ import Footer from '../components/Footer.vue'
       </ul>
     </section>
 
+    <!-- 瀑布流圖片牆 -->
+    <WaterFall :blocks="blocks" />
+
     <!-- Footer -->
-    <Footer />  
+    <Footer />
   </div>
 </template>

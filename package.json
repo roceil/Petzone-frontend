@@ -13,9 +13,12 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",
+    "@yeger/vue-masonry-wall": "^5.0.6",
     "axios": "^1.6.7",
+    "masonry-layout": "^4.2.2",
     "pinia": "^2.1.7",
     "vue": "^3.3.11",
+    "vue-masonry": "^0.16.0",
     "vue-router": "^4.2.5"
   },
   "devDependencies": {

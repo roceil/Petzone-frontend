@@ -2,8 +2,6 @@
 import WaterFall from '@/containers/WaterFall.vue'
 import Footer from '../components/Footer.vue'
 import { blocks } from '@/constants'
-
-
 </script>
 
 <template>

@@ -9,7 +9,9 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "lint:console": "eslint . --ignore-pattern dist/ --rule 'no-console:[\"error\", { \"allow\": [\"warn\", \"error\", \"info\"] }]' --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "format": "prettier --write src/",
+    "check": "npm run lint && npm run lint:console && npm run format && npm run test:unit"
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",

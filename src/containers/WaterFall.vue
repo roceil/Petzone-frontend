@@ -15,7 +15,9 @@ defineProps({
       <img :src="waterBgGray" alt="" class="w-full h-full" />
     </div>
 
-    <div class="absolute top-0 left-[-195px] w-[381px] h-[892px] -z-10 flex justify-center items-center ">
+    <div
+      class="absolute top-0 left-[-195px] w-[381px] h-[892px] -z-10 flex justify-center items-center"
+    >
       <img :src="waterBgYellow" alt="" class="w-full h-full" />
     </div>
     <masonry-wall :items="blocks" :column-width="320" :gap="16" class="w-[996px]">

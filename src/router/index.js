@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -10,8 +9,8 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue')
     },
     {
-      path:'/ecommerce',
-      name:'ecommerce',
+      path: '/ecommerce',
+      name: 'ecommerce',
       component: () => import('../views/EcommerceView.vue')
     },
     {

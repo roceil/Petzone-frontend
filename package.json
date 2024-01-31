@@ -15,10 +15,13 @@
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",
+    "@splinetool/loader": "^1.0.39",
+    "@splinetool/runtime": "^1.0.39",
     "@yeger/vue-masonry-wall": "^5.0.6",
     "axios": "^1.6.7",
     "masonry-layout": "^4.2.2",
     "pinia": "^2.1.7",
+    "three": "^0.161.0",
     "vue": "^3.3.11",
     "vue-masonry": "^0.16.0",
     "vue-router": "^4.2.5"

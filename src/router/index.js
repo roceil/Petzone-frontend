@@ -17,6 +17,11 @@ const router = createRouter({
       path: '/ecommerce/cart',
       name: 'cart',
       component: () => import('../views/CartView.vue')
+    },
+    {
+      path: '/community',
+      name: 'community',
+      component: () => import('../views/CommunityView.vue')
     }
   ]
 })

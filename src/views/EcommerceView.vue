@@ -5,8 +5,8 @@ import shoppingCart from '../assets/shopping-cart.svg'
 
 <template>
   <!-- 上方區塊 -->
-  <div class="EcommerceView">
-    <div class="container flex justify-between mt-[70px]">
+  <div class="EcommerceView m-10">
+    <div class="container flex justify-around">
       <!-- 頁面標題 -->
       <h1 class="text-5xl font-bold text-font">商品專區</h1>
 
@@ -23,13 +23,30 @@ import shoppingCart from '../assets/shopping-cart.svg'
       </ul>
 
       <!-- 搜尋欄 -->
-      <div class="w-[345px] h-12 border border-font rounded-md"></div>
+      <div class="w-[200px] h-12 border border-font rounded-md relative">
+        <button class="absolute inset-y-0 right-2 flex items-center pr-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 
   <!-- 商品列表 -->
-  <ul class="container mt-[94px] mb-[291px] flex flex-wrap justify-center gap-[100px]">
-    <li v-for="product in productListData" :key="product.name" class="py-4">
+  <ul class="container m-10 flex flex-wrap justify-center gap-[50px]">
+    <li v-for="product in productListData" :key="product.name">
       <!-- 圖片 -->
       <div
         class="w-[322px] h-[185px] rounded-[10px] flex justify-center items-center font-bold text-white text-3xl"
@@ -39,7 +56,7 @@ import shoppingCart from '../assets/shopping-cart.svg'
       </div>
 
       <!-- 文字 -->
-      <div class="flex justify-between py-[21px] px-[7.5px] mt-5 text-font text-2xl">
+      <div class="flex justify-between py-[21px] px-[7.5px] text-font text-2xl">
         <p class="font-bold">{{ product.name }}</p>
         <p>
           <del>＄{{ product.originalPrice }}</del> / ＄{{ product.price }}

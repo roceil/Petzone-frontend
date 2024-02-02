@@ -9,14 +9,19 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "format": "prettier --write src/"
+    "lint:console": "eslint . --ignore-pattern dist/ --rule 'no-console:[\"error\", { \"allow\": [\"warn\", \"error\", \"info\"] }]' --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
+    "format": "prettier --write src/",
+    "check": "npm run lint && npm run lint:console && npm run format && npm run test:unit"
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",
+    "@splinetool/loader": "^1.0.39",
+    "@splinetool/runtime": "^1.0.39",
     "@yeger/vue-masonry-wall": "^5.0.6",
     "axios": "^1.6.7",
     "masonry-layout": "^4.2.2",
     "pinia": "^2.1.7",
+    "three": "^0.161.0",
     "vue": "^3.3.11",
     "vue-masonry": "^0.16.0",
     "vue-router": "^4.2.5"

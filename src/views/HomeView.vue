@@ -41,13 +41,13 @@ onMounted(async () => {
 <template>
   <div class="HomeView">
     <!-- 3D -->
-    <section class="container">
+    <!-- <section class="container">
       <div
         class="w-full h-[calc(70vh-96.24px)] bg-secondary flex justify-center items-center relative"
       >
         <canvas ref="canvas" />
       </div>
-    </section>
+    </section> -->
 
     <!-- banner -->
     <section class="container flex space-x-10 xl:justify-center mt-[76px]">

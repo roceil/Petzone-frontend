@@ -24,6 +24,11 @@ const router = createRouter({
       component: () => import('../views/CheckoutView.vue')
     },
     {
+      path: '/ecommerce/order',
+      name: 'order',
+      component: () => import('../views/OrderView.vue')
+    },
+    {
       path: '/community',
       name: 'community',
       component: () => import('../views/CommunityView.vue')

@@ -6,6 +6,7 @@ import { productListData } from '@/constants'
   <div class="container">
     <h1 class="m-10 text-font text-5xl font-bold">新增訂單</h1>
   </div>
+
   <div class="container">
     <!-- 購買明細 -->
     <div class="mt-10 flex justify-center">
@@ -24,6 +25,10 @@ import { productListData } from '@/constants'
               <p>NT$ {{ product.price }}</p>
             </td>
           </tr>
+          <!-- <tr>
+            <td class="px-10 py-5" colspan="2">優惠券折扣</td>
+            <td class="px-10 py-5 text-right" colspan="2">-0</td>
+          </tr> -->
           <tr class="border-black border-b-2">
             <td class="px-10 py-5" colspan="2">會員積分折抵</td>
             <td class="px-10 py-5 text-right" colspan="2">-80</td>

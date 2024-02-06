@@ -22,6 +22,26 @@ const router = createRouter({
       path: '/community',
       name: 'community',
       component: () => import('../views/CommunityView.vue')
+    },
+    {
+      path: '/membercenter',
+      name: 'membercenter',
+      component: () => import('../views/MemberCenterView.vue')
+    },
+    {
+      path: '/membercenter/pointshistory',
+      name: 'pointshistory',
+      component: () => import('../views/PointsHistoryView.vue')
+    },
+    {
+      path: '/membercenter/ordershistory',
+      name: 'ordershistory',
+      component: () => import('../views/OrdersHistoryView.vue')
+    },
+    {
+      path: '/mypost',
+      name: 'mypost',
+      component: () => import('../views/MyPostView.vue')
     }
   ]
 })

@@ -67,9 +67,10 @@ export default {
           >
             登入／註冊
           </button>
-          <button v-if="has_token" @click="logout">
+
+          <RouterLink v-if="has_token" to="/membercenter">
             <div class="w-[50px] h-[50px] bg-red-400 rounded-full"></div>
-          </button>
+          </RouterLink>
         </div>
       </div>
     </div>

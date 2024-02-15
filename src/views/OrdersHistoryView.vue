@@ -21,8 +21,9 @@ const button_border_position = computed(() => {
 const change_button_status = (status) => {
   button_status.value = status
 }
+
+const table_title = ['訂單編號', '下單日期', '購買項目', '訂單金額']
 </script>
-ㄋ
 
 <template>
   <div class="OrderHistoryView">
@@ -47,10 +48,51 @@ const change_button_status = (status) => {
           </ul>
 
           <!-- 表格標題 -->
-          <div class="w-full h-[60px] bg-third mt-5 rounded-[10px]"></div>
+          <ul
+            class="w-full h-[60px] bg-third mt-5 rounded-[10px] flex text-font text-xl items-center space-x-[138px] px-7"
+          >
+            <li v-for="title in table_title" :key="title">{{ title }}</li>
+          </ul>
 
           <!-- 表格內容 -->
-          <div class="w-full h-[395px] bg-slate-300 rounded-[10px]"></div>
+          <ul
+            class="w-full h-[395px] rounded-[10px] px-7 py-6 border border-input_font custom-shadow overflow-y-scroll"
+          >
+            <li
+              class="flex items-center py-[26px] text-font text-xl"
+              v-for="(item, index) in 10"
+              :key="index"
+            >
+              <!-- 訂單編號 -->
+              <div class="mr-[118px]">
+                <p>#123456</p>
+              </div>
+
+              <!-- 下單日期 -->
+              <div class="mr-[120px]">
+                <p>2024/01/01</p>
+              </div>
+
+              <!-- 購買項目 -->
+              <div class="mr-[125px]">
+                <div class="w-[100px] h-[100px] bg-slate-300 rounded-[10px]"></div>
+              </div>
+
+              <!-- 訂單金額 -->
+              <div class="mr-[116px]">
+                <p>NT$ 1000</p>
+              </div>
+
+              <!-- 按鈕 -->
+              <div class="">
+                <button
+                  class="btn bg-secondary hover:bg-font border-none text-white font-semibold px-[30px] py-[9px] text-base"
+                >
+                  訂單詳情
+                </button>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </MemberCenterDetail>

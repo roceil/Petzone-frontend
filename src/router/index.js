@@ -14,9 +14,24 @@ const router = createRouter({
       component: () => import('../views/EcommerceView.vue')
     },
     {
+      path: '/ecommerce/product',
+      name: 'product',
+      component: () => import('../views/ProductView.vue')
+    },
+    {
       path: '/ecommerce/cart',
       name: 'cart',
       component: () => import('../views/CartView.vue')
+    },
+    {
+      path: '/ecommerce/checkout',
+      name: 'checkout',
+      component: () => import('../views/CheckoutView.vue')
+    },
+    {
+      path: '/ecommerce/order',
+      name: 'order',
+      component: () => import('../views/OrderView.vue')
     },
     {
       path: '/community',

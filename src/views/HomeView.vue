@@ -2,40 +2,40 @@
 import WaterFall from '@/containers/WaterFall.vue'
 import Footer from '../components/Footer.vue'
 import { blocks } from '@/constants'
-import { ref, onMounted, reactive } from 'vue'
-import { Application } from '@splinetool/runtime'
+// import { ref, onMounted, reactive } from 'vue'
+// import { Application } from '@splinetool/runtime'
 
-// template ref
-const canvas = ref(null)
+// // template ref
+// const canvas = ref(null)
 
-// spline state
-const state = reactive({
-  spline: {
-    scene: 'https://prod.spline.design/LUmVgb1TPgRB-SHb/scene.splinecode',
-    app: null,
-    isLoaded: false
-  }
-})
+// // spline state
+// const state = reactive({
+//   spline: {
+//     scene: 'https://prod.spline.design/LUmVgb1TPgRB-SHb/scene.splinecode',
+//     app: null,
+//     isLoaded: false
+//   }
+// })
 
-onMounted(async () => {
-  const app = new Application(canvas.value)
-  await app.load(state.spline.scene)
-  state.spline.app = app
-  state.spline.isLoaded = true
+// onMounted(async () => {
+//   const app = new Application(canvas.value)
+//   await app.load(state.spline.scene)
+//   state.spline.app = app
+//   state.spline.isLoaded = true
 
-  setTimeout(() => {
-    // 創建一個新的 KeyboardEvent
-    const event = new KeyboardEvent('keydown', {
-      key: 'Enter', // 指定按鍵為 Enter
-      code: 'Enter', // 與 key 類似，但 code 是更具體的
-      bubbles: true, // 使事件可以冒泡
-      cancelable: true // 使事件可以被取消
-    })
+//   setTimeout(() => {
+//     // 創建一個新的 KeyboardEvent
+//     const event = new KeyboardEvent('keydown', {
+//       key: 'Enter', // 指定按鍵為 Enter
+//       code: 'Enter', // 與 key 類似，但 code 是更具體的
+//       bubbles: true, // 使事件可以冒泡
+//       cancelable: true // 使事件可以被取消
+//     })
 
-    // 觸發事件
-    document.dispatchEvent(event)
-  }, 3000)
-})
+//     // 觸發事件
+//     document.dispatchEvent(event)
+//   }, 3000)
+// })
 </script>
 
 <template>

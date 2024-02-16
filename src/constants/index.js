@@ -13,6 +13,24 @@ export const headerLinks = [
   }
 ]
 
+// Header 頭貼下拉選單選項
+export const drop_down_links = [
+  { name: '我的會員中心', link: '/membercenter' },
+  { name: '我的歷史訂單', link: '/membercenter/ordershistory' },
+  { name: '我的貼文專區', link: '/mypost' },
+  // { name: '後台管理', link: '/item4' },
+  { name: '會員登出', link: '/item5' }
+]
+
+// Header 購物車下拉選單假資料
+export const fake_shopping_cart = [
+  { id: 1, img: 'https://via.placeholder.com/48', name: '狗狗甜甜圈', price: 2000, quantity: 10 },
+  { id: 2, img: 'https://via.placeholder.com/48', name: '貓咪魚魚餅', price: 1000, quantity: 5 },
+  { id: 3, img: 'https://via.placeholder.com/48', name: '狗窩', price: 4500, quantity: 1 },
+  { id: 4, img: 'https://via.placeholder.com/48', name: '貓砂', price: 300, quantity: 20 },
+  { id: 5, img: 'https://via.placeholder.com/48', name: '狗狗罐頭', price: 150, quantity: 30 }
+]
+
 // 首頁瀑布流假資料
 export const blocks = [
   {

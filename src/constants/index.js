@@ -188,3 +188,58 @@ export const productListData = [
     price: 88.95
   }
 ]
+
+// 註冊 Modal 欄位
+export const sign_up_modal_form_items = [
+  {
+    tag: 'email',
+    label: '請輸入帳號',
+    sub_label: '(Email)',
+    placeholder: '請輸入Email',
+    type: 'email'
+  },
+  {
+    tag: 'password',
+    label: '請輸入密碼',
+    placeholder: '請輸入密碼',
+    type: 'password'
+  },
+  {
+    tag: 'name',
+    label: '請輸入姓名',
+    placeholder: '請輸入姓名',
+    type: 'text'
+  },
+  {
+    tag: 'nickname',
+    label: '請輸入暱稱',
+    placeholder: '請輸入暱稱',
+    type: 'text'
+  },
+  {
+    tag: 'phone',
+    label: '請輸入電話',
+    placeholder: '請輸入電話',
+    type: 'tel'
+  },
+  {
+    tag: 'address',
+    label: '請輸入地址',
+    placeholder: '請輸入地址',
+    type: 'text'
+  }
+]
+
+// 登入 Modal 欄位
+export const login_modal_form_items = [
+  {
+    label: '會員帳號',
+    tag: 'email',
+    type: 'text'
+  },
+  {
+    label: '會員密碼',
+    tag: 'password',
+    type: 'password'
+  }
+]

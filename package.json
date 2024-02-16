@@ -11,20 +11,25 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "lint:console": "eslint . --ignore-pattern dist/ --rule 'no-console:[\"error\", { \"allow\": [\"warn\", \"error\", \"info\"] }]' --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts",
     "format": "prettier --write src/",
-    "check": "npm run lint && npm run lint:console && npm run format && npm run test:unit"
+    "check": "npm run lint && npm run lint:console && npm run format && npm run test:unit",
+    "vite": "vite"
   },
   "dependencies": {
     "@heroicons/vue": "^2.1.1",
     "@splinetool/loader": "^1.0.39",
     "@splinetool/runtime": "^1.0.39",
+    "@vee-validate/zod": "^4.12.5",
     "@yeger/vue-masonry-wall": "^5.0.6",
     "axios": "^1.6.7",
+    "js-cookie": "^3.0.5",
     "masonry-layout": "^4.2.2",
     "pinia": "^2.1.7",
     "three": "^0.161.0",
+    "vee-validate": "^4.12.5",
     "vue": "^3.3.11",
     "vue-masonry": "^0.16.0",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.3.3",

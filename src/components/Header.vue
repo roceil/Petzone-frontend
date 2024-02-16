@@ -3,13 +3,13 @@
 import { onMounted } from 'vue'
 import router from '@/router'
 import Modal from '@/components/modal/Modal.vue'
+import { headerLinks } from '@/constants'
+import { useAuthStore } from '@/stores/auth'
+import { useModalStore } from '@/stores/modal'
 import LoginModal from './modal/LoginModal.vue'
 import SignUpModal from './modal/SignUpModal.vue'
 import ResetPasswordModal from './modal/ResetPasswordModal.vue'
 import SetNewPasswordModal from './modal/SetNewPasswordModal.vue'
-import { headerLinks } from '@/constants'
-import { useAuthStore } from '@/stores/auth'
-import { useModalStore } from '@/stores/modal'
 import AvatarDropDownList from './AvatarDropDownList.vue'
 import CartDropDownList from './CartDropDownList.vue'
 
@@ -25,21 +25,10 @@ const GotoHome = () => {
   router.push({ name: 'home' })
 }
 
-// 登入 API
-const login = () => {
-  setTimeout(() => {
-    console.log('Login')
-    authStore.set_token('123456789')
-    modalStore.handleCloseModal()
-  }, 1000)
-}
-
-// 登出 API
+// 登出
 const logout = () => {
-  setTimeout(() => {
-    console.log('Logout')
-    authStore.clear_token()
-  }, 1000)
+  authStore.set_token(false)
+  authStore.clear_token()
 }
 
 const modalStore = useModalStore()
@@ -47,6 +36,7 @@ const modalStore = useModalStore()
 
 <template>
   <header class="Header">
+    <!-- 主內容 -->
     <div class="container">
       <div class="flex justify-between items-center py-[10px] border-b border-font">
         <!-- LOGO -->
@@ -88,7 +78,7 @@ const modalStore = useModalStore()
       :isOpen="modalStore.isModalOpen && modalStore.currentModal === 'login'"
       @update:isOpen="modalStore.handleCloseModal"
     >
-      <LoginModal :login="login" />
+      <LoginModal />
     </Modal>
 
     <!-- modal - 註冊 -->

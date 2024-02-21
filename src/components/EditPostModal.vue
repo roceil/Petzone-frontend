@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from 'vue'
 import close from '@/assets/header/close-btn.svg'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import { Navigation } from 'swiper/modules'
 
 const props = defineProps({
   type: String
@@ -11,12 +15,18 @@ const showModal = () => {
   dialogRef.value.showModal()
 }
 const hideModal = () => {
+  images.value = []
   dialogRef.value.close()
 }
 
+// 選擇圖檔
+const images = ref([])
 const fileInputRef = ref()
 const chooseFile = () => {
   fileInputRef.value.click()
+}
+const handleFileChange = (e) => {
+  images.value = [...e.target.files].map((item) => URL.createObjectURL(item))
 }
 
 defineExpose({ showModal })
@@ -46,11 +56,25 @@ defineExpose({ showModal })
           </div>
         </div>
         <template v-if="props.type === 'new'">
-          <div class="w-full h-full aspect-square bg-third rounded-[10px]"></div>
+          <Swiper
+            class="w-full rounded-[10px] overflow-hidden"
+            :navigation="true"
+            :modules="[Navigation]"
+          >
+            <SwiperSlide v-for="(item, index) in images" :key="index">
+              <img :src="item" class="w-full" />
+            </SwiperSlide>
+          </Swiper>
           <div class="flex items-center justify-between">
             <label>請從電腦中選擇圖檔</label>
             <button class="btn btn-primary" @click="chooseFile">選擇照片</button>
-            <input class="hidden" ref="fileInputRef" type="file" />
+            <input
+              class="hidden"
+              ref="fileInputRef"
+              type="file"
+              multiple
+              @change="handleFileChange"
+            />
           </div>
         </template>
         <textarea

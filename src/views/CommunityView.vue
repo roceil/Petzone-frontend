@@ -1,10 +1,18 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import EditPostModal from '@/components/EditPostModal.vue'
+const router = useRouter()
+const editPostModalRef = ref()
+</script>
 <template>
   <div class="Community text-font">
     <section class="container my-10">
       <div class="flex justify-between">
         <h1 class="text-5xl font-bold">貼文專區</h1>
-        <button class="btn btn-primary text-white px-10">新增貼文</button>
+        <button class="px-10 text-white btn btn-primary" @click="editPostModalRef.showModal">
+          新增貼文
+        </button>
       </div>
     </section>
     <section class="container mb-10">
@@ -12,19 +20,20 @@
         <div class="col-span-8">
           <div class="grid grid-cols-3 gap-10">
             <button
-              class="aspect-square rounded-lg overflow-hidden relative"
+              class="relative overflow-hidden rounded-lg aspect-square"
               v-for="item in 9"
               :key="item"
+              @click="router.push(`/community/${item}`)"
             >
-              <div class="group w-full h-full">
-                <div class="w-full h-full bg-secondary hover:blur-sm transition">
+              <div class="w-full h-full group">
+                <div class="w-full h-full transition bg-secondary hover:blur-sm">
                   <img
                     src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
                     alt=""
                   />
                 </div>
                 <div
-                  class="absolute right-2 bottom-2 opacity-0 group-hover:opacity-100 text-white transition"
+                  class="absolute text-white transition opacity-0 right-2 bottom-2 group-hover:opacity-100"
                 >
                   <span class="me-2">
                     <svg
@@ -33,7 +42,7 @@
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="w-6 h-6 inline"
+                      class="inline w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"
@@ -51,7 +60,7 @@
                       viewBox="0 0 24 24"
                       stroke-width="1.5"
                       stroke="currentColor"
-                      class="w-6 h-6 inline"
+                      class="inline w-6 h-6"
                     >
                       <path
                         stroke-linecap="round"
@@ -69,11 +78,11 @@
         <div class="col-span-4">
           <div class="relative">
             <input
-              class="border border-font p-4 rounded-md focus:outline-none w-full"
+              class="w-full p-4 border rounded-md border-font focus:outline-none"
               type="text"
               placeholder="請輸入貼文作者"
             />
-            <button class="absolute inset-y-0 right-2 flex items-center pr-2">
+            <button class="absolute inset-y-0 flex items-center pr-2 right-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -90,21 +99,22 @@
               </svg>
             </button>
           </div>
-          <h5 class="text-xl font-bold mt-10">Recommended topics</h5>
+          <h5 class="mt-10 text-xl font-bold">Recommended topics</h5>
           <div class="flex flex-wrap mt-10">
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">柴犬</button>
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">志工經驗分享</button>
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">寵物健康</button>
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">寵物手作</button>
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">俄羅斯藍貓</button>
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">戶外活動</button>
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">寵物心理學</button>
-            <button class="px-8 py-4 me-6 mb-4 border rounded-full">寵物保健知識</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">柴犬</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">志工經驗分享</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物健康</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物手作</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">俄羅斯藍貓</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">戶外活動</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物心理學</button>
+            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物保健知識</button>
           </div>
           <button class="mt-4 ms-4">see more...</button>
         </div>
       </div>
     </section>
+    <EditPostModal ref="editPostModalRef" :type="'new'" />
   </div>
 </template>
 <style></style>

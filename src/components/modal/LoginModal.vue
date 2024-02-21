@@ -30,6 +30,21 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
   modalStore.handleCloseModal()
   alert('登入成功')
 })
+
+// Google 登入
+// import axios from 'axios'
+// const google_login_submit = async () => {
+//   try {
+//     const res = await axios.get('/auth/google')
+//     console.log(res)
+//   } catch (error) {
+//     console.error(error)
+//   }
+// }
+
+const google_redirect = () => {
+  window.location.href = 'https://petzone-backend-dev.zeabur.app/auth/google'
+}
 </script>
 
 <template>
@@ -80,6 +95,7 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
     <!-- 第三方登入 -->
     <div class="w-full flex justify-center mt-[37px]">
       <button
+        @click="google_redirect"
         class="bg-[#EEF1F4] p-[10px] rounded flex items-center space-x-5 text-[#545F71] w-[250px]"
       >
         <img :src="google_icon" alt="google_icon" />

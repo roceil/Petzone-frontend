@@ -39,6 +39,11 @@ const router = createRouter({
       component: () => import('../views/CommunityView.vue')
     },
     {
+      path: '/community/:id',
+      name: 'communityDetail',
+      component: () => import('../views/CommunityDetailView.vue')
+    },
+    {
       path: '/membercenter',
       name: 'membercenter',
       component: () => import('../views/MemberCenterView.vue')

@@ -1,7 +1,8 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import router from '@/router'
+import { useRoute } from 'vue-router'
 import Modal from '@/components/modal/Modal.vue'
 import { headerLinks } from '@/constants'
 import { useAuthStore } from '@/stores/auth'
@@ -14,6 +15,12 @@ import AvatarDropDownList from './AvatarDropDownList.vue'
 import CartDropDownList from './CartDropDownList.vue'
 
 const authStore = useAuthStore()
+
+// 判斷前後台
+const route = useRoute()
+const isAdmin = computed(() => {
+  return route.meta.admin
+})
 
 // 檢查是否有 token
 onMounted(() => {
@@ -44,32 +51,38 @@ const modalStore = useModalStore()
           <img src="../assets/logo.svg" alt="logo" />
         </button>
 
-        <!-- Nav -->
-        <ul class="flex space-x-12 text-font text-2xl">
-          <li v-for="link in headerLinks" :key="link.name">
-            <RouterLink :to="link.link">{{ link.name }}</RouterLink>
-          </li>
-        </ul>
+        <!-- 前台顯示 -->
+        <template v-if="!isAdmin">
+          <!-- Nav -->
+          <ul class="flex space-x-12 text-2xl text-font">
+            <li v-for="link in headerLinks" :key="link.name">
+              <RouterLink :to="link.link">{{ link.name }}</RouterLink>
+            </li>
+          </ul>
 
-        <!-- 購物車＆登入 -->
-        <div class="flex space-x-[50px] mr-[25px] items-center">
-          <!-- 購物車下拉視窗 -->
-          <CartDropDownList />
+          <!-- 購物車＆登入 -->
+          <div class="flex space-x-[50px] mr-[25px] items-center">
+            <!-- 購物車下拉視窗 -->
+            <CartDropDownList />
 
-          <!-- 登入按鈕 -->
-          <button
-            v-if="!authStore.has_token"
-            @click="modalStore.openModal('login')"
-            class="btn btn-primary text-white font-bold rounded-full py-4 px-5"
-          >
-            登入／註冊
-          </button>
+            <!-- 登入按鈕 -->
+            <button
+              v-if="!authStore.has_token"
+              @click="modalStore.openModal('login')"
+              class="px-5 py-4 font-bold text-white rounded-full btn btn-primary"
+            >
+              登入／註冊
+            </button>
 
-          <!-- 頭像下拉視窗 -->
-          <div v-else class="dropdown dropdown-end">
-            <AvatarDropDownList :logout="logout" />
+            <!-- 頭像下拉視窗 -->
+            <div v-else class="dropdown dropdown-end">
+              <AvatarDropDownList :logout="logout" />
+            </div>
           </div>
-        </div>
+        </template>
+
+        <!-- 後台顯示 -->
+        <template v-else></template>
       </div>
     </div>
 

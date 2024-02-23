@@ -13,12 +13,12 @@ export default defineConfig({
   },
   server: {
     port: 3030,
-    proxy: {
-      '/api': {
-        target: 'https://petzone-backend.zeabur.app',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      }
-    }
+    // proxy: {
+    //   '/api': {
+    //     target: 'https://petzone-backend.zeabur.app',
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/api/, ''),
+    //   }
+    // }
   }
 })

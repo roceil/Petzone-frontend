@@ -14,7 +14,7 @@ defineProps({
     <div tabindex="0" class="w-[50px] h-[50px] bg-red-400 rounded-full"></div>
     <ul
       tabindex="0"
-      class="dropdown-content z-[1] menu shadow bg-base-100 rounded w-[182px] border border-font text-font top-[106px] p-0 overflow-hidden"
+      class="dropdown-content z-[1] menu shadow bg-base-100 rounded w-[182px] border border-font text-font p-0 overflow-hidden"
     >
       <li
         v-for="link in drop_down_links"

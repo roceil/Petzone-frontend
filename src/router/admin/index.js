@@ -11,7 +11,7 @@ const routes = [{
   },
   children: [
     {
-      path: 'community',
+      path: '/community',
       name: 'community',
       component: () => import('../../views/admin/CommunityAdminView.vue')
     }

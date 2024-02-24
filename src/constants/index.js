@@ -1,5 +1,10 @@
 import cat from '../assets/ecommerce/cat.svg'
 import dog from '../assets/ecommerce/dog.svg'
+import users from '../assets/sidebar/users.svg'
+import gift from '../assets/sidebar/gift.svg'
+import truck from '../assets/sidebar/truck.svg'
+import post from '../assets/sidebar/post.svg'
+import coupon from '../assets/sidebar/coupon.svg'
 
 // Header 連結
 export const headerLinks = [
@@ -241,5 +246,33 @@ export const login_modal_form_items = [
     label: '會員密碼',
     tag: 'password',
     type: 'password'
+  }
+]
+
+export const sidebarLinks = [
+  {
+    name: '帳號管理',
+    icon: users,
+    link: '/admin/accounts'
+  },
+  {
+    name: '商品管理',
+    icon: gift,
+    link: '/admin/products'
+  },
+  {
+    name: '訂單管理',
+    icon: truck,
+    link: '/admin/orders'
+  },
+  {
+    name: '貼文管理',
+    icon: post,
+    link: '/admin/posts'
+  },
+  {
+    name: '優惠券管理',
+    icon: coupon,
+    link: '/admin/coupons'
   }
 ]

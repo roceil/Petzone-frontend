@@ -10,6 +10,7 @@ const routes = [
     meta: {
       admin: true
     },
+    component: () => import('../../views/admin/AdminView.vue'),
     children: [
       {
         path: 'accounts',

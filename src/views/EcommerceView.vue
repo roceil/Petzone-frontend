@@ -1,75 +1,84 @@
 <script setup>
-import { ecommerceLinks, productListData } from '@/constants'
-import shoppingCart from '../assets/shopping-cart.svg'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import { ecommerceLinks } from '@/constants'
+
+const { VITE_API_BASE_URL } = import.meta.env
+const products = ref()
+
+const userGetProducts = async () => {
+  await axios
+    .get(`${VITE_API_BASE_URL}/api/products`)
+    .then((res) => {
+      // console.log(res.data.products)
+      products.value = res.data.products
+      return products
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+}
+
+onMounted(() => {
+  userGetProducts()
+  console.log(products)
+})
 </script>
 
 <template>
   <!-- 上方區塊 -->
-  <div class="EcommerceView m-10">
-    <div class="container flex justify-around">
-      <!-- 頁面標題 -->
-      <h1 class="text-5xl font-bold text-font">商品專區</h1>
+  <div class="container flex text-font">
+    <!-- 頁面標題 -->
+    <div>
+      <h1 class="mt-10 mx-10 text-5xl font-bold">商品管理</h1>
+    </div>
 
-      <!-- 專區按鈕 -->
-      <ul class="flex text-2xl text-font space-x-[27px]">
-        <li
-          v-for="link in ecommerceLinks"
-          :key="link.name"
-          class="flex justify-center items-center"
-        >
-          <img :src="link.icon" :alt="link.name" />
-          <router-link :to="link.link">{{ link.name }}</router-link>
-        </li>
-      </ul>
+    <!-- 專區按鈕 -->
+    <ul class="flex mt-10 mx-20 space-x-[100px] text-2xl font-bold">
+      <li v-for="link in ecommerceLinks" :key="link.name" class="flex justify-center items-center">
+        <img :src="link.icon" :alt="link.name" />
+        <router-link :to="link.link">{{ link.name }}</router-link>
+      </li>
+    </ul>
 
-      <!-- 搜尋欄 -->
-      <div class="w-[200px] h-12 border border-font rounded-md relative">
-        <button class="absolute inset-y-0 right-2 flex items-center pr-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-            />
-          </svg>
-        </button>
-      </div>
+    <!-- 搜尋欄 -->
+    <div class="relative flex mt-10 ml-48">
+      <button class="absolute inset-y-0 right-2 flex items-center pr-2"></button>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="w-[200px] py-1.5 pl-2 border rounded-md border-font placeholder:text-gray-40 focus:outline-none"
+        placeholder="請輸入商品名稱"
+      />
+      <button class="absolute inset-y-0 right-0 mr-2">
+        <img src="../assets/search.svg" alt="search" />
+      </button>
     </div>
   </div>
 
   <!-- 商品列表 -->
-  <ul class="container m-10 flex flex-wrap justify-center gap-[50px]">
-    <li v-for="product in productListData" :key="product.name">
-      <!-- 圖片 -->
-      <div
-        class="w-[322px] h-[185px] rounded-[10px] flex justify-center items-center font-bold text-white text-3xl"
-        :class="product.image"
-      >
-        {{ product.name }}
+  <div class="container grid grid-cols-3">
+    <div class="m-10 w-[320px]" v-for="product in products" :key="product.name">
+      <a href="#">
+        <img class="rounded-[10px]" :src="product.photos" alt="商品圖" />
+      </a>
+      <div>
+        <div class="flex my-4 text-font text-2xl">
+          <p class="mx-2 font-bold">{{ product.name }}</p>
+          <p>
+            <del>＄{{ product.originPrice }}</del> / ＄{{ product.price }}
+          </p>
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+            class="btn w-full rounded-md border-font text-font border-2 hover:opacity-80 hover:-translate-y-1"
+          >
+            <p class="font-semibold">加入購物車</p>
+            <img src="../assets/shopping-cart.svg" alt="shopping-cart" />
+          </button>
+        </div>
       </div>
-
-      <!-- 文字 -->
-      <div class="flex justify-between py-[21px] px-[7.5px] text-font text-2xl">
-        <p class="font-bold">{{ product.name }}</p>
-        <p>
-          <del>＄{{ product.originalPrice }}</del> / ＄{{ product.price }}
-        </p>
-      </div>
-
-      <!-- 按鈕 -->
-      <button
-        class="btn w-full rounded-md border-font text-font border-2 hover:opacity-80 hover:-translate-y-1"
-      >
-        <p class="font-semibold">加入購物車</p>
-        <img :src="shoppingCart" alt="shopping-cart" />
-      </button>
-    </li>
-  </ul>
+    </div>
+  </div>
 </template>

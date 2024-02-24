@@ -2,7 +2,9 @@
 import Sidebar from '@/components/Sidebar.vue'
 </script>
 <template>
-  <Sidebar></Sidebar>
-  <RouterView></RouterView>
+  <div class="grid grid-cols-12">
+    <Sidebar></Sidebar>
+    <RouterView></RouterView>
+  </div>
 </template>
 <style scoped></style>

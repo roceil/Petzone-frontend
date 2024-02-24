@@ -4,10 +4,10 @@ import { sidebarLinks } from '@/constants'
 </script>
 
 <template>
-  <div class="container flex flex-col text-font">
-    <aside class="flex flex-col w-[200px] border-r border-font" id="sidenav-main">
-      <div class="relative my-[50px]">
-        <div class="flex flex-col">
+  <div class="col-span-2">
+    <aside class="w-[200px] h-full border-r border-font">
+      <div class="mx-[25px] py-[80px] text-font">
+        <div>
           <ul>
             <li
               class="flex items-center cursor-pointer my-[50px]"

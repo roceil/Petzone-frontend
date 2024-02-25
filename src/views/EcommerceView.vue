@@ -10,7 +10,7 @@ const productName = ref('')
 // console.log(categoryType, categoryName)
 
 async function userGetProducts(search) {
-  console.log(search)
+  // console.log(search)
   if (!search) {
     try {
       const response = await axios.get(`${VITE_API_BASE_URL}/api/products`)
@@ -30,7 +30,7 @@ async function userGetProducts(search) {
     }
   } else if (search === 'productName') {
     try {
-      console.log(productName.value)
+      // console.log(productName.value)
       const response = await axios.get(
         `${VITE_API_BASE_URL}/api/products?name=${productName.value}`
       )
@@ -49,7 +49,7 @@ watch(categoryType, async (Type) => {
 
 onMounted(() => {
   userGetProducts()
-  console.log(products)
+  // console.log(products)
 })
 </script>
 

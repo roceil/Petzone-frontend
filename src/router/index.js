@@ -65,7 +65,7 @@ const router = createRouter({
       component: () => import('../views/MyPostView.vue')
     },
     ...adminRoutes
-  ] 
+  ]
 })
 
 export default router

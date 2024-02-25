@@ -1,24 +1,13 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+// import { productStore } from '@/stores/product'
+// import { storeToRefs } from 'pinia'
+import { useRoute } from 'vue-router'
 
-const images = ref([
-  {
-    id: '1',
-    url: 'https://picsum.photos/id/235/200/300'
-  },
-  {
-    id: '2',
-    url: 'https://picsum.photos/id/236/200/300'
-  },
-  {
-    id: '3',
-    url: 'https://picsum.photos/id/237/200/300'
-  },
-  {
-    id: '4',
-    url: 'https://picsum.photos/id/238/200/300'
-  }
-])
+// const productHandler = productStore()
+// const { product } = storeToRefs(productHandler)
+const route = useRoute()
+
 const productReview = ref([
   {
     username: '拉拉熊',
@@ -35,15 +24,20 @@ const productReview = ref([
     createAt: '2024/01/01'
   }
 ])
+
+onMounted(() => {
+  console.log(route.query)
+})
 </script>
+
 <template>
   <div class="container text-font">
     <div class="grid grid-cols-2 m-6">
       <!-- 商品圖片 -->
-      <div class="m-auto">
+      <!-- <div class="m-auto">
         <div class="carousel w-[660px] h-[400px] rounded-[10px]">
-          <div class="carousel-item relative w-full" v-for="image in images" :key="image">
-            <img class="w-full" :src="image.url" alt="" />
+          <div class="carousel-item relative w-full">
+            <img class="w-full" src="" alt="" />
             <div
               class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2"
             >
@@ -53,17 +47,12 @@ const productReview = ref([
           </div>
         </div>
         <div class="flex justify-between">
-          <img
-            v-for="image in images"
-            :key="image"
-            class="w-[150px] h-[100px] rounded-[10px] object-fill"
-            :src="image.url"
-            alt=""
-          />
+          <img class="w-[150px] h-[100px] rounded-[10px] object-fill" src="" alt="" />
         </div>
-      </div>
+      </div> -->
+
       <!-- 商品資訊 -->
-      <div class="w-[420px] m-auto">
+      <!-- <div class="w-[420px] m-auto">
         <p class="mt-16 text-5xl font-bold">商品名稱</p>
         <P class="my-4 text-2xl text-secondary"
           >這是商品描述這是商品描述這是商品描述這是商品描述這是商品描述這是商品描述這是商品描述這是商品描述這是商品描述</P
@@ -113,14 +102,15 @@ const productReview = ref([
             </svg>
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
+
     <!-- 推薦商品 -->
     <p class="mx-6 text-2xl font-bold">你也許也會喜歡...</p>
     <div class="grid grid-cols-4 m-6">
-      <div class="w-[300px]" v-for="product in images" :key="product">
+      <div class="w-[300px]">
         <button type="button">
-          <img class="w-[300px] h-[175px] rounded-[10px] object-fill" :src="product.url" alt="" />
+          <img class="w-[300px] h-[175px] rounded-[10px] object-fill" src="" alt="" />
         </button>
         <div class="flex justify-between py-[21px] px-[7.5px] text-2xl">
           <p>商品名稱</p>

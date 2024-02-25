@@ -1,23 +1,51 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import axios from 'axios'
 import { ecommerceLinks } from '@/constants'
 
 const { VITE_API_BASE_URL } = import.meta.env
 const products = ref()
+const categoryType = ref('')
+const productName = ref('')
+// console.log(categoryType, categoryName)
 
-const userGetProducts = async () => {
-  await axios
-    .get(`${VITE_API_BASE_URL}/api/products`)
-    .then((res) => {
-      // console.log(res.data.products)
-      products.value = res.data.products
-      return products
-    })
-    .catch((error) => {
+async function userGetProducts(search) {
+  console.log(search)
+  if (!search) {
+    try {
+      const response = await axios.get(`${VITE_API_BASE_URL}/api/products`)
+      products.value = response.data.products
+    } catch (error) {
       console.error(error)
-    })
+    }
+  } else if (Object.keys(search)[0] === 'categoryType') {
+    try {
+      // console.log(search.categoryType)
+      const response = await axios.get(
+        `${VITE_API_BASE_URL}/api/products?category=${search.categoryType}`
+      )
+      products.value = response.data.products
+    } catch (error) {
+      console.error(error)
+    }
+  } else if (search === 'productName') {
+    try {
+      console.log(productName.value)
+      const response = await axios.get(
+        `${VITE_API_BASE_URL}/api/products?name=${productName.value}`
+      )
+      products.value = response.data.products
+    } catch (error) {
+      console.error(error)
+    }
+  }
 }
+
+watch(categoryType, async (Type) => {
+  // console.log(Type)
+  const category = { categoryType: Type }
+  userGetProducts(category)
+})
 
 onMounted(() => {
   userGetProducts()
@@ -30,16 +58,16 @@ onMounted(() => {
   <div class="container flex text-font">
     <!-- 頁面標題 -->
     <div>
-      <h1 class="mt-10 mx-10 text-5xl font-bold">商品管理</h1>
+      <h1 class="mt-10 mx-10 text-5xl font-bold">商品專區</h1>
     </div>
 
     <!-- 專區按鈕 -->
-    <ul class="flex mt-10 mx-20 space-x-[100px] text-2xl font-bold">
-      <li v-for="link in ecommerceLinks" :key="link.name" class="flex justify-center items-center">
+    <div class="flex mt-10 mx-20 space-x-[100px] text-2xl font-bold">
+      <div v-for="link in ecommerceLinks" :key="link.name" class="flex justify-center items-center">
         <img :src="link.icon" :alt="link.name" />
-        <router-link :to="link.link">{{ link.name }}</router-link>
-      </li>
-    </ul>
+        <button @click.prevent="categoryType = link.type">{{ link.name }}</button>
+      </div>
+    </div>
 
     <!-- 搜尋欄 -->
     <div class="relative flex mt-10 ml-48">
@@ -50,8 +78,12 @@ onMounted(() => {
         name="name"
         class="w-[200px] py-1.5 pl-2 border rounded-md border-font placeholder:text-gray-40 focus:outline-none"
         placeholder="請輸入商品名稱"
+        v-model="productName"
       />
-      <button class="absolute inset-y-0 right-0 mr-2">
+      <button
+        class="absolute inset-y-0 right-0 mr-2"
+        @click.prevent="userGetProducts('productName')"
+      >
         <img src="../assets/search.svg" alt="search" />
       </button>
     </div>
@@ -59,18 +91,25 @@ onMounted(() => {
 
   <!-- 商品列表 -->
   <div class="container grid grid-cols-3">
-    <div class="m-10 w-[320px]" v-for="product in products" :key="product.name">
+    <div class="w-[320px] m-10" v-for="product in products" :key="product.name">
       <a href="#">
-        <img class="rounded-[10px]" :src="product.photos" alt="商品圖" />
+        <img
+          class="w-[320px] h-[180px] rounded-[10px] object-cover"
+          :src="product.photos"
+          alt="商品圖"
+        />
       </a>
       <div>
-        <div class="flex my-4 text-font text-2xl">
+        <div class="flex my-4 text-font text-2xl justify-between">
           <p class="mx-2 font-bold">{{ product.name }}</p>
-          <p>
-            <del>＄{{ product.originPrice }}</del> / ＄{{ product.price }}
-          </p>
+          <div>
+            <p v-if="!product.price">${{ product.originPrice }}</p>
+            <p v-else>
+              <del>${{ product.originPrice }}</del> / ${{ product.price }}
+            </p>
+          </div>
         </div>
-        <div class="flex items-center justify-between">
+        <div class="flex items-center">
           <button
             class="btn w-full rounded-md border-font text-font border-2 hover:opacity-80 hover:-translate-y-1"
           >

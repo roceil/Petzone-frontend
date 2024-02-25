@@ -145,12 +145,12 @@ export const ecommerceLinks = [
   {
     name: '貓貓專區',
     icon: cat,
-    link: '/ecommerce/cat'
+    type: 'cat'
   },
   {
     name: '狗狗專區',
     icon: dog,
-    link: '/ecommerce/dog'
+    type: 'dog'
   }
 ]
 

@@ -8,7 +8,6 @@ export const productStore = defineStore('productStore', () => {
   const products = ref([])
   const categoryType = ref('')
   const productName = ref('')
-  const productId = ref('')
   const product = ref({})
 
   // 取得所有產品資料
@@ -44,12 +43,10 @@ export const productStore = defineStore('productStore', () => {
   }
 
   // 取得單一產品資料
-  const userGetProduct = async (id) => {
+  const userGetProduct = async (productId) => {
     // console.log(productId)
-    const response = await axios.get(`${VITE_API_BASE_URL}/api/product/${id}`)
-    productId.value = id
+    const response = await axios.get(`${VITE_API_BASE_URL}/api/product/${productId}`)
     product.value = response.data.product[0]
-    redirect()
   }
 
   return { products, categoryType, productName, product, userGetProducts, userGetProduct }

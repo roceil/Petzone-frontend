@@ -73,7 +73,7 @@ onMounted(() => {
       <button @click.prevent="redirectToProductPage(product._id)">
         <img
           class="w-[320px] h-[180px] rounded-[10px] object-cover"
-          :src="product.photos"
+          :src="product.photos[0]"
           alt="商品圖"
         />
       </button>

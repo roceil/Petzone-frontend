@@ -3,10 +3,30 @@ import { ref, onMounted } from 'vue'
 import { productStore } from '@/stores/product'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
+// import { useRouter } from 'vue-router'
 
-const productHandler = productStore()
-const { product } = storeToRefs(productHandler)
 const route = useRoute()
+// const router = useRouter()
+const productHandler = productStore()
+const { product, products } = storeToRefs(productHandler)
+const productReview = ref([
+  {
+    username: '拉拉熊',
+    score: 5,
+    content:
+      '這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容',
+    createAt: '2024/01/01'
+  },
+  {
+    username: '拉拉熊1',
+    score: 1,
+    content:
+      '這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容',
+    createAt: '2024/01/01'
+  }
+])
+
+// 圖片切換
 const currentIndex = ref(0)
 const imgChange = (index, max) => {
   if (index < 0) {
@@ -19,26 +39,17 @@ const imgChange = (index, max) => {
   console.log(currentIndex.value, index)
 }
 
-// const productReview = ref([
-//   {
-//     username: '拉拉熊',
-//     score: 5,
-//     content:
-//       '這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容',
-//     createAt: '2024/01/01'
-//   },
-//   {
-//     username: '拉拉熊1',
-//     score: 1,
-//     content:
-//       '這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容',
-//     createAt: '2024/01/01'
-//   }
-// ])
+// 產品資料更新
+const renewPage = (prodcutId) => {
+  currentIndex.value = 0
+  route.query.productId = prodcutId
+  productHandler.userGetProduct(prodcutId)
+}
 
 onMounted(() => {
-  // console.log(route.query.productId, product)
+  console.log(route.query.productId, product)
   productHandler.userGetProduct(route.query.productId)
+  productHandler.userGetProducts()
 })
 </script>
 
@@ -86,7 +97,7 @@ onMounted(() => {
       <!-- 商品資訊 -->
       <div class="w-[420px] m-auto">
         <p class="mt-10 text-5xl font-bold">{{ product.name }}</p>
-        <P class="my-4 text-2xl text-secondary">{{ product.description }}</P>
+        <p class="my-4 text-2xl text-secondary">{{ product.description }}</p>
         <div class="flex justify-between mt-10 px-2 text-2xl">
           <p>庫存量： {{ product.quantity }} {{ product.unit }}</p>
           <div>
@@ -115,20 +126,30 @@ onMounted(() => {
 
     <!-- 推薦商品 -->
     <p class="mx-6 text-2xl font-bold">你也許也會喜歡...</p>
-    <!-- <div class="grid grid-cols-4 m-6">
-      <div class="w-[300px]">
-        <button type="button">
-          <img class="w-[300px] h-[175px] rounded-[10px] object-fill" src="" alt="" />
+    <div class="grid grid-cols-4 m-6">
+      <div class="w-[300px]" v-for="product in products" :key="product._id">
+        <button type="button" @click.prevent="renewPage(product._id)">
+          <img
+            class="w-[300px] h-[160px] rounded-[10px] object-fill"
+            :src="product.photos[0]"
+            alt="推薦商品圖"
+          />
         </button>
-        <div class="flex justify-between py-[21px] px-[7.5px] text-2xl">
-          <p>商品名稱</p>
-          <p><del>$40</del> / $38.95</p>
+        <div class="flex justify-between text-2xl">
+          <p>{{ product.name }}</p>
+          <div>
+            <p v-if="!product.price">${{ product.originPrice }}</p>
+            <p v-else>
+              <del>${{ product.originPrice }}</del> / ${{ product.price }}
+            </p>
+          </div>
         </div>
       </div>
-    </div> -->
+    </div>
+
     <!-- 商品評論 -->
     <p class="mx-6 text-2xl font-bold">商品評論</p>
-    <!-- <div class="m-6 grid place-content-center">
+    <div class="m-6 grid place-content-center">
       <div class="w-[1060px] m-6 flex" v-for="review in productReview" :key="review.username">
         <div class="w-2/12">
           <img
@@ -158,6 +179,6 @@ onMounted(() => {
           ></textarea>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>

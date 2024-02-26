@@ -7,7 +7,7 @@ import { useRouter } from 'vue-router'
 import { ecommerceLinks } from '@/constants'
 
 const productHandler = productStore()
-const { products, categoryType } = storeToRefs(productHandler)
+const { products, categoryType, productName } = storeToRefs(productHandler)
 
 // 重新刷新頁面後params參數會遺失，Vue router 4.0 以上版本已經將params參數傳遞移除改用query
 const router = useRouter()
@@ -56,8 +56,12 @@ onMounted(() => {
           name="name"
           class="w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font placeholder:text-gray-400 focus:outline-none"
           placeholder="請輸入商品名稱"
+          v-model="productName"
         />
-        <button class="absolute inset-y-0 right-0 mr-2 top-0 mt-1">
+        <button
+          class="absolute inset-y-0 right-0 mr-2 top-0 mt-1"
+          @click.prevent="productHandler.userGetProducts('productName')"
+        >
           <img src="../assets/search.svg" alt="search" />
         </button>
       </div>

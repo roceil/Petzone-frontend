@@ -14,8 +14,8 @@ export default {
         secondary: '#638889',
         third: '#F9EFDB',
         input_font: '#9BA5B7',
-        font:'#415656'
-      },
+        font: '#415656'
+      }
     },
     screens: {
       lg: '1280px',

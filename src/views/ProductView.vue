@@ -36,7 +36,7 @@ const imgChange = (index, max) => {
   } else {
     currentIndex.value = index
   }
-  console.log(currentIndex.value, index)
+  // console.log(currentIndex.value, index)
 }
 
 // 產品資料更新
@@ -47,7 +47,7 @@ const renewPage = (prodcutId) => {
 }
 
 onMounted(() => {
-  console.log(route.query.productId, product)
+  // console.log(route.query.productId, product)
   productHandler.userGetProduct(route.query.productId)
   productHandler.userGetProducts()
 })
@@ -126,8 +126,8 @@ onMounted(() => {
 
     <!-- 推薦商品 -->
     <p class="mx-6 text-2xl font-bold">你也許也會喜歡...</p>
-    <div class="grid grid-cols-4 m-6">
-      <div class="w-[300px]" v-for="product in products" :key="product._id">
+    <div class="flex">
+      <div class="w-[300px] m-6" v-for="product in products" :key="product._id">
         <button type="button" @click.prevent="renewPage(product._id)">
           <img
             class="w-[300px] h-[160px] rounded-[10px] object-fill"

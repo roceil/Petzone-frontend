@@ -4,7 +4,7 @@ import { sidebarLinks } from '@/constants'
 </script>
 
 <template>
-  <div class="col-span-2">
+  <div class="col-span-2 justify-end">
     <aside class="w-[200px] h-full border-r border-font">
       <div class="mx-[25px] py-[80px] text-font">
         <div>

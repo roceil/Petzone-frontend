@@ -12,7 +12,7 @@ export default defineConfig({
     }
   },
   server: {
-    port: 3030,
+    port: 3000
     // proxy: {
     //   '/api': {
     //     target: 'https://petzone-backend.zeabur.app',

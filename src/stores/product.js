@@ -45,6 +45,7 @@ export const productStore = defineStore('productStore', () => {
   // 取得單一產品資料
   const userGetProduct = async (productId) => {
     // console.log(productId)
+
     const response = await axios.get(`${VITE_API_BASE_URL}/api/product/${productId}`)
     product.value = response.data.product[0]
   }

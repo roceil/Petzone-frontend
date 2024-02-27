@@ -1,9 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { productStore } from '@/stores/product'
+import { cartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 const route = useRoute()
 // const router = useRouter()
@@ -25,6 +26,17 @@ const productReview = ref([
     createAt: '2024/01/01'
   }
 ])
+
+const cartHandler = cartStore()
+
+// 將商品加入購物車並導向購物車頁面
+const router = useRouter()
+const directToCartPage = (productId) => {
+  cartHandler.addToCart(productId)
+  router.push({
+    name: 'cart'
+  })
+}
 
 // 圖片切換
 const currentIndex = ref(0)
@@ -110,15 +122,17 @@ onMounted(() => {
         <div class="flex justify-around mt-10">
           <button
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
+            @click.prevent="cartHandler.addToCart(product._id)"
           >
             <p class="font-semibold">加入購物車</p>
-            <img src="../assets/shopping-cart.svg" alt="shopping-cart" />
+            <img src="../assets/ecommerce/shopping-cart.svg" alt="shopping-cart" />
           </button>
           <button
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
+            @click.prevent="directToCartPage(product._id)"
           >
             <p class="font-semibold">直接購買</p>
-            <img src="../assets/shopping-bag.svg" alt="shopping-cart" />
+            <img src="../assets/ecommerce/shopping-bag.svg" alt="shopping-cart" />
           </button>
         </div>
       </div>

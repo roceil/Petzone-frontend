@@ -2,6 +2,7 @@
 // import axios from 'axios'
 import { watch, onMounted } from 'vue'
 import { productStore } from '@/stores/product'
+import { cartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { ecommerceLinks } from '@/constants'
@@ -9,9 +10,11 @@ import { ecommerceLinks } from '@/constants'
 const productHandler = productStore()
 const { products, categoryType, productName } = storeToRefs(productHandler)
 
+const cartHandler = cartStore()
+
 // 重新刷新頁面後params參數會遺失，Vue router 4.0 以上版本已經將params參數傳遞移除改用query
 const router = useRouter()
-const redirectToProductPage = (productId) => {
+const directToProductPage = (productId) => {
   router.push({
     name: 'product',
     query: {
@@ -71,7 +74,7 @@ onMounted(() => {
   <!-- 商品列表 -->
   <div class="container mt-10 text-font grid grid-cols-3 gap-[15%] px-10">
     <div class="w-[320px]" v-for="product in products" :key="product.name">
-      <a @click.prevent="redirectToProductPage(product._id)">
+      <a @click.prevent="directToProductPage(product._id)">
         <img
           class="w-[320px] h-[180px] rounded-[10px] object-cover"
           :src="product.photos[0]"
@@ -89,9 +92,10 @@ onMounted(() => {
       </div>
       <button
         class="w-[320px] rounded-md btn border-2 border-font hover:opacity-80 hover:-translate-y-1"
+        @click.prevent="cartHandler.addToCart(product._id)"
       >
         <p class="font-semibold">加入購物車</p>
-        <img src="../assets/shopping-cart.svg" alt="shopping-cart" />
+        <img src="../assets/ecommerce/shopping-cart.svg" alt="shopping-cart" />
       </button>
     </div>
   </div>

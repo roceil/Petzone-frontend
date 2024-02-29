@@ -42,5 +42,5 @@ export const cartStore = defineStore('cartStore', () => {
     cartList.value.splice(itemIndex, 1)
   }
 
-  return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart, updateCart }
+  return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart }
 })

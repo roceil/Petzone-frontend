@@ -72,11 +72,11 @@ onMounted(() => {
   </div>
 
   <!-- 商品列表 -->
-  <div class="container mt-10 text-font grid grid-cols-3 gap-[15%] px-10">
-    <div class="w-[320px]" v-for="product in products" :key="product.name">
+  <div class="container mt-10 text-font grid grid-cols-3 gap-8">
+    <div class="w-full" v-for="product in products" :key="product.name">
       <a @click.prevent="directToProductPage(product._id)">
         <img
-          class="w-[320px] h-[180px] rounded-[10px] object-cover"
+          class="w-full h-[300px] rounded-[10px] object-cover"
           :src="product.photos[0]"
           alt="商品圖"
         />
@@ -91,7 +91,7 @@ onMounted(() => {
         </div>
       </div>
       <button
-        class="w-[320px] rounded-md btn border-2 border-font hover:opacity-80 hover:-translate-y-1"
+        class="w-full rounded-md btn border-2 border-font hover:opacity-80 hover:-translate-y-1"
         @click.prevent="cartHandler.addToCart(product._id)"
       >
         <p class="font-semibold">加入購物車</p>

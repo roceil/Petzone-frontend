@@ -1,10 +1,22 @@
 <script setup>
-import { onMounted } from 'vue'
+import { watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { cartStore } from '@/stores/cart'
 
 const cartHandler = cartStore()
 const { cartList, totalPrice } = storeToRefs(cartHandler)
+
+watch(cartList.value, () => {
+  const subTotal = cartList.value.map((item) => {
+    // console.log(item)
+    if (item.price) {
+      return item.price * item.qty
+    } else {
+      return item.originPrice * item.qty
+    }
+  })
+  totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+})
 
 onMounted(() => {
   const subTotal = cartList.value.map((item) => {
@@ -25,21 +37,20 @@ onMounted(() => {
   <div class="container relative">
     <h1 class="m-10 text-font text-5xl font-bold">你的購物車</h1>
   </div>
-
   <div class="container">
     <!-- 購買商品明細 -->
     <div class="mt-10">
       <table class="text-font">
         <thead class="h-[60px] bg-third text-xl">
-          <th class="rounded-l-[10px] text-left px-12">購買商品</th>
-          <th class="px-12">售價</th>
-          <th class="px-12">數量</th>
-          <th class="rounded-r-[10px] text-left px-12">金額</th>
+          <th class="rounded-l-[10px] text-left px-10">購買商品</th>
+          <th class="px-10">售價</th>
+          <th class="px-10">數量</th>
+          <th class="rounded-r-[10px] text-left px-10">金額</th>
         </thead>
         <tbody class="rounded-[10px] shadow">
           <tr class="h-[116px] p-4" v-for="product in cartList" :key="product._id">
             <td>
-              <div class="flex items-center gap-5 ml-9 mr-36">
+              <div class="flex items-center gap-5 ml-8 mr-8 lg:mr-24">
                 <img
                   class="w-[100px] h-[100px] rounded-[10px] object-cover"
                   :src="product.photos[0]"
@@ -69,7 +80,7 @@ onMounted(() => {
               <div class="flex justify-center gap-7">
                 <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
                 <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
-                <button type="button">
+                <button type="button" @click="cartHandler.deleteFromCart(product._id)">
                   <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
                 </button>
               </div>
@@ -80,8 +91,7 @@ onMounted(() => {
     </div>
 
     <!-- 訂單摘要 -->
-    <table class="absolute top-[40%] left-[70%] w-[350px] text-font">
-      <!-- <table class="fixed top-[150px] right-[120px] w-[350px] text-font"> -->
+    <table class="absolute top-[30%] left-[65%] w-[350px] text-font">
       <thead class="h-[60px] bg-third text-2xl text-center">
         <th class="rounded-[10px]" colspan="2">訂單摘要</th>
       </thead>
@@ -116,7 +126,7 @@ onMounted(() => {
               id="point-input"
               type="number"
               class="block w-[80px] h-[30px] bg-gray-50 border rounded-lg text-font text-center"
-              placeholder="1"
+              placeholder="0"
               min="0"
             />
           </td>

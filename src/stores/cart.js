@@ -7,6 +7,7 @@ export const cartStore = defineStore('cartStore', () => {
   const totalPrice = ref(0)
   const finalPrice = ref(0)
 
+  // 加入購物車
   const addToCart = (productId, qty = 1) => {
     const { products } = productStore()
 
@@ -33,5 +34,13 @@ export const cartStore = defineStore('cartStore', () => {
     // console.log(cartList.value)
   }
 
-  return { cartList, totalPrice, finalPrice, addToCart }
+  // 刪除購物車
+  const deleteFromCart = (productId) => {
+    const itemIndex = cartList.value.findIndex((item) => {
+      return item._id === productId
+    })
+    cartList.value.splice(itemIndex, 1)
+  }
+
+  return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart, updateCart }
 })

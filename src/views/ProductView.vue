@@ -1,9 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { productStore } from '@/stores/product'
+import { cartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 const route = useRoute()
 // const router = useRouter()
@@ -25,6 +26,17 @@ const productReview = ref([
     createAt: '2024/01/01'
   }
 ])
+
+const cartHandler = cartStore()
+
+// 將商品加入購物車並導向購物車頁面
+const router = useRouter()
+const directToCartPage = (productId) => {
+  cartHandler.addToCart(productId)
+  router.push({
+    name: 'cart'
+  })
+}
 
 // 圖片切換
 const currentIndex = ref(0)
@@ -54,18 +66,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container text-font">
-    <div class="grid grid-cols-2 m-6">
+  <div class="container mt-5 text-font">
+    <div class="flex flex-nowrap">
       <!-- 商品圖片 -->
-      <div class="m-auto">
-        <div class="carousel w-[600px] h-[400px] rounded-[10px] relative">
+      <div class="w-7/12 ml-10">
+        <div class="carousel h-[450px] rounded-[10px] relative">
           <div class="carousel-item" v-for="(img, index) in product.photos" :key="img">
-            <img
-              class="w-[600px] h-[400px]"
-              :src="img"
-              alt="商品圖"
-              v-show="currentIndex === index"
-            />
+            <img class="object-cover" :src="img" alt="商品圖" v-show="currentIndex === index" />
           </div>
           <div class="absolute flex justify-between left-5 right-5 top-1/2">
             <button
@@ -85,20 +92,20 @@ onMounted(() => {
           </div>
         </div>
         <!-- 商品小圖 -->
-        <div class="grid grid-cols-4 gap-5 mt-2">
-          <div v-for="(img, index) in product.photos" :key="img">
+        <div class="flex">
+          <div class="mr-4" v-for="(img, index) in product.photos" :key="img">
             <button type="button" @click.prevent="imgChange(index)">
-              <img class="w-[150px] h-[100px] rounded-[10px]" :src="img" alt="商品圖" />
+              <img class="max-h-[112px] rounded-[10px]" :src="img" alt="商品圖" />
             </button>
           </div>
         </div>
       </div>
 
       <!-- 商品資訊 -->
-      <div class="w-[420px] m-auto">
-        <p class="mt-10 text-5xl font-bold">{{ product.name }}</p>
-        <p class="my-4 text-2xl text-secondary">{{ product.description }}</p>
-        <div class="flex justify-between mt-10 px-2 text-2xl">
+      <div class="w-5/12 px-10 mt-10 mr-10">
+        <p class="text-5xl font-bold">{{ product.name }}</p>
+        <p class="text-2xl text-secondary mt-10">{{ product.description }}</p>
+        <div class="flex justify-between mt-10 text-2xl">
           <p>庫存量： {{ product.quantity }} {{ product.unit }}</p>
           <div>
             <p v-if="!product.price">${{ product.originPrice }}</p>
@@ -107,27 +114,30 @@ onMounted(() => {
             </p>
           </div>
         </div>
-        <div class="flex justify-around mt-10">
+        <!-- 按鈕區塊 -->
+        <div class="flex justify-between mt-20">
           <button
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
+            @click.prevent="cartHandler.addToCart(product._id)"
           >
             <p class="font-semibold">加入購物車</p>
-            <img src="../assets/shopping-cart.svg" alt="shopping-cart" />
+            <img src="../assets/ecommerce/shopping-cart.svg" alt="shopping-cart" />
           </button>
           <button
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
+            @click.prevent="directToCartPage(product._id)"
           >
             <p class="font-semibold">直接購買</p>
-            <img src="../assets/shopping-bag.svg" alt="shopping-cart" />
+            <img src="../assets/ecommerce/shopping-bag.svg" alt="shopping-cart" />
           </button>
         </div>
       </div>
     </div>
 
     <!-- 推薦商品 -->
-    <p class="mx-6 text-2xl font-bold">你也許也會喜歡...</p>
-    <div class="flex">
-      <div class="w-[300px] m-6" v-for="product in products" :key="product._id">
+    <p class="text-2xl font-bold mt-10 ml-10">你也許也會喜歡...</p>
+    <div class="flex mt-10 ml-10">
+      <div class="w-[300px] mr-4" v-for="product in products" :key="product._id">
         <button type="button" @click.prevent="renewPage(product._id)">
           <img
             class="w-[300px] h-[160px] rounded-[10px] object-fill"
@@ -148,9 +158,9 @@ onMounted(() => {
     </div>
 
     <!-- 商品評論 -->
-    <p class="mx-6 text-2xl font-bold">商品評論</p>
-    <div class="m-6 grid place-content-center">
-      <div class="w-[1060px] m-6 flex" v-for="review in productReview" :key="review.username">
+    <p class="text-2xl font-bold mt-10 ml-10">商品評論</p>
+    <div class="grid justify-items-center my-10 ml-10">
+      <div class="flex w-[1024px] mt-10" v-for="review in productReview" :key="review.username">
         <div class="w-2/12">
           <img
             class="w-[150px] h-[150px] rounded-full object-fill"

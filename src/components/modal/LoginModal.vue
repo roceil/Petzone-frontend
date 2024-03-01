@@ -7,12 +7,14 @@ import close from '@/assets/header/close-btn.svg'
 import google_icon from '@/assets/modal/google_icon.svg'
 import { useModalStore } from '@/stores/modal'
 import { useAuthStore } from '@/stores/auth'
+import { useUserStore } from '@/stores/user'
 import { login_api } from '@/api/auth'
 import FormInput from '../validate/FormInput.vue'
 import { login_modal_form_items } from '@/constants'
 
 const modalStore = useModalStore()
 const authStore = useAuthStore()
+const userStore = useUserStore()
 
 const validationSchema = z.object({
   email: z.string().email('Email 格式不正確').min(1, '信箱欄位為必填'),
@@ -23,10 +25,11 @@ const { handleSubmit } = useForm({
 })
 
 const onSubmit = handleSubmit(async ({ email, password }) => {
-  const login_status = await login_api(email, password)
-  if (login_status) {
-    authStore.set_token(login_status)
+  const accessToken = await login_api(email, password)
+  if (accessToken) {
+    authStore.set_token(accessToken)
   }
+  await userStore.getUserId()
   modalStore.handleCloseModal()
   alert('登入成功')
 })

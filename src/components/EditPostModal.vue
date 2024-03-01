@@ -1,23 +1,43 @@
 <script setup>
 import { ref } from 'vue'
+import { post_post_api, put_post_api } from '@/api/community'
 import close from '@/assets/header/close-btn.svg'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 
-const props = defineProps({
-  type: String
-})
-
 const dialogRef = ref()
-const showModal = () => {
+const showModal = (post = null) => {
+  if (post) {
+    const { _id, content, tags, photos } = post
+    postId.value = _id
+    postData.value = {
+      content,
+      tags,
+      photos
+    }
+  }
   dialogRef.value.showModal()
 }
 const hideModal = () => {
+  postId.value = null
+  postData.value = {
+    content: '',
+    tags: [],
+    photos: []
+  }
   images.value = []
   dialogRef.value.close()
 }
+
+// postData
+const postId = ref(null)
+const postData = ref({
+  content: '',
+  tags: [],
+  photos: []
+})
 
 // 選擇圖檔
 const images = ref([])
@@ -29,6 +49,23 @@ const handleFileChange = (e) => {
   images.value = [...e.target.files].map((item) => URL.createObjectURL(item))
 }
 
+// 發佈
+const handleSend = async () => {
+  if (postId.value) {
+    const res = await put_post_api(postId.value, postData.value)
+    console.log(res);
+    alert('編輯成功')
+    emit('getPost')
+  } else {
+    const res = await post_post_api(postData.value)
+    console.log(res);
+    alert('新增成功')
+    emit('getPosts')
+  }
+  hideModal()
+}
+
+const emit = defineEmits(['getPost', 'getPosts'])
 defineExpose({ showModal })
 </script>
 <template>
@@ -40,7 +77,7 @@ defineExpose({ showModal })
       </div>
       <!-- 標題 -->
       <h3 class="font-bold text-5xl text-font text-center mt-[46px]">
-        {{ props.type === 'edit' ? '編輯貼文' : '建立新貼文' }}
+        {{ postId ? '編輯貼文' : '建立新貼文' }}
       </h3>
       <form class="mt-6 space-y-4" @submit.prevent>
         <div>
@@ -55,7 +92,7 @@ defineExpose({ showModal })
             柴犬
           </div>
         </div>
-        <template v-if="props.type === 'new'">
+        <template v-if="!postId">
           <Swiper
             class="w-full rounded-[10px] overflow-hidden"
             :navigation="true"
@@ -81,9 +118,10 @@ defineExpose({ showModal })
           class="w-full textarea textarea-bordered"
           rows="5"
           placeholder="請輸入有關此貼文的描述"
+          v-model="postData.content"
         />
         <div class="text-end">
-          <button class="px-8 btn btn-primary">發佈</button>
+          <button class="px-8 btn btn-primary" @click="handleSend">發佈</button>
         </div>
       </form>
     </div>

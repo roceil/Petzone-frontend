@@ -10,7 +10,7 @@ export const login_api = async (email, password) => {
       password: password
     })
     if (data.accessToken) {
-      return true
+      return data.accessToken
     }
   } catch (error) {
     console.error(error)

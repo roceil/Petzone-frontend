@@ -3,16 +3,15 @@ import { defineStore } from 'pinia'
 import Cookies from 'js-cookie'
 
 export const useAuthStore = defineStore('auth', () => {
-  const has_token = ref(false)
   const token = ref('')
 
-  const set_token = (login_status) => {
-    // token.value = login_status
-    has_token.value = login_status
+  const set_token = (accessToken) => {
+    token.value = accessToken
     write_cookie()
   }
 
   const clear_token = () => {
+    token.value = ''
     clear_cookie()
   }
 
@@ -20,24 +19,23 @@ export const useAuthStore = defineStore('auth', () => {
   const write_cookie = () => {
     const expires = new Date(new Date().getTime() + 24 * 60 * 60 * 1000) // 1 day
 
-    if (has_token.value) {
-      Cookies.set('has_login', has_token.value, { expires: expires })
+    if (token.value) {
+      Cookies.set('token', token.value, { expires: expires })
     }
   }
 
   // 初始化時讀取 cookie
   const read_cookie = () => {
-    const cookie = Cookies.get('has_login')
+    const cookie = Cookies.get('token')
     if (cookie) {
       token.value = cookie
-      has_token.value = true
     }
   }
 
   // 清除 cookie 中的 token
   const clear_cookie = () => {
-    Cookies.remove('has_login')
+    Cookies.remove('token')
   }
 
-  return { has_token, token, set_token, clear_token, read_cookie }
+  return { token, set_token, clear_token, read_cookie }
 })

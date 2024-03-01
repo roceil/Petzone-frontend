@@ -1,37 +1,71 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import dayjs from 'dayjs'
+import { get_post_api, delete_post_api } from '@/api/community'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import { Navigation } from 'swiper/modules'
 import EditPostModal from '@/components/EditPostModal.vue'
+
+const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
+
+const post = ref(null)
+const getPost = async () => {
+  const res = await get_post_api(route.params.id)
+  post.value = res.data
+}
+onMounted(async () => {
+  if(!userId.value) {
+    await userStore.getUserId()
+  }
+  await getPost()
+})
+
+const deletePost = async () => {
+  const res = await delete_post_api(route.params.id)
+  console.log(res);
+  alert('刪除成功')
+  router.push('/community')
+}
 
 const editPostModalRef = ref()
 </script>
 <template>
-  <div class="CommunityDetail text-font">
+  <div class="CommunityDetail text-font" v-if="post">
     <section class="container flex flex-col justify-center my-10 max-w-[800px] space-y-4">
       <div class="p-10">
         <div class="flex items-center mb-4 space-x-4">
-          <div class="h-[80px] w-[80px] bg-third rounded-full"></div>
-          <span>拉拉熊</span>
-          <span>於 2024/01/01 分享</span>
+          <div class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden">
+            <img :src="post.user.photo" alt="">
+          </div>
+          <span>{{ post.user.nickName }}</span>
+          <span>於 {{ dayjs(post.createAt).format('YYYY/MM/DD') }} 分享</span>
         </div>
-        <div class="mb-4 space-x-2 text-end">
-          <button class="link" @click="editPostModalRef.showModal">編輯</button>
-          <button class="link">刪除</button>
+        <div class="mb-4 space-x-2 text-end" v-if="userId === post.user._id">
+          <button class="link" @click="editPostModalRef.showModal(post)">編輯</button>
+          <button class="link" @click="deletePost">刪除</button>
         </div>
-        <div class="rounded-[10px] aspect-square bg-third group overflow-hidden">
-          <img
-            src="https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*"
-            alt=""
-          />
-        </div>
+        <Swiper
+          class="w-full rounded-[10px] overflow-hidden"
+          :navigation="true"
+          :modules="[Navigation]"
+        >
+          <SwiperSlide v-for="(item, index) in post.photos" :key="index">
+            <div class="rounded-[10px]  bg-third group overflow-hidden">
+              <img class="w-full" :src="item" alt="" />
+            </div>
+          </SwiperSlide>
+        </Swiper>
       </div>
       <div>
-        與柴犬共度的日常，一場充滿歡笑和愛的冒險
-        <br />
-        每天早晨，當陽光照亮我的房間，我就知道一場快樂的柴犬冒險即將開始。
-        <br />
-        我的柴犬夥伴，一隻活潑好動的柴犬小橘，總是在床邊等著我的起床。
-        <br />
-        它的尾巴像一支旗幟一樣搖擺，表達著對新一天的期待。
+        {{ post.content }}
       </div>
       <div class="flex items-center justify-between pb-4 border-b">
         <div class="flex items-center space-x-4">
@@ -50,7 +84,7 @@ const editPostModalRef = ref()
                 d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
               />
             </svg>
-            <span>1,000個喜愛</span>
+            <span>{{ post.likes.length }} 個喜愛</span>
           </button>
           <button>
             <svg
@@ -70,16 +104,18 @@ const editPostModalRef = ref()
           </button>
         </div>
         <div class="flex space-x-2">
-          <div class="px-4 py-2 border rounded-full" v-for="(item, index) in 2" :key="index">
-            柴犬
+          <div class="px-4 py-2 border rounded-full" v-for="(tag, index) in post.tags" :key="index">
+            {{ tag }}
           </div>
         </div>
       </div>
       <div class="py-4 space-y-8">
-        <div class="flex items-center space-x-4" v-for="(item, index) in 2" :key="index">
-          <div class="w-[36px] h-[36px] rounded-full bg-third"></div>
-          <span>小新</span>
-          <p>你家的小柴好可愛！</p>
+        <div class="flex items-center space-x-4" v-for="comment in post.comments" :key="comment.id">
+          <div class="w-[36px] h-[36px] rounded-full bg-third">
+            <img :src="comment.photo" alt="">
+          </div>
+          <span>{{ comment.nickName }}</span>
+          <p>{{ comment.content }}</p>
         </div>
         <div class="space-y-4">
           <textarea
@@ -93,7 +129,7 @@ const editPostModalRef = ref()
         </div>
       </div>
     </section>
-    <EditPostModal ref="editPostModalRef" :type="'edit'" />
+    <EditPostModal ref="editPostModalRef" @getPost="getPost" />
   </div>
 </template>
 <style></style>

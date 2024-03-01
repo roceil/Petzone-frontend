@@ -7,6 +7,7 @@ import Modal from '@/components/modal/Modal.vue'
 import { headerLinks } from '@/constants'
 import { useAuthStore } from '@/stores/auth'
 import { useModalStore } from '@/stores/modal'
+import { useUserStore } from '@/stores/user'
 import LoginModal from './modal/LoginModal.vue'
 import SignUpModal from './modal/SignUpModal.vue'
 import ResetPasswordModal from './modal/ResetPasswordModal.vue'
@@ -15,6 +16,7 @@ import AvatarDropDownList from './AvatarDropDownList.vue'
 import CartDropDownList from './CartDropDownList.vue'
 
 const authStore = useAuthStore()
+const userStore = useUserStore()
 
 // 判斷前後台
 const route = useRoute()
@@ -34,8 +36,8 @@ const GotoHome = () => {
 
 // 登出
 const logout = () => {
-  authStore.set_token(false)
   authStore.clear_token()
+  userStore.resetUserId()
 }
 
 const modalStore = useModalStore()
@@ -67,7 +69,7 @@ const modalStore = useModalStore()
 
             <!-- 登入按鈕 -->
             <button
-              v-if="!authStore.has_token"
+              v-if="!authStore.token"
               @click="modalStore.openModal('login')"
               class="px-5 py-4 font-bold text-white rounded-full btn btn-primary"
             >

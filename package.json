@@ -21,6 +21,7 @@
     "@vee-validate/zod": "^4.12.5",
     "@yeger/vue-masonry-wall": "^5.0.6",
     "axios": "^1.6.7",
+    "dayjs": "^1.11.10",
     "js-cookie": "^3.0.5",
     "masonry-layout": "^4.2.2",
     "pinia": "^2.1.7",

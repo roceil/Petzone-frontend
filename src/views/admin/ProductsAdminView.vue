@@ -16,7 +16,7 @@
               type="text"
               id="name"
               name="name"
-              class="w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+              class="max-w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
               placeholder="請輸入商品名稱"
             />
             <button class="absolute inset-y-0 right-0 mr-2 top-0 mt-1">
@@ -28,7 +28,7 @@
           <label for="category" class="mx-2 text-xl">商品類型</label>
           <select
             id="category"
-            class="w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            class="max-w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
           >
             <option disabled>請選擇商品類型</option>
             <option value="1">狗狗主食</option>
@@ -45,15 +45,18 @@
           <label for="isEnabled" class="mx-2 text-xl">商品狀態</label>
           <select
             id="isEnabled"
-            class="w-[120px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            class="max-w-[120px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
           >
             <option disabled>請選擇商品狀態</option>
             <option value="0">下架</option>
             <option value="1">上架</option>
           </select>
         </div>
-
-        <button class="w-[125px] mt-1 ml-6 btn btn-secondary text-white">新增商品</button>
+        <div>
+          <button class="flex items-center max-w-[125px] mx-2 ml-6 btn btn-secondary text-white">
+            新增商品
+          </button>
+        </div>
       </div>
 
       <!-- 商品列表 -->

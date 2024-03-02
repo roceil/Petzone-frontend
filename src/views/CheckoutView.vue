@@ -1,5 +1,35 @@
 <script setup>
-import { productListData } from '@/constants'
+import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { cartStore } from '@/stores/cart'
+import { orderStore } from '@/stores/order'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const cartHandler = cartStore()
+const { cartList, totalPrice } = storeToRefs(cartHandler)
+const orderHandler = orderStore()
+
+const paymentType = ref()
+
+const recipient = ref({
+  userId: null,
+  name: '',
+  email: '',
+  phone: '',
+  address: ''
+})
+
+const directToOrderPage = async (recipient, paymentType, totalPrice) => {
+  await orderHandler.addOrder(recipient, parseInt(paymentType), totalPrice)
+  router.push({
+    name: 'order'
+    // query: {
+    //   productId
+    // }
+  })
+}
 </script>
 <template>
   <!-- 頁面標題 -->
@@ -15,31 +45,38 @@ import { productListData } from '@/constants'
           <th colspan="4" class="rounded-[10px] text-xl text-center">購買明細</th>
         </thead>
         <tbody class="rounded-[10px] shadow">
-          <tr v-for="product in productListData" :key="product.name">
+          <tr v-for="product in cartList" :key="product._id">
             <td class="px-10 py-5">
               {{ product.name }}
             </td>
-            <td class="px-10 py-5">NT$ {{ product.price }}</td>
+            <td class="px-10 py-5">
+              <p v-if="product.price">$ {{ product.price }}</p>
+              <p v-else>$ {{ product.originPrice }}</p>
+            </td>
             <td class="px-10 py-5">x1</td>
             <td class="px-10 py-5 text-right">
-              <p>NT$ {{ product.price }}</p>
+              <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
+              <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
             </td>
           </tr>
           <!-- <tr>
             <td class="px-10 py-5" colspan="2">優惠券折扣</td>
             <td class="px-10 py-5 text-right" colspan="2">-0</td>
           </tr> -->
-          <tr class="border-black border-b-2">
+          <!-- <tr class="border-black border-b-2">
             <td class="px-10 py-5" colspan="2">會員積分折抵</td>
-            <td class="px-10 py-5 text-right" colspan="2">-80</td>
-          </tr>
+            <td class="px-10 py-5 text-right" colspan="2">-0</td>
+          </tr> -->
           <tr class="border-b-2">
             <td class="px-10 py-5 text-2xl font-bold" colspan="2">訂單金額</td>
-            <td class="px-10 py-5 text-2xl font-bold text-right" colspan="2">NT$ 720</td>
+            <td class="px-10 py-5 text-2xl font-bold text-right" colspan="2">
+              NT$ {{ totalPrice }}
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
+
     <!-- 收件人資訊 & 付款方式 -->
     <div class="my-10 flex justify-center">
       <form class="text-font border rounded-[10px] shadow">
@@ -55,16 +92,29 @@ import { productListData } from '@/constants'
               name="name"
               class="ml-5 border rounded-md py-1.5 pl-6 pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人姓名"
+              v-model="recipient.name"
             />
           </div>
           <div class="my-5">
-            <label for="tel">電話：</label>
+            <label for="email">信箱：</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              class="ml-5 border rounded-md py-1.5 pl-6 pr-20 placeholder:text-gray-400"
+              placeholder="請輸入收件人信箱"
+              v-model="recipient.email"
+            />
+          </div>
+          <div class="my-5">
+            <label for="phone">電話：</label>
             <input
               type="tel"
-              id="tel"
-              name="tel"
+              id="phone"
+              name="phone"
               class="ml-5 border rounded-md py-1.5 pl-6 pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人電話"
+              v-model="recipient.phone"
             />
           </div>
           <div class="my-5">
@@ -75,6 +125,7 @@ import { productListData } from '@/constants'
               name="address"
               class="w-[700px] h-[90px] ml-5 border rounded-md py-1.5 pl-6 placeholder:text-gray-400"
               placeholder="請輸入收件人地址"
+              v-model="recipient.address"
             ></textarea>
           </div>
         </div>
@@ -82,13 +133,30 @@ import { productListData } from '@/constants'
           <h1 colspan="2" class="text-xl font-bold text-center leading-[60px]">付款方式</h1>
         </div>
         <div class="my-5 px-10">
-          <input type="radio" id="cash" name="payment" value="cash" />
+          <input type="radio" id="cash" name="paymentType" value="1" v-model.number="paymentType" />
           <label class="ml-5" for="cash">現金付款</label><br />
-          <input type="radio" id="credit" name="payment" value="credit" />
+          <input
+            type="radio"
+            id="credit"
+            name="paymentType"
+            value="2"
+            v-model.number="paymentType"
+          />
           <label class="ml-5" for="credit">信用卡付款</label><br />
         </div>
         <div class="flex justify-end my-5 px-10">
-          <button type="button" class="w-[80px] h-[40px] bg-secondary rounded-md text-primary">
+          <button
+            type="button"
+            class="mx-3 w-[80px] h-[40px] bg-third rounded-md text-secondary"
+            @click="router.push(`/ecommerce/cart`)"
+          >
+            回上一步
+          </button>
+          <button
+            type="button"
+            class="mx-3 w-[80px] h-[40px] bg-secondary rounded-md text-primary"
+            @click="directToOrderPage(recipient, parseInt(paymentType), totalPrice)"
+          >
             確認訂單
           </button>
         </div>

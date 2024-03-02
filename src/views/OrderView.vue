@@ -1,15 +1,20 @@
 <script setup>
 import { productListData } from '@/constants'
+import { storeToRefs } from 'pinia'
+import { cartStore } from '@/stores/cart'
+
+const cartHandler = cartStore()
+const { cartList } = storeToRefs(cartHandler)
 </script>
 <template>
   <!-- 頁面標題 -->
   <div class="container">
     <h1 class="mt-10 ml-10 text-font text-5xl font-bold">訂單詳情</h1>
   </div>
-
+  {{ cartList }}
   <div class="containter w-[900px] m-auto mb-10 justify-center text-font">
     <!-- 訂單編號及狀態 -->
-    <P class="text-xl font-bold text-right">訂單狀態：未付款</P>
+    <p class="text-xl font-bold text-right">訂單狀態：未付款</p>
     <div class="flex">
       <p class="w-1/2 text-xl">#123456</p>
       <p class="w-1/2 text-xl text-right">下單日期：2024/01/01</p>

@@ -53,14 +53,16 @@ const handleFileChange = (e) => {
 const handleSend = async () => {
   if (postId.value) {
     const res = await put_post_api(postId.value, postData.value)
-    console.log(res);
-    alert('編輯成功')
-    emit('getPost')
+    if (res) {
+      alert('編輯成功')
+      emit('getPost')
+    }
   } else {
     const res = await post_post_api(postData.value)
-    console.log(res);
-    alert('新增成功')
-    emit('getPosts')
+    if (res) {
+      alert('新增成功')
+      emit('getPosts')
+    }
   }
   hideModal()
 }

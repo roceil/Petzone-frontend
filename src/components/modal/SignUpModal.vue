@@ -15,7 +15,7 @@ const validationSchema = z.object({
   email: z.string().email('Email 格式不正確').min(1, '信箱欄位為必填'),
   password: z.string().min(6, '密碼至少需要 6 個字符'),
   name: z.string().min(3, '名字欄位為必填'),
-  nickname: z.string().min(3, '暱稱欄位為必填'),
+  nickName: z.string().min(3, '暱稱欄位為必填'),
   phone: z.string().min(10, '電話欄位為必填'),
   address: z.string().min(1, '地址欄位為必填')
 })
@@ -24,9 +24,9 @@ const { handleSubmit } = useForm({
   validationSchema: toTypedSchema(validationSchema)
 })
 
-const onSubmit = handleSubmit(async ({ email, password, name, nickname, phone, address }) => {
+const onSubmit = handleSubmit(async ({ email, password, name, nickName, phone, address }) => {
   try {
-    const status = await sign_up_api(email, password, name, nickname, phone, address)
+    const status = await sign_up_api(email, password, name, nickName, phone, address)
     if (status === 'success') {
       modalStore.openModal('login')
       alert('註冊成功')

@@ -10,14 +10,19 @@ const config = () => {
   }
 }
 
-// 取得所有貼文
-export const get_posts_api = async (nickName) => {
+// 取得所有 tags
+export const get_tags_api = async () => {
   try {
-    let url = `${VITE_API_BASE_URL}/api/posts`
-    if (nickName) {
-      url = `${url}?nickName=${nickName}`
-    }
-    return await axios.get(url)
+    return axios.get(`${VITE_API_BASE_URL}/api/tags`)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 取得所有貼文
+export const get_posts_api = async (params) => {
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/posts`, { params })
   } catch (error) {
     console.error(error)
   }

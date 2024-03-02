@@ -1,14 +1,24 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { post_post_api, put_post_api } from '@/api/community'
+import { useCommunityStore } from '@/stores/community'
+import { storeToRefs } from 'pinia'
 import close from '@/assets/header/close-btn.svg'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 
+const communityStore = useCommunityStore()
+const { tags, tagsOptions } = storeToRefs(communityStore)
+onMounted(() => {
+  if (!tags.value.length) {
+    communityStore.getTags()
+  }
+})
+
 const dialogRef = ref()
-const showModal = (post = null) => {
+const showModal = (post) => {
   if (post) {
     const { _id, content, tags, photos } = post
     postId.value = _id
@@ -72,7 +82,7 @@ defineExpose({ showModal })
 </script>
 <template>
   <dialog ref="dialogRef" class="modal">
-    <div class="relative items-center px-20 modal-box">
+    <div class="relative items-center px-20 modal-box max-w-[90%]">
       <!-- 關閉按鈕 -->
       <div class="absolute right-[29px] top-[33px]">
         <button @click="hideModal"><img :src="close" alt="close-btn" /></button>
@@ -84,14 +94,42 @@ defineExpose({ showModal })
       <form class="mt-6 space-y-4" @submit.prevent>
         <div>
           <label for="tag">貼文 Tag</label>
-          <select class="w-full mt-1 select select-bordered" name="" id="tag">
-            <option disabled selected>請選擇貼文 Tag</option>
-            <option v-for="item in 5" :key="item" value="item">柴犬</option>
+          <select
+            class="w-full mt-1 select select-bordered"
+            name=""
+            id="tag"
+            v-model="postData.tags"
+            multiple
+            :disabled="postData.tags.length > 2"
+          >
+            <optgroup v-for="tagGroup in tagsOptions" :key="tagGroup.type" :label="tagGroup.type">
+              <option v-for="name in tagGroup.name" :key="name" :value="name">{{ name }}</option>
+            </optgroup>
           </select>
         </div>
         <div class="flex space-x-2">
-          <div class="px-4 py-2 border rounded-full" v-for="(item, index) in 2" :key="index">
-            柴犬
+          <div
+            class="px-4 py-2 border rounded-full flex items-center space-x-1"
+            v-for="(tag, index) in postData.tags"
+            :key="tag"
+          >
+            <button @click="postData.tags.splice(index, 1)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </button>
+            <span>{{ tag }}</span>
           </div>
         </div>
         <template v-if="!postId">

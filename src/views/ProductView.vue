@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { productStore } from '@/stores/product'
 import { cartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
@@ -13,7 +13,8 @@ import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 
 const route = useRoute()
-// const router = useRouter()
+const router = useRouter()
+
 const productHandler = productStore()
 const { product, products } = storeToRefs(productHandler)
 
@@ -36,8 +37,26 @@ const productReview = ref([
   }
 ])
 
+// 商品圖片切換
+const thumbsSwiper = ref(null)
+const setThumbsSwiper = (swiper) => {
+  thumbsSwiper.value = swiper
+}
+
+// 點擊推薦商品商品資料更新
+const productId = ref('')
+watch(productId, async (newId) => {
+  // console.log(newId)
+  router.push({
+    name: 'product',
+    query: {
+      productId: newId
+    }
+  })
+  productHandler.userGetProduct(newId)
+})
+
 // 將商品加入購物車並導向購物車頁面
-const router = useRouter()
 const directToCartPage = (productId) => {
   cartHandler.addToCart(productId)
   router.push({
@@ -45,21 +64,10 @@ const directToCartPage = (productId) => {
   })
 }
 
-// 圖片切換
-const thumbsSwiper = ref(null)
-const setThumbsSwiper = (swiper) => {
-  thumbsSwiper.value = swiper
-}
-
-// 產品資料更新
-const renewPage = (prodcutId) => {
-  route.query.productId = prodcutId
-  productHandler.userGetProduct(prodcutId)
-}
-
 onMounted(() => {
   // console.log(route.query.productId, product)
-  productHandler.userGetProduct(route.query.productId)
+  productId.value = route.query.productId
+  productHandler.userGetProduct(productId.value)
   productHandler.userGetProducts()
 })
 </script>
@@ -76,7 +84,7 @@ onMounted(() => {
           :thumbs="{ swiper: thumbsSwiper }"
           :modules="[FreeMode, Navigation, Thumbs]"
         >
-          <SwiperSlide v-for="(img, index) in product.photos" :key="img">
+          <SwiperSlide v-for="img in product.photos" :key="img">
             <div class="rounded-[10px] bg-third group overflow-hidden">
               <img class="w-full" :src="img" alt="" />
             </div>
@@ -89,9 +97,8 @@ onMounted(() => {
           :slidesPerView="4"
           :freeMode="true"
           :watchSlidesProgress="true"
-          :modules="modules"
         >
-          <swiper-slide v-for="(img, index) in product.photos" :key="img"
+          <swiper-slide v-for="img in product.photos" :key="img"
             ><img class="rounded-[10px]" :src="img"
           /></swiper-slide>
         </swiper>
@@ -134,7 +141,7 @@ onMounted(() => {
     <p class="text-2xl font-bold mt-10 ml-10">你也許也會喜歡...</p>
     <div class="flex mt-10 ml-10">
       <div class="w-[300px] mr-4" v-for="product in products" :key="product._id">
-        <button type="button" @click.prevent="renewPage(product._id)">
+        <button type="button" @click="productId = product._id">
           <img
             class="w-[300px] h-[160px] rounded-[10px] object-fill"
             :src="product.photos[0]"

@@ -19,6 +19,7 @@ watch(cartList.value, () => {
     }
   })
   totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+  return totalPrice.value
 })
 
 onMounted(() => {

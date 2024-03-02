@@ -37,5 +37,6 @@ export const useAuthStore = defineStore('auth', () => {
     Cookies.remove('token')
   }
 
+
   return { token, set_token, clear_token, read_cookie }
 })

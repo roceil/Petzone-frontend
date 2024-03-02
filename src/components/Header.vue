@@ -38,6 +38,7 @@ const GotoHome = () => {
 const logout = () => {
   authStore.clear_token()
   userStore.resetUserId()
+  router.push({ name: 'home' })
 }
 
 const modalStore = useModalStore()

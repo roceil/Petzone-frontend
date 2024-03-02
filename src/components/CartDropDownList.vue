@@ -6,7 +6,7 @@ import minus from '@/assets/header/minus-circle.svg'
 </script>
 
 <template>
-  <div class="CartDropDownList">
+  <div class="CartDropDownList flex justify-center">
     <div class="dropdown dropdown-end dropdown-hover">
       <RouterLink to="/ecommerce/cart">
         <img tabindex="0" :src="shopping_cart_icon" alt="shopping-cart-icon" />
@@ -52,5 +52,3 @@ import minus from '@/assets/header/minus-circle.svg'
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped></style>

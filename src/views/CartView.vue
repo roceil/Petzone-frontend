@@ -2,6 +2,9 @@
 import { watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { cartStore } from '@/stores/cart'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const cartHandler = cartStore()
 const { cartList, totalPrice } = storeToRefs(cartHandler)
@@ -45,7 +48,7 @@ onMounted(() => {
           <th class="rounded-l-[10px] text-left px-10">購買商品</th>
           <th class="px-10">售價</th>
           <th class="px-10">數量</th>
-          <th class="rounded-r-[10px] text-left px-10">金額</th>
+          <th colspan="2" class="rounded-r-[10px] text-left px-10">金額</th>
         </thead>
         <tbody class="rounded-[10px] shadow">
           <tr class="h-[116px] p-4" v-for="product in cartList" :key="product._id">
@@ -80,10 +83,12 @@ onMounted(() => {
               <div class="flex justify-center gap-7">
                 <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
                 <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
-                <button type="button" @click="cartHandler.deleteFromCart(product._id)">
-                  <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
-                </button>
               </div>
+            </td>
+            <td>
+              <button type="button" @click="cartHandler.deleteFromCart(product._id)">
+                <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
+              </button>
             </td>
           </tr>
         </tbody>
@@ -147,7 +152,11 @@ onMounted(() => {
         </tr>
         <tr>
           <td colspan="2" class="text-right pr-6 py-3">
-            <button type="button" class="w-[80px] h-[40px] bg-secondary rounded-md text-primary">
+            <button
+              type="button"
+              class="w-[80px] h-[40px] bg-secondary rounded-md text-primary"
+              @click="router.push(`/ecommerce/checkout`)"
+            >
               來去結帳
             </button>
           </td>

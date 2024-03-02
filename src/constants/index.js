@@ -216,7 +216,7 @@ export const sign_up_modal_form_items = [
     type: 'text'
   },
   {
-    tag: 'nickname',
+    tag: 'nickName',
     label: '請輸入暱稱',
     placeholder: '請輸入暱稱',
     type: 'text'

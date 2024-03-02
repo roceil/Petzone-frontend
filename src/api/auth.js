@@ -18,13 +18,13 @@ export const login_api = async (email, password) => {
 }
 
 // 註冊 API
-export const sign_up_api = async (email, password, name, nickname, phone, address) => {
+export const sign_up_api = async (email, password, name, nickName, phone, address) => {
   try {
     const { data } = await axios.post(`${VITE_API_BASE_URL}/auth/signup`, {
       email,
       password,
       name,
-      nickname,
+      nickName,
       phone,
       address
     })

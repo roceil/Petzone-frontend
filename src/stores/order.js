@@ -4,7 +4,14 @@ import { post_new_order_api } from '@/api/ecommerce'
 import { get_order_by_id_api } from '@/api/ecommerce'
 
 export const orderStore = defineStore('orderStore', () => {
-  const order = ref({})
+  const order = ref({
+    recipient: {
+      name: '',
+      email: '',
+      phone: '',
+      address: ''
+    }
+  })
 
   // 建立訂單
   const addOrder = async (neworder) => {

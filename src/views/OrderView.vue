@@ -1,21 +1,20 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { orderStore } from '@/stores/order'
+import { useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 
 const orderHandler = orderStore()
 const { order } = storeToRefs(orderHandler)
 
-const recipient = ref({})
-
 onMounted(async () => {
   // console.log(route.params.id)
   await orderHandler.GetOrder(route.params.id)
-  console.log(order)
-  recipient.value = { ...order.value.recipient }
+  // console.log(order)
 })
 </script>
 <template>
@@ -89,16 +88,16 @@ onMounted(async () => {
       </thead>
       <tbody>
         <tr>
-          <td colspan="5" class="pl-5 py-5">姓名：{{ recipient.name }}</td>
+          <td colspan="5" class="pl-5 py-5">姓名：{{ order.recipient.name }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-5">信箱：{{ recipient.email }}</td>
+          <td colspan="5" class="pl-5 py-5">信箱：{{ order.recipient.email }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-5">電話：{{ recipient.phone }}</td>
+          <td colspan="5" class="pl-5 py-5">電話：{{ order.recipient.phone }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-5">地址：{{ recipient.phone }}</td>
+          <td colspan="5" class="pl-5 py-5">地址：{{ order.recipient.address }}</td>
         </tr>
       </tbody>
       <thead class="h-[60px] bg-third">
@@ -112,8 +111,12 @@ onMounted(async () => {
       <tr>
         <td colspan="5">
           <div class="flex justify-end">
-            <button type="button" class="w-[80px] h-[40px] my-5 bg-third rounded-md text-secondary">
-              返回首頁
+            <button
+              type="button"
+              class="w-[80px] h-[40px] my-5 bg-third rounded-md text-secondary"
+              @click="router.push(`/ecommerce`)"
+            >
+              返回商店
             </button>
             <button
               type="button"

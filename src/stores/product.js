@@ -33,7 +33,7 @@ export const productStore = defineStore('productStore', () => {
   // 取得單一產品資料
   const userGetProduct = async (productId) => {
     const { data } = await get_product_by_id_api(productId)
-    console.log(data)
+    // console.log(data)
     product.value = data.product[0]
   }
 

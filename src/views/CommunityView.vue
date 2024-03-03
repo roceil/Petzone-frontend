@@ -2,29 +2,51 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { get_posts_api } from '@/api/community'
+import { useCommunityStore } from '@/stores/community'
+import { storeToRefs } from 'pinia'
 import EditPostModal from '@/components/EditPostModal.vue'
 const route = useRoute()
 const router = useRouter()
+const communityStore = useCommunityStore()
+const { tags, tagsOptions } = storeToRefs(communityStore)
 
 const posts = ref([])
 const keyword = ref('')
+const searchTag = ref('')
 const getPosts = async () => {
-  const res = await get_posts_api(keyword.value)
-  posts.value = res.data
-  if (keyword.value) {
-    router.push({
-      path: '/community',
-      query: {
-        keyword: keyword.value
-      }
-    })
-  } else {
-    router.push('/community')
+  const params = {
+    nickName: keyword.value,
+    tag: searchTag.value
   }
+  const res = await get_posts_api(params)
+  posts.value = res.data
+  router.replace({
+    path: '/community',
+    query: {
+      keyword: keyword.value,
+      tag: searchTag.value
+    }
+  })
 }
+
+const handleClickTag = (tag) => {
+  if (searchTag.value === tag) {
+    searchTag.value = ''
+  } else {
+    searchTag.value = tag
+  }
+  getPosts()
+}
+
 onMounted(() => {
   if (route.query.keyword) {
     keyword.value = route.query.keyword
+  }
+  if (route.query.tag) {
+    searchTag.value = route.query.tag
+  }
+  if (!tags.value.length) {
+    communityStore.getTags()
   }
   getPosts()
 })
@@ -36,7 +58,7 @@ const editPostModalRef = ref()
     <section class="container my-10">
       <div class="flex justify-between">
         <h1 class="text-5xl font-bold">貼文專區</h1>
-        <button class="px-10 text-white btn btn-primary" @click="editPostModalRef.showModal">
+        <button class="px-10 text-white btn btn-primary" @click="editPostModalRef.showModal(null)">
           新增貼文
         </button>
       </div>
@@ -44,7 +66,8 @@ const editPostModalRef = ref()
     <section class="container mb-10">
       <div class="grid grid-cols-12 gap-10">
         <div class="col-span-8">
-          <div class="grid grid-cols-3 gap-10">
+          <div class="text-center" v-if="!posts.length">尚無貼文</div>
+          <div class="grid grid-cols-3 gap-10" v-else>
             <button
               class="relative overflow-hidden rounded-lg aspect-square"
               v-for="post in posts"
@@ -124,17 +147,22 @@ const editPostModalRef = ref()
             </button>
           </div>
           <h5 class="mt-10 text-xl font-bold">Recommended topics</h5>
-          <div class="flex flex-wrap mt-10">
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">柴犬</button>
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">志工經驗分享</button>
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物健康</button>
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物手作</button>
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">俄羅斯藍貓</button>
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">戶外活動</button>
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物心理學</button>
-            <button class="px-4 py-2 mb-4 border rounded-full me-6">寵物保健知識</button>
+
+          <div class="mt-4" v-for="tag in tagsOptions" :key="tag.type">
+            <h6 class="text-lg font-bold">{{ tag.type }}</h6>
+            <div class="flex flex-wrap mt-4">
+              <button
+                class="px-4 py-2 mb-4 border rounded-full me-6"
+                :class="searchTag === name ? 'bg-third' : ''"
+                v-for="name in tag.name"
+                :key="name"
+                @click="handleClickTag(name)"
+              >
+                {{ name }}
+              </button>
+            </div>
           </div>
-          <button class="mt-4 ms-4">see more...</button>
+          <!-- <button class="mt-4 ms-4">see more...</button> -->
         </div>
       </div>
     </section>

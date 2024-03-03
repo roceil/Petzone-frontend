@@ -29,7 +29,7 @@ export const get_member_data_api = async (userId) => {
     return data
   } catch (error) {
     console.error(error)
-    alert('取得會員資料失敗')
+    return Promise.reject(error)
   }
 }
 
@@ -53,9 +53,13 @@ export const put_user_data_api = async (userId, userData) => {
 // 捐贈點數
 export const donate_point_api = async (userId, points) => {
   try {
-    const { data } = await axios.put(`${VITE_API_BASE_URL}/api/donatePointsById/${userId}`, {
-      points
-    }, config())
+    const { data } = await axios.put(
+      `${VITE_API_BASE_URL}/api/donatePointsById/${userId}`,
+      {
+        points
+      },
+      config()
+    )
     if (!data) throw new Error('捐贈失敗')
 
     return data

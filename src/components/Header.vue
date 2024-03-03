@@ -79,7 +79,7 @@ const modalStore = useModalStore()
 
             <!-- 頭像下拉視窗 -->
             <div v-else class="dropdown dropdown-hover dropdown-end">
-              <AvatarDropDownList :logout="logout" />
+              <AvatarDropDownList :logout="logout" :userPhotoPath="userStore.userPhotoPath" />
             </div>
           </div>
         </template>

@@ -48,9 +48,13 @@ export const useUserStore = defineStore('user', () => {
   // 初始化時讀取 cookie
   const read_cookie = () => {
     const cookie_userId = Cookies.get('userId')
+    const cookie_userPhotoPath = Cookies.get('userPhotoPath')
 
     if (cookie_userId) {
       userId.value = cookie_userId
+    }
+    if (cookie_userPhotoPath) {
+      userPhotoPath.value = cookie_userPhotoPath
     }
   }
 

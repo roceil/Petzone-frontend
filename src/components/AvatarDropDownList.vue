@@ -6,6 +6,10 @@ defineProps({
   logout: {
     type: Function,
     required: true
+  },
+  userPhotoPath: {
+    type: String,
+    required: true
   }
 })
 </script>
@@ -13,7 +17,8 @@ defineProps({
 <template>
   <div class="AvatarDropDownList">
     <div tabindex="0" class="w-[50px] h-[50px] rounded-full">
-      <img :src="default_avatar" alt="default_avatar" />
+      <img v-if="userPhotoPath" :src="userPhotoPath" alt="user_photo" />
+      <img v-else :src="default_avatar" alt="default_avatar" />
     </div>
 
     <ul

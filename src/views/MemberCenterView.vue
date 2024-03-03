@@ -134,7 +134,6 @@ const donateSubmit = async () => {
   }
 }
 
-
 onMounted(() => {
   getMemberData(userId)
 })
@@ -191,7 +190,8 @@ onMounted(() => {
       <div class="min-h-[469px] min-w-[280px] flex flex-col items-center">
         <p class="text-font font-semibold text-center">更換大頭貼照片</p>
         <div class="w-[150px] h-[150px] rounded-full mt-[17px]">
-          <img :src="userAvatar" alt="user_avatar" srcset="" />
+          <img v-if="userData.photo" :src="userData.photo" alt="user_photo" />
+          <img v-else :src="default_avatar" alt="default_avatar" />
         </div>
 
         <div class="flex items-center space-x-[7px] mt-4">

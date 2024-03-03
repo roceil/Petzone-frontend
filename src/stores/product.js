@@ -1,8 +1,9 @@
-import axios from 'axios'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-
-const { VITE_API_BASE_URL } = import.meta.env
+import { get_products_api } from '@/api/ecommerce'
+import { get_products_by_type_api } from '@/api/ecommerce'
+import { get_products_by_name_api } from '@/api/ecommerce'
+import { get_product_by_id_api } from '@/api/ecommerce'
 
 export const productStore = defineStore('productStore', () => {
   const products = ref([])
@@ -13,41 +14,27 @@ export const productStore = defineStore('productStore', () => {
   // 取得所有產品資料
   const userGetProducts = async (search) => {
     if (!search) {
-      try {
-        const response = await axios.get(`${VITE_API_BASE_URL}/api/products`)
-        products.value = response.data.products
-      } catch (error) {
-        console.error(error)
-      }
+      const { data } = await get_products_api()
+      // console.log(data)
+      products.value = data.products
     } else if (Object.keys(search)[0] === 'categoryType') {
-      try {
-        // console.log(search.categoryType)
-        const response = await axios.get(
-          `${VITE_API_BASE_URL}/api/products?category=${search.categoryType}`
-        )
-        products.value = response.data.products
-      } catch (error) {
-        console.error(error)
-      }
+      // console.log(search.categoryType)
+      const categoryType = search.categoryType
+      const { data } = await get_products_by_type_api(categoryType)
+      // console.log(data)
+      products.value = data.products
     } else if (search === 'productName') {
-      try {
-        // console.log(productName.value)
-        const response = await axios.get(
-          `${VITE_API_BASE_URL}/api/products?name=${productName.value}`
-        )
-        products.value = response.data.products
-      } catch (error) {
-        console.error(error)
-      }
+      const { data } = await get_products_by_name_api(search)
+      // console.log(data)
+      products.value = data.products
     }
   }
 
   // 取得單一產品資料
   const userGetProduct = async (productId) => {
-    // console.log(productId)
-
-    const response = await axios.get(`${VITE_API_BASE_URL}/api/product/${productId}`)
-    product.value = response.data.product[0]
+    const { data } = await get_product_by_id_api(productId)
+    console.log(data)
+    product.value = data.product[0]
   }
 
   return { products, categoryType, productName, product, userGetProducts, userGetProduct }

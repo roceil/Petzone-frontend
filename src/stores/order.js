@@ -1,8 +1,6 @@
-import axios from 'axios'
 import { defineStore } from 'pinia'
 import { cartStore } from '@/stores/cart'
-
-const { VITE_API_BASE_URL } = import.meta.env
+import { post_new_order_api } from '@/api/ecommerce'
 
 export const orderStore = defineStore('orderStore', () => {
   const { cartList } = cartStore()
@@ -16,17 +14,7 @@ export const orderStore = defineStore('orderStore', () => {
       paymentType: paymentType
     }
     // console.log(neworder)
-    try {
-      await axios
-        .post(`${VITE_API_BASE_URL}/api/order`, neworder)
-        .then((res) => {
-          console.log(res.data)
-          cartList.value = []
-        })
-        .catch(() => {})
-    } catch (error) {
-      console.error(error)
-    }
+    await post_new_order_api(neworder)
   }
 
   return { addOrder }

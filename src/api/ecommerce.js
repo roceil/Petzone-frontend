@@ -41,12 +41,9 @@ export const get_product_by_id_api = async (productId) => {
 // 建立訂單
 export const post_new_order_api = async (neworder) => {
   try {
-    return await axios
-      .post(`${VITE_API_BASE_URL}/api/order`, neworder)
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch(() => {})
+    return await axios.post(`${VITE_API_BASE_URL}/api/order`, neworder).then((res) => {
+      return res.data
+    })
   } catch (error) {
     console.error(error)
   }

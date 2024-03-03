@@ -3,19 +3,15 @@ import { cartStore } from '@/stores/cart'
 import { post_new_order_api } from '@/api/ecommerce'
 
 export const orderStore = defineStore('orderStore', () => {
-  const { cartList } = cartStore()
-
   // 建立訂單
-  const addOrder = async (recipient, paymentType, totalPrice) => {
-    const neworder = {
-      products: cartList,
-      recipient: recipient,
-      totalPrice: totalPrice,
-      paymentType: paymentType
-    }
+  const addOrder = async (neworder) => {
     // console.log(neworder)
-    await post_new_order_api(neworder)
+    const message = await post_new_order_api(neworder)
+    if (message.message === '訂單新增成功') {
+      return message
+    } else {
+      return '新增訂單失敗'
+    }
   }
-
   return { addOrder }
 })

@@ -1,17 +1,23 @@
 <script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+// import { storeToRefs } from 'pinia'
+// import { orderStore } from '@/stores/order'
 import { productListData } from '@/constants'
-import { storeToRefs } from 'pinia'
-import { cartStore } from '@/stores/cart'
 
-const cartHandler = cartStore()
-const { cartList } = storeToRefs(cartHandler)
+const route = useRoute()
+const orderId = ref('')
+
+onMounted(() => {
+  console.log(route.query.orderId)
+  orderId.value = route.query.orderId
+})
 </script>
 <template>
   <!-- 頁面標題 -->
   <div class="container">
     <h1 class="mt-10 ml-10 text-font text-5xl font-bold">訂單詳情</h1>
   </div>
-  {{ cartList }}
   <div class="containter w-[900px] m-auto mb-10 justify-center text-font">
     <!-- 訂單編號及狀態 -->
     <p class="text-xl font-bold text-right">訂單狀態：未付款</p>

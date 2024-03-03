@@ -41,12 +41,18 @@ export const get_product_by_id_api = async (productId) => {
 // 建立訂單
 export const post_new_order_api = async (neworder) => {
   try {
-    return await axios
-      .post(`${VITE_API_BASE_URL}/api/order`, neworder)
-      .then((res) => {
-        console.log(res.data)
-      })
-      .catch(() => {})
+    return await axios.post(`${VITE_API_BASE_URL}/api/order`, neworder).then((res) => {
+      return res.data
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 取得單一訂單資料
+export const get_order_by_id_api = async (orderId) => {
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/order/${orderId}`)
   } catch (error) {
     console.error(error)
   }

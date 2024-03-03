@@ -25,12 +25,20 @@ const { handleSubmit } = useForm({
 })
 
 const onSubmit = handleSubmit(async ({ email, password }) => {
-  const accessToken = await login_api(email, password)
-  if (accessToken) {
-    authStore.set_token(accessToken)
+  const { accessToken, photo, userId } = await login_api(email, password)
+  console.log(accessToken)
+
+  if (!accessToken) {
+    alert('登入失敗，請檢查帳號密碼是否正確')
+    return
   }
+  authStore.set_token(accessToken)
   await userStore.getUserId()
+  userStore.setUserPhotoPath(photo)
+  userStore.setUserId(userId)
+
   modalStore.handleCloseModal()
+
   alert('登入成功')
 })
 

@@ -1,7 +1,11 @@
 <script setup>
-import left_btn from '@/assets/pagination/left.svg'
-import right_btn from '@/assets/pagination/right.svg'
+import { ref, onMounted } from 'vue'
+import dayjs from 'dayjs'
+// import left_btn from '@/assets/pagination/left.svg'
+// import right_btn from '@/assets/pagination/right.svg'
 import decoration from '@/assets/points_history/decoration.svg'
+import { useUserStore } from '@/stores/user'
+import { get_member_data_api } from '@/api/user'
 
 const points_history_table_title = [
   '序號',
@@ -12,52 +16,32 @@ const points_history_table_title = [
   '異動後點數'
 ]
 
-// 5 筆假的積分異動記錄
-const fake_points_history = [
-  {
-    id: 1,
-    date: '2024/01/01',
-    reason: '訂單紅利',
-    before_points: 100,
-    points: 50,
-    after_points: 150
-  },
-  {
-    id: 2,
-    date: '2024/01/01',
-    reason: '訂單紅利',
-    before_points: 100,
-    points: 50,
-    after_points: 150
-  },
-  {
-    id: 3,
-    date: '2024/01/01',
-    reason: '訂單紅利',
-    before_points: 100,
-    points: 50,
-    after_points: 150
-  },
-  {
-    id: 4,
-    date: '2024/01/01',
-    reason: '訂單紅利',
-    before_points: 100,
-    points: 50,
-    after_points: 150
-  },
-  {
-    id: 5,
-    date: '2024/01/01',
-    reason: '訂單紅利',
-    before_points: 100,
-    points: 50,
-    after_points: 150
-  }
-]
 
-// 假的頁數資料
-const fake_total_page = 10
+// 使用者的積分詳情
+const userPointsHistory = ref([])
+const userStore = useUserStore()
+const userId = userStore.userId
+
+// 取得使用者資料
+const getMemberData = async (userId) => {
+  try {
+    const { pointsRecord } = await get_member_data_api(userId)
+    userPointsHistory.value = pointsRecord.reverse()
+    console.log(userPointsHistory.value)
+  } catch (error) {
+    console.error(error)
+    alert('取得使用者積分紀錄失敗')
+  }
+}
+
+// 格式化日期的方法
+const formatDate = (date) => {
+  return dayjs(date).format('YYYY-MM-DD')
+}
+
+onMounted(() => {
+  getMemberData(userId)
+})
 </script>
 
 <template>
@@ -80,20 +64,20 @@ const fake_total_page = 10
         </ul>
 
         <!-- 表格內容 -->
-        <ul class="w-full h-[324px] rounded-[10px] custom-shadow border border-input_font relative">
+        <ul class="w-full h-[500px] rounded-[10px] custom-shadow border border-input_font relative overflow-y-scroll">
           <li
             class="flex py-4 text-center text-font"
-            v-for="item in fake_points_history"
+            v-for="(item, index) in userPointsHistory"
             :key="item.id"
           >
             <!-- 序號 -->
             <div class="w-[60px]">
-              <p>{{ item.id }}</p>
+              <p>{{ index + 1 }}</p>
             </div>
 
             <!-- 異動日期 -->
             <div class="w-[120px]">
-              <p>{{ item.date }}</p>
+              <p>{{ formatDate(item.createAt) }}</p>
             </div>
 
             <!-- 異動原因 -->
@@ -103,17 +87,17 @@ const fake_total_page = 10
 
             <!-- 異動前點數 -->
             <div class="w-[120px] text-right pr-4">
-              <p>{{ item.before_points }}</p>
+              <p>{{ item.beforePoints }}</p>
             </div>
 
             <!-- 異動點數 -->
             <div class="w-[120px] text-right pr-4">
-              <p>{{ item.points }}</p>
+              <p>{{ item.changePoints }}</p>
             </div>
 
             <!-- 異動後點數 -->
             <div class="w-[120px] text-right pr-4">
-              <p>{{ item.after_points }}</p>
+              <p>{{ item.afterPoints }}</p>
             </div>
           </li>
 
@@ -126,7 +110,7 @@ const fake_total_page = 10
         </ul>
 
         <!-- 分頁按鈕 -->
-        <div class="w-full mt-[15px] flex justify-center items-center">
+        <!-- <div class="w-full mt-[15px] flex justify-center items-center">
           <ul class="w-[269px] h-6 flex justify-between items-center text-center space-x-[10px]">
             <li class="hover:opacity-80 flex items-center">
               <button>
@@ -150,7 +134,7 @@ const fake_total_page = 10
               </button>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

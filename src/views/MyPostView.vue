@@ -1,4 +1,29 @@
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { get_member_data_api } from '@/api/user'
+
+// 使用者資料
+const userStore = useUserStore()
+const userId = userStore.userId
+const userData = ref({})
+
+// 取得使用者資料
+const getMemberData = async (userId) => {
+  try {
+    const data = await get_member_data_api(userId)
+    userData.value = data
+    console.log(userData.value)
+  } catch (error) {
+    console.error(error)
+    alert('取得使用者資料失敗')
+  }
+}
+
+onMounted(() => {
+  getMemberData(userId)
+})
+</script>
 
 <template>
   <div class="MyPostView">
@@ -9,13 +34,16 @@
       >
         <div class="w-[381px] h-[178px] px-[10px] flex justify-between">
           <div class="">
-            <div class="w-[100px] h-[100px] bg-red-400 rounded-full"></div>
+            <div class="w-[100px] h-[100px] rounded-full">
+              <img v-if="userData.photo" :src="userData.photo" alt="user_photo" />
+              <img v-else :src="default_avatar" alt="default_avatar" />
+            </div>
 
-            <p class="text-font font-semibold mt-5 text-center">暱稱</p>
+            <p class="text-font font-semibold mt-5 text-center">{{ userData.nickName }}</p>
           </div>
 
           <div class="text-font leading-5 w-[211px] flex items-center">
-            <p>這是自我介紹這是自我介紹這是自我介紹這是自我介紹這是自我介紹</p>
+            <p>{{ userData.intro }}</p>
           </div>
         </div>
 

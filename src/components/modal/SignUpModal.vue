@@ -30,6 +30,7 @@ const onSubmit = handleSubmit(async ({ email, password, name, nickName, phone, a
     if (status === 'success') {
       modalStore.openModal('login')
       alert('註冊成功')
+      return
     }
     throw new Error('註冊失敗')
   } catch (error) {

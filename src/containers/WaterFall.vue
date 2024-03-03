@@ -1,6 +1,6 @@
 <script setup>
-import waterBgGray from '../assets/waterFall/waterFall_gray.svg'
-import waterBgYellow from '../assets/waterFall/waterFall_yellow.svg'
+import water_green from '@/assets/home/water_green.svg'
+import water_yellow from '@/assets/home/water_yellow.svg'
 defineProps({
   blocks: {
     type: Array,
@@ -10,16 +10,12 @@ defineProps({
 </script>
 
 <template>
-  <section class="container flex justify-center mt-[58.5px] relative">
-    <div class="absolute top-[-191px] right-0 w-[400px] h-[670px] -z-10">
-      <img :src="waterBgGray" alt="" class="w-full h-full" />
-    </div>
+  <section class="container flex justify-center mt-[122px] relative">
+    <!-- 背景裝飾 -->
+    <img :src="water_green" alt="裝飾ICON" class="absolute -right-11 top-0 -z-10" />
+    <img :src="water_yellow" alt="裝飾ICON" class="absolute -left-20 bottom-[-241px] -z-10" />
 
-    <div
-      class="absolute top-0 left-[-195px] w-[381px] h-[892px] -z-10 flex justify-center items-center"
-    >
-      <img :src="waterBgYellow" alt="" class="w-full h-full" />
-    </div>
+    <!-- 主要內容 -->
     <masonry-wall :items="blocks" :column-width="320" :gap="16" class="w-[996px]">
       <template #default="{ item }">
         <div

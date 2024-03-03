@@ -9,11 +9,15 @@ export const login_api = async (email, password) => {
       email: email,
       password: password
     })
-    if (data.accessToken) {
-      return data.accessToken
+    if (data) {
+      return data
     }
+    throw new Error('登入失敗')
   } catch (error) {
     console.error(error)
+    return {
+      accessToken: '',
+    }
   }
 }
 

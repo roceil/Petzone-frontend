@@ -53,7 +53,7 @@ watch(productId, async (newId) => {
       productId: newId
     }
   })
-  productHandler.userGetProduct(newId)
+  await productHandler.userGetProduct(newId)
 })
 
 // 將商品加入購物車並導向購物車頁面

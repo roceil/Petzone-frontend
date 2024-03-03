@@ -54,13 +54,8 @@ const onSubmit = async (recipient, paymentType, totalPrice) => {
 }
 
 const directToOrderPage = (orderId) => {
-  // console.log()
-  router.push({
-    name: 'order',
-    query: {
-      orderId
-    }
-  })
+  // console.log(orderId)
+  router.push(`/ecommerce/order/${orderId}`)
 }
 </script>
 <template>

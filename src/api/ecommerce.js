@@ -48,3 +48,12 @@ export const post_new_order_api = async (neworder) => {
     console.error(error)
   }
 }
+
+// 取得單一訂單資料
+export const get_order_by_id_api = async (orderId) => {
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/order/${orderId}`)
+  } catch (error) {
+    console.error(error)
+  }
+}

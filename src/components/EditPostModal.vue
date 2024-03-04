@@ -169,7 +169,7 @@ defineExpose({ showModal })
           </Swiper>
           <div class="flex items-center justify-between">
             <label>請從電腦中選擇圖檔</label>
-            <button class="btn btn-primary" @click="chooseFile">選擇照片</button>
+            <button class="btn btn-secondary text-white" @click="chooseFile">選擇照片</button>
             <input
               class="hidden"
               ref="fileInputRef"
@@ -186,7 +186,7 @@ defineExpose({ showModal })
           v-model="postData.content"
         />
         <div class="text-end">
-          <button class="px-8 btn btn-primary" @click="handleSend">發佈</button>
+          <button class="px-8 btn btn-secondary text-white" @click="handleSend">發佈</button>
         </div>
       </form>
     </div>

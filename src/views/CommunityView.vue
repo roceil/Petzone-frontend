@@ -58,7 +58,10 @@ const editPostModalRef = ref()
     <section class="container my-10">
       <div class="flex justify-between">
         <h1 class="text-5xl font-bold">貼文專區</h1>
-        <button class="px-10 text-white btn btn-primary" @click="editPostModalRef.showModal(null)">
+        <button
+          class="px-10 text-white btn btn-secondary"
+          @click="editPostModalRef.showModal(null)"
+        >
           新增貼文
         </button>
       </div>

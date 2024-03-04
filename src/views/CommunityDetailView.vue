@@ -207,7 +207,7 @@ const editPostModalRef = ref()
             v-model="commentData.content"
           ></textarea>
           <div class="text-end">
-            <button class="px-8 btn btn-primary" @click="createComment">留言</button>
+            <button class="px-8 btn btn-secondary text-white" @click="createComment">留言</button>
           </div>
         </div>
       </div>

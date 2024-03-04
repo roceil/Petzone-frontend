@@ -40,7 +40,7 @@ onMounted(() => {
     }
   })
   totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-  // console.log(subTotal, total)
+  // console.log(subTotal)
 
   //確認是否已登入，如未登入導向登入
   userStore.getUserId()
@@ -93,6 +93,11 @@ onMounted(() => {
                   min="0"
                   required
                   v-model="product.qty"
+                  @change="
+                    (e) => {
+                      cartHandler.updatedCart(product._id, e.target.value)
+                    }
+                  "
                 />
               </div>
             </td>

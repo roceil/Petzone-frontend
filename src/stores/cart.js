@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user'
 import { post_cart_api } from '@/api/ecommerce'
 import { get_cart_api } from '@/api/ecommerce'
 import { get_product_by_id_api } from '@/api/ecommerce'
+import { update_cart_api } from '@/api/ecommerce'
 
 export const cartStore = defineStore('cartStore', () => {
   const cartList = ref([])
@@ -38,6 +39,8 @@ export const cartStore = defineStore('cartStore', () => {
       }
     }
     // console.log(cartList.value)
+
+    // 如為會員同時會存入會員資料
     if (userId != '') {
       const cart = cartList.value.map((item) => {
         return { productId: item._id, qty: item.qty }
@@ -64,12 +67,12 @@ export const cartStore = defineStore('cartStore', () => {
     const { products } = productStore()
     const newCart = cart.map(async (item) => {
       let productFound = products.find((product) => {
-        console.log(item.productId, product._id)
+        // console.log(item.productId, product._id)
         if (item.productId === product._id) {
           return product
         }
       })
-      console.log('productFound', productFound)
+      // console.log('productFound', productFound)
 
       if (productFound !== undefined) {
         const newItem = { ...productFound, qty: item.qty }
@@ -77,13 +80,28 @@ export const cartStore = defineStore('cartStore', () => {
       } else {
         const { data } = await get_product_by_id_api(item.productId)
         const newItem = { ...data.product, qty: item.qty }
-        console.log(newItem)
+        // console.log(newItem)
         return newItem
       }
     })
     cartList.value = await Promise.all(newCart)
-    console.log(newCart, cartList.value)
+    // console.log(newCart, cartList.value)
+    const subTotal = cartList.value.map((item) => {
+      // console.log(item)
+      if (item.price) {
+        return item.price * item.qty
+      } else {
+        return item.originPrice * item.qty
+      }
+    })
+    totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
   }
 
-  return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart, getCart }
+  const updatedCart = async (productId, qty) => {
+    const { userId } = useUserStore()
+    const cart = { productId, qty }
+    update_cart_api(userId, cart)
+  }
+
+  return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart, getCart, updatedCart }
 })

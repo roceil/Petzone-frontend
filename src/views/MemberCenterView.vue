@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { get_member_data_api, put_user_data_api, donate_point_api } from '@/api/user'
+import { upload_image_api } from '@/api/upload'
 import default_avatar from '@/assets/default_avatar.png'
 
 const formItems = ref([
@@ -52,7 +53,18 @@ function triggerFileInput() {
 function handleFileChange(event) {
   const files = event.target.files
   if (files.length > 0) {
+    uploadImage(files[0])
     fileName.value = files[0].name // 更新 fileName 為選擇的檔案名稱
+  }
+}
+
+// 上傳圖片到 Firebase
+const uploadImage = async (file) => {
+  try {
+    const res = await upload_image_api(file)
+    return res
+  } catch (error) {
+    console.error(error)
   }
 }
 
@@ -189,8 +201,13 @@ onMounted(() => {
       <!-- 大頭貼 -->
       <div class="min-h-[469px] min-w-[280px] flex flex-col items-center">
         <p class="text-font font-semibold text-center">更換大頭貼照片</p>
-        <div class="w-[150px] h-[150px] rounded-full mt-[17px]">
-          <img v-if="userData.photo" :src="userData.photo" alt="user_photo" />
+        <div class="w-[150px] h-[150px] mt-[17px] rounded-full overflow-hidden">
+          <img
+            v-if="userData.photo"
+            :src="userData.photo"
+            alt="user_photo"
+            class="w-full h-full object-cover"
+          />
           <img v-else :src="default_avatar" alt="default_avatar" />
         </div>
 
@@ -249,3 +266,5 @@ onMounted(() => {
     </div>
   </div>
 </template>
+import { upload_image_api } from '@/api/upload'import { up } from 'inquirer/lib/utils/readline'
+

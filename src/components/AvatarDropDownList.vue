@@ -16,8 +16,13 @@ defineProps({
 
 <template>
   <div class="AvatarDropDownList">
-    <div tabindex="0" class="w-[50px] h-[50px] rounded-full">
-      <img v-if="userPhotoPath" :src="userPhotoPath" alt="user_photo" />
+    <div tabindex="0">
+      <img
+        v-if="userPhotoPath"
+        :src="userPhotoPath"
+        alt="user_photo"
+        class="w-[50px] h-[50px] object-cover rounded-full"
+      />
       <img v-else :src="default_avatar" alt="default_avatar" />
     </div>
 

@@ -79,3 +79,22 @@ export const get_monthly_donate_rank_api = async () => {
     return Promise.reject(error)
   }
 }
+
+// 上傳圖片到 Firebase
+export const upload_image_api = async (file) => {
+  try {
+
+    console.log(file)
+    const formData = new FormData()
+
+    formData.append('file', file)
+    console.log(formData)
+
+    return
+    const { data } = await axios.post(`${VITE_API_BASE_URL}/api/upload/image`, formData)
+    return data
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}

@@ -1,6 +1,57 @@
 <script setup>
+import { ref, onMounted, nextTick } from 'vue'
 import crown from '@/assets/home/crown.svg'
 import donor_bg from '@/assets/home/donor_bg.svg'
+import { get_monthly_donate_rank_api } from '@/api/user'
+import anime from 'animejs'
+
+const donorList = ref({})
+const totalDonationRef = ref(null) // 新增一個 ref 來獲取累積金額元素
+
+const getMonthlyDonateRank = async () => {
+  try {
+    const res = await get_monthly_donate_rank_api()
+    donorList.value = res
+    console.log(donorList.value)
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const numberFormatter = (num) => {
+  return new Intl.NumberFormat('zh-TW').format(num)
+}
+
+onMounted(() => {
+  getMonthlyDonateRank()
+  nextTick(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            anime({
+              targets: donorList.value,
+              totalDonation: [0, donorList.value.totalDonation],
+              round: 1,
+              easing: 'linear',
+              duration: 3000,
+              update: function (anim) {
+                totalDonationRef.value.innerText = `NT$${numberFormatter(anim.animations[0].currentValue)}`
+              }
+            })
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        root: null,
+        threshold: 0.1
+      }
+    )
+
+    observer.observe(totalDonationRef.value)
+  })
+})
 </script>
 
 <template class="">
@@ -19,14 +70,18 @@ import donor_bg from '@/assets/home/donor_bg.svg'
 
       <!-- 捐款者清單 -->
       <ul class="flex items-center justify-center space-x-[100px] mt-6">
-        <li v-for="img in 4" :key="img">
-          <div class="w-[200px] h-[200px] bg-red-300 rounded-full" />
+        <li v-for="donor in donorList.topDonators" :key="donor">
+          <div class="rounded-full overflow-hidden flex justify-center items-center">
+            <img :src="donor.photo" :alt="donor.name" class="object-cover w-[200px] h-[200px]" />
+          </div>
         </li>
       </ul>
 
       <!-- 累積金額 -->
       <p class="mt-6 text-2xl font-bold text-font text-end w-full max-w-[1124px]">
-        平台總累積捐贈金額：<span class="">NT$ 100,000</span>
+        平台總累積捐贈金額：<span ref="totalDonationRef"
+          >NT${{ numberFormatter(donorList.totalDonation) }}</span
+        >
       </p>
     </div>
 
@@ -38,3 +93,4 @@ import donor_bg from '@/assets/home/donor_bg.svg'
     />
   </section>
 </template>
+import { get_monthly_donate_rank_api } from '@/api/user';

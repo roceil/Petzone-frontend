@@ -31,30 +31,8 @@ onMounted(async () => {
     <img :src="water_yellow" alt="裝飾ICON" class="absolute -left-20 bottom-[-241px] -z-10" />
 
     <!-- 主要內容 -->
-    <!-- <masonry-wall :items="waterFallData" :column-width="320" :gap="16" class="w-[1024px]">
+    <masonry-wall :items="waterFallData" :column-width="320" :gap="16" :max-columns="3">
       <template #default="{ item }">
-        <RouterLink :to="`community/${item._id}`">
-          <div
-            class="rounded-[10px] overflow-hidden relative"
-          >
-            <div
-              class="hover:opacity-100 opacity-0 absolute bottom-0 left-0 w-full h-full backdrop-blur-sm bg-white/30 rounded-[10px] flex justify-center items-center font-semibold hover:text-4xl text-black duration-300 ease-in-out"
-            >
-              <p class="group-hover:block">瞧瞧貼文</p>
-            </div>
-
-            <img :src="item.photos[0]" :alt="item.content" class="w-full h-full" />
-          </div>
-        </RouterLink>
-      </template>
-    </masonry-wall> -->
-
-    <vue-masonry-wall
-      :items="waterFallData"
-      :options="{ width: 320, padding: 16 }"
-      @append="append"
-    >
-      <template v-slot:default="{ item }">
         <RouterLink :to="`community/${item._id}`">
           <div class="rounded-[10px] overflow-hidden relative">
             <div
@@ -67,6 +45,6 @@ onMounted(async () => {
           </div>
         </RouterLink>
       </template>
-    </vue-masonry-wall>
+    </masonry-wall>
   </section>
 </template>

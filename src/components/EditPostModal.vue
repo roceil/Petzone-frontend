@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { post_post_api, put_post_api } from '@/api/community'
+import { post_upload_images } from '@/api/products'
 import { useCommunityStore } from '@/stores/community'
 import { storeToRefs } from 'pinia'
 import close from '@/assets/header/close-btn.svg'
@@ -37,7 +38,7 @@ const hideModal = () => {
     tags: [],
     photos: []
   }
-  images.value = []
+  files.value = []
   dialogRef.value.close()
 }
 
@@ -50,13 +51,20 @@ const postData = ref({
 })
 
 // 選擇圖檔
-const images = ref([])
+const files = ref([])
+const images = computed(() => {
+  return files.value.map((item) => URL.createObjectURL(item))
+})
 const fileInputRef = ref()
 const chooseFile = () => {
   fileInputRef.value.click()
 }
 const handleFileChange = (e) => {
-  images.value = [...e.target.files].map((item) => URL.createObjectURL(item))
+  if (e.target.files.length > 3) {
+    alert('圖片數量不可超過 3 張')
+  } else {
+    files.value = [...e.target.files]
+  }
 }
 
 // 發佈
@@ -68,7 +76,24 @@ const handleSend = async () => {
       emit('getPost')
     }
   } else {
-    const res = await post_post_api(postData.value)
+    if (!files.value.length && !postData.value.photos.length) {
+      alert('至少需上傳一張圖片')
+      return
+    }
+    const formData = new FormData()
+    files.value.forEach((item) => {
+      formData.append('files', item)
+    })
+    const photos = await post_upload_images(formData)
+    if (!photos) {
+      alert('上傳圖片失敗')
+      return
+    }
+    const data = {
+      ...postData.value,
+      photos
+    }
+    const res = await post_post_api(data)
     if (res) {
       alert('新增成功')
       emit('getPosts')

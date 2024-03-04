@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { get_member_data_api, put_user_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
@@ -50,22 +50,35 @@ function triggerFileInput() {
   fileInput.value.click()
 }
 
-function handleFileChange(event) {
-  const files = event.target.files
-  if (files.length > 0) {
-    uploadImage(files[0])
-    fileName.value = files[0].name // 更新 fileName 為選擇的檔案名稱
+const handleFileChange = (event) => {
+  const file = event.target.files[0]
+  if (!file) {
+    alert('請選擇一個檔案')
+    return
   }
-}
 
-// 上傳圖片到 Firebase
-const uploadImage = async (file) => {
-  try {
-    const res = await upload_image_api(file)
-    return res
-  } catch (error) {
-    console.error(error)
+  // 檢查檔案類型
+  if (file.type !== 'image/png') {
+    alert('檔案類型必須是 PNG')
+    return
   }
+
+  // 檢查檔案大小（5MB）
+  const maxSize = 5 * 1024 * 1024 // 5MB
+  if (file.size > maxSize) {
+    alert('檔案大小必須低於 5MB')
+    return
+  }
+  fileName.value = file.name // 顯示檔案名稱
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    const base64 = e.target.result
+    userData.value.photo = base64 // 將 base64 字串用於圖片預覽
+  }
+  reader.onerror = (error) => {
+    console.error('檔案讀取錯誤', error)
+  }
+  reader.readAsDataURL(file)
 }
 
 // 使用者資料
@@ -100,6 +113,14 @@ const getMemberData = async (userId) => {
 // 更改使用者資料
 const submit = async () => {
   try {
+    // 檢查是否有選擇新的圖片
+    if (fileInput.value && fileInput.value.files[0]) {
+      // 上傳圖片到 Firebase 並獲取 URL
+      const file = fileInput.value.files[0]
+      const uploadResult = await upload_image_api(file)
+      userData.value.photo = uploadResult.imgUrl
+    }
+
     // 1. 檢查表單是否有修改
     userData.value.intro = userIntro.value || userData.value.intro
     userData.value.name = formItems.value[1].value || formItems.value[1].placeholder
@@ -213,7 +234,7 @@ onMounted(() => {
 
         <div class="flex items-center space-x-[7px] mt-4">
           <div v-if="!fileName" class="text-sm text-font min-w-[157.6px]">
-            <p>從電腦中選取圖檔</p>
+            <p>從電腦中選取 Png 圖檔</p>
             <p>最佳大小為600 x 600 px</p>
           </div>
           <p v-else class="text-font text-sm min-w-[157.6px]">{{ fileName }}</p>
@@ -233,8 +254,8 @@ onMounted(() => {
         </div>
 
         <div class="mt-[53px]">
-          <div class="text-font">
-            <span>累計積分：{{ userData.historyPoints }} 點｜</span>
+          <div class="text-font flex justify-center">
+            <!-- <span>累計積分：{{ userData.historyPoints }} 點｜</span> -->
             <span>可用積分：{{ userData.points }} 點</span>
           </div>
 
@@ -267,4 +288,3 @@ onMounted(() => {
   </div>
 </template>
 import { upload_image_api } from '@/api/upload'import { up } from 'inquirer/lib/utils/readline'
-

@@ -33,10 +33,10 @@ export const get_member_data_api = async (userId) => {
   }
 }
 
-// 更改會員資料（不含 avatar）
+// 更改會員資料
 export const put_user_data_api = async (userId, userData) => {
   try {
-    const { data } = await axios.put(
+    const { data } = await axios.patch(
       `${VITE_API_BASE_URL}/api/usersInfoById/${userId}`,
       userData,
       config()

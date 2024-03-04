@@ -168,8 +168,9 @@ const directToOrderPage = (orderId) => {
               v-model="recipient.address"
               rules="required"
               :class="{ 'is-invalid': errors['地址'] }"
-            ></VField>
-            <error-message name="地址" class="invalid-feedback text-red-500 m-3"></error-message>
+            ></VField
+            ><br />
+            <error-message name="地址" class="invalid-feedback text-red-500"></error-message>
           </div>
         </div>
         <div class="w-[900px] h-[60px] bg-third rounded-[10px]">

@@ -4,6 +4,7 @@ import { productStore } from '@/stores/product'
 import { useUserStore } from '@/stores/user'
 import { post_cart_api } from '@/api/ecommerce'
 import { get_cart_api } from '@/api/ecommerce'
+import { get_product_by_id_api } from '@/api/ecommerce'
 
 export const cartStore = defineStore('cartStore', () => {
   const cartList = ref([])
@@ -58,8 +59,30 @@ export const cartStore = defineStore('cartStore', () => {
   const getCart = async () => {
     const { userId } = useUserStore()
     const cart = await get_cart_api(userId)
+    // console.log(cart)
 
-    console.log(cart)
+    const { products } = productStore()
+    const newCart = cart.map(async (item) => {
+      let productFound = products.find((product) => {
+        console.log(item.productId, product._id)
+        if (item.productId === product._id) {
+          return product
+        }
+      })
+      console.log('productFound', productFound)
+
+      if (productFound !== undefined) {
+        const newItem = { ...productFound, qty: item.qty }
+        return newItem
+      } else {
+        const { data } = await get_product_by_id_api(item.productId)
+        const newItem = { ...data.product, qty: item.qty }
+        console.log(newItem)
+        return newItem
+      }
+    })
+    cartList.value = await Promise.all(newCart)
+    console.log(newCart, cartList.value)
   }
 
   return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart, getCart }

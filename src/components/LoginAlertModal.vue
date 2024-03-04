@@ -31,7 +31,7 @@ const directToLogin = () => {
       <h3 class="font-bold text-5xl text-font text-center mt-[46px]">目前以訪客身分購物</h3>
 
       <!-- 文字說明 -->
-      <p class="mt-[25px] text-font leading-[48px] font-bold">登入即可使用點數消費！</p>
+      <p class="mt-[25px] text-font leading-[48px] font-bold">登入即可使用會員積分折扣！</p>
 
       <!-- 按鈕 -->
       <div class="w-full flex justify-center space-x-[23px] px-[35px] mt-[46px]">

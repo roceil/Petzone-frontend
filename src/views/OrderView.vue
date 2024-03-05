@@ -47,7 +47,7 @@ onMounted(async () => {
     <!-- 訂單編號及狀態 -->
     <p class="text-xl font-bold text-right">訂單狀態：{{ order.status }}</p>
     <div class="flex">
-      <p class="w-1/2 text-xl">訂單編號：{{ order._id }}</p>
+      <p class="w-1/2 text-xl">訂單編號：# {{ order.orderId }}</p>
       <p class="w-1/2 text-xl text-right">下單日期：{{ order.createdAt }}</p>
     </div>
     <table class="w-[900px] text-font rounded-[10px] shadow">

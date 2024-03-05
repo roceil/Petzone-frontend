@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { get_member_data_api, put_user_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
-import default_avatar from '@/assets/default_avatar.png'
+import default_avatar from '@/assets/avatar.svg'
 
 const formItems = ref([
   {

@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { cartStore } from '@/stores/cart'
 import { orderStore } from '@/stores/order'
+import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 
 import { Form as VForm, Field as VField, ErrorMessage, defineRule, configure } from 'vee-validate'
@@ -10,11 +11,16 @@ import * as AllRules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 
+import { get_member_data_api } from '@/api/user'
+import { delete_all_cart_api } from '@/api/ecommerce'
+
 const router = useRouter()
 
 const cartHandler = cartStore()
 const { cartList, totalPrice } = storeToRefs(cartHandler)
 const orderHandler = orderStore()
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
 
 const recipient = ref({
   userId: null,
@@ -49,7 +55,10 @@ const onSubmit = async (recipient, paymentType, totalPrice) => {
     paymentType: paymentType
   }
   const message = await orderHandler.addOrder(neworder)
-  // console.log(message.orderId)
+  // console.log(message)
+  if (message.message === '訂單新增成功') {
+    await delete_all_cart_api(userId.value)
+  }
   directToOrderPage(message.orderId)
 }
 
@@ -57,6 +66,22 @@ const directToOrderPage = (orderId) => {
   // console.log(orderId)
   router.push(`/ecommerce/order/${orderId}`)
 }
+
+onMounted(async () => {
+  //確認是否已登入，如已登入自動帶入會員資料
+  userStore.getUserId()
+  if (userId.value) {
+    const userInfo = await get_member_data_api(userId.value)
+    // console.log(userInfo)
+    recipient.value = {
+      userId: userInfo._id,
+      name: userInfo.name,
+      email: userInfo.account,
+      phone: userInfo.phone,
+      address: userInfo.address
+    }
+  }
+})
 </script>
 <template>
   <!-- 頁面標題 -->

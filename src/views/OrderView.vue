@@ -14,7 +14,27 @@ const { order } = storeToRefs(orderHandler)
 onMounted(async () => {
   // console.log(route.params.id)
   await orderHandler.GetOrder(route.params.id)
-  // console.log(order)
+  // console.log(order.value)
+  switch (order.value.status) {
+    case 'unPaid':
+      order.value.status = '未付款'
+      break
+    case 'hasPaid':
+      order.value.status = '已付款'
+      break
+    case 'done':
+      order.value.status = '已完成'
+      break
+    case 'cancel':
+      order.value.status = '已取消'
+      break
+  }
+
+  if (order.value.paymentType === 'cash') {
+    order.value.paymentType = '現金'
+  } else {
+    order.value.paymentType = '信用卡'
+  }
 })
 </script>
 <template>

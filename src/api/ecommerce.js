@@ -57,3 +57,53 @@ export const get_order_by_id_api = async (orderId) => {
     console.error(error)
   }
 }
+
+// 購物車資料存入會員資料
+export const post_cart_api = async (userId, cart) => {
+  try {
+    // console.log(userId, cart)
+    return await axios.post(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart).then((res) => {
+      return res.data
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 取得會員購物車資料
+export const get_cart_api = async (userId) => {
+  // console.log(userId)
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/cart/${userId}`).then((res) => {
+      return res.data
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 更新會員購物車數量
+export const update_cart_api = async (userId, cart) => {
+  // console.log(userId, cart)
+  try {
+    return await axios.put(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart).then((res) => {
+      // console.log(res.data)
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 刪除會員購物車
+export const delete_cart_api = async (userId, productId) => {
+  console.log(userId, productId)
+  try {
+    return await axios
+      .delete(`${VITE_API_BASE_URL}/api/cart/${userId}/${productId}`)
+      .then((res) => {
+        // console.log(res.data)
+      })
+  } catch (error) {
+    console.error(error)
+  }
+}

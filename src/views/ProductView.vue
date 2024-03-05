@@ -43,6 +43,13 @@ const setThumbsSwiper = (swiper) => {
   thumbsSwiper.value = swiper
 }
 
+// 取得四樣推薦商品
+const recommendProduct = ref([])
+const getRecommendProduct = () => {
+  const tempProduct = products.value
+  recommendProduct.value = tempProduct.slice(0, 4)
+}
+
 // 點擊推薦商品商品資料更新
 const productId = ref('')
 watch(productId, async (newId) => {
@@ -69,6 +76,7 @@ onMounted(() => {
   productId.value = route.query.productId
   productHandler.userGetProduct(productId.value)
   productHandler.userGetProducts()
+  getRecommendProduct()
 })
 </script>
 
@@ -86,7 +94,7 @@ onMounted(() => {
         >
           <SwiperSlide v-for="img in product.photos" :key="img">
             <div class="rounded-[10px] bg-third group overflow-hidden">
-              <img class="w-full" :src="img" alt="" />
+              <img class="w-full object-cover" :src="img" alt="商品圖" />
             </div>
           </SwiperSlide>
         </Swiper>
@@ -99,7 +107,7 @@ onMounted(() => {
           :watchSlidesProgress="true"
         >
           <swiper-slide v-for="img in product.photos" :key="img"
-            ><img class="rounded-[10px]" :src="img"
+            ><img class="rounded-[10px] cursor-pointer" :src="img"
           /></swiper-slide>
         </swiper>
       </div>
@@ -140,10 +148,10 @@ onMounted(() => {
     <!-- 推薦商品 -->
     <p class="text-2xl font-bold mt-10 ml-10">你也許也會喜歡...</p>
     <div class="flex mt-10 ml-10">
-      <div class="w-[300px] mr-4" v-for="product in products" :key="product._id">
+      <div class="max-w-[350px] mr-4" v-for="product in recommendProduct" :key="product._id">
         <button type="button" @click="productId = product._id">
           <img
-            class="w-[300px] h-[160px] rounded-[10px] object-fill"
+            class="w-[350px] h-[160px] rounded-[10px] object-cover"
             :src="product.photos[0]"
             alt="推薦商品圖"
           />

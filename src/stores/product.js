@@ -34,7 +34,7 @@ export const productStore = defineStore('productStore', () => {
   const userGetProduct = async (productId) => {
     const { data } = await get_product_by_id_api(productId)
     // console.log(data)
-    product.value = data.product[0]
+    product.value = data.product
   }
 
   return { products, categoryType, productName, product, userGetProducts, userGetProduct }

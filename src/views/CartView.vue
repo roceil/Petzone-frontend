@@ -1,13 +1,21 @@
 <script setup>
-import { watch, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { cartStore } from '@/stores/cart'
+import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import LoginAlertModal from '@/components/LoginAlertModal.vue'
+// import post_cart_api from '@/api/ecommerce'
 
 const router = useRouter()
 
 const cartHandler = cartStore()
 const { cartList, totalPrice } = storeToRefs(cartHandler)
+
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
+
+const loginAlertModalRef = ref()
 
 watch(cartList.value, () => {
   const subTotal = cartList.value.map((item) => {
@@ -32,7 +40,15 @@ onMounted(() => {
     }
   })
   totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-  // console.log(subTotal, total)
+  // console.log(subTotal)
+
+  //確認是否已登入，如未登入導向登入
+  userStore.getUserId()
+  if (!userId.value) {
+    loginAlertModalRef.value.showModal()
+  } else {
+    cartHandler.getCart()
+  }
 })
 </script>
 
@@ -77,6 +93,11 @@ onMounted(() => {
                   min="0"
                   required
                   v-model="product.qty"
+                  @blur="
+                    (e) => {
+                      cartHandler.updatedCart(product._id, e.target.value)
+                    }
+                  "
                 />
               </div>
             </td>
@@ -165,4 +186,5 @@ onMounted(() => {
       </tbody>
     </table>
   </div>
+  <LoginAlertModal ref="loginAlertModalRef"></LoginAlertModal>
 </template>

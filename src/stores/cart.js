@@ -63,6 +63,16 @@ export const cartStore = defineStore('cartStore', () => {
     if (userId != '') {
       delete_cart_api(userId, productId)
     }
+
+    const subTotal = cartList.value.map((item) => {
+      // console.log(item)
+      if (item.price) {
+        return item.price * item.qty
+      } else {
+        return item.originPrice * item.qty
+      }
+    })
+    totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
   }
 
   // 取得會員購物車
@@ -104,10 +114,21 @@ export const cartStore = defineStore('cartStore', () => {
     totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
   }
 
+  // 更新會員購物車
   const updatedCart = async (productId, qty) => {
     const { userId } = useUserStore()
     const cart = { productId, qty }
     update_cart_api(userId, cart)
+
+    const subTotal = cartList.value.map((item) => {
+      // console.log(item)
+      if (item.price) {
+        return item.price * item.qty
+      } else {
+        return item.originPrice * item.qty
+      }
+    })
+    totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
   }
 
   return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart, getCart, updatedCart }

@@ -93,7 +93,7 @@ onMounted(() => {
                   min="0"
                   required
                   v-model="product.qty"
-                  @blur="
+                  @change="
                     (e) => {
                       cartHandler.updatedCart(product._id, e.target.value)
                     }

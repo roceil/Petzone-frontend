@@ -12,6 +12,7 @@ import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 
 import { get_member_data_api } from '@/api/user'
+import { delete_all_cart_api } from '@/api/ecommerce'
 
 const router = useRouter()
 
@@ -54,7 +55,10 @@ const onSubmit = async (recipient, paymentType, totalPrice) => {
     paymentType: paymentType
   }
   const message = await orderHandler.addOrder(neworder)
-  // console.log(message.orderId)
+  // console.log(message)
+  if (message.message === '訂單新增成功') {
+    await delete_all_cart_api(userId.value)
+  }
   directToOrderPage(message.orderId)
 }
 
@@ -68,7 +72,7 @@ onMounted(async () => {
   userStore.getUserId()
   if (userId.value) {
     const userInfo = await get_member_data_api(userId.value)
-    console.log(userInfo)
+    // console.log(userInfo)
     recipient.value = {
       userId: userInfo._id,
       name: userInfo.name,

@@ -96,13 +96,25 @@ export const update_cart_api = async (userId, cart) => {
 
 // 刪除會員購物車
 export const delete_cart_api = async (userId, productId) => {
-  console.log(userId, productId)
+  // console.log(userId, productId)
   try {
     return await axios
       .delete(`${VITE_API_BASE_URL}/api/cart/${userId}/${productId}`)
       .then((res) => {
         // console.log(res.data)
       })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 清空會員購物車
+export const delete_all_cart_api = async (userId) => {
+  // console.log(userId)
+  try {
+    return await axios.delete(`${VITE_API_BASE_URL}/api/cart/${userId}`).then((res) => {
+      // console.log(res.data)
+    })
   } catch (error) {
     console.error(error)
   }

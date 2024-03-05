@@ -57,7 +57,7 @@ onMounted(() => {
   <div class="container relative">
     <h1 class="m-10 text-font text-5xl font-bold">你的購物車</h1>
   </div>
-  <div class="container">
+  <div class="container" v-if="cartList.length !== 0">
     <!-- 購買商品明細 -->
     <div class="mt-10">
       <table class="text-font">
@@ -186,5 +186,6 @@ onMounted(() => {
       </tbody>
     </table>
   </div>
+  <div class="text-font text-5xl font-bold text-center" v-else>購物車內無產品</div>
   <LoginAlertModal ref="loginAlertModalRef"></LoginAlertModal>
 </template>

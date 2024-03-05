@@ -34,8 +34,8 @@ onMounted(() => {
       >
         <div class="w-[381px] h-[178px] px-[10px] flex justify-between">
           <div class="">
-            <div class="w-[100px] h-[100px] rounded-full">
-              <img v-if="userData.photo" :src="userData.photo" alt="user_photo" />
+            <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
+              <img v-if="userData.photo" :src="userData.photo" alt="user_photo" class="object-cover w-full h-full"/>
               <img v-else :src="default_avatar" alt="default_avatar" />
             </div>
 

@@ -114,3 +114,13 @@ export const delete_post_comment_api = async (params) => {
     console.error(error)
   }
 }
+
+// 隨機取得 20 篇貼文
+export const get_random_posts_api = async () => {
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/posts/random`)
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}

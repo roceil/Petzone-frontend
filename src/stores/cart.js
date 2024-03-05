@@ -6,6 +6,7 @@ import { post_cart_api } from '@/api/ecommerce'
 import { get_cart_api } from '@/api/ecommerce'
 import { get_product_by_id_api } from '@/api/ecommerce'
 import { update_cart_api } from '@/api/ecommerce'
+import { delete_cart_api } from '@/api/ecommerce'
 
 export const cartStore = defineStore('cartStore', () => {
   const cartList = ref([])
@@ -52,10 +53,16 @@ export const cartStore = defineStore('cartStore', () => {
 
   // 刪除購物車
   const deleteFromCart = (productId) => {
+    const { userId } = useUserStore()
+
     const itemIndex = cartList.value.findIndex((item) => {
       return item._id === productId
     })
     cartList.value.splice(itemIndex, 1)
+
+    if (userId != '') {
+      delete_cart_api(userId, productId)
+    }
   }
 
   // 取得會員購物車

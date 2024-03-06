@@ -63,7 +63,7 @@ onMounted(() => {
         />
         <button
           class="absolute inset-y-0 right-0 mr-2 top-0 mt-1"
-          @click.prevent="productHandler.userGetProducts('productName')"
+          @click.prevent="productHandler.userGetProducts('name')"
         >
           <img src="../assets/search.svg" alt="search" />
         </button>

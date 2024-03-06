@@ -24,7 +24,7 @@ export const orderStore = defineStore('orderStore', () => {
     }
   }
 
-  // 取得單一產品資料
+  // 取得訂單資料
   const GetOrder = async (orderId) => {
     const { data } = await get_order_by_id_api(orderId)
     // console.log(data)

@@ -23,7 +23,9 @@ export const get_products_by_type_api = async (categoryType) => {
 // 取得特定名稱產品資料
 export const get_products_by_name_api = async (search) => {
   try {
-    return axios.get(`${VITE_API_BASE_URL}/api/products?category=${search}`)
+    // console.log(search.value)
+    const productName = search.value
+    return axios.get(`${VITE_API_BASE_URL}/api/products?name=${productName}`)
   } catch (error) {
     console.error(error)
   }
@@ -114,6 +116,32 @@ export const delete_all_cart_api = async (userId) => {
   try {
     return await axios.delete(`${VITE_API_BASE_URL}/api/cart/${userId}`).then((res) => {
       // console.log(res.data)
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 會員新增產品評論
+export const post_product_review_api = async (productId, review) => {
+  try {
+    console.log(productId, review)
+    return await axios
+      .post(`${VITE_API_BASE_URL}/api/product/review/${productId}`, review)
+      .then((res) => {
+        return res.data
+      })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 取得產品評論
+export const get_product_reviews_api = async (productId) => {
+  try {
+    // console.log(productId)
+    return await axios.get(`${VITE_API_BASE_URL}/api/product/reviews/${productId}`).then((res) => {
+      return res.data
     })
   } catch (error) {
     console.error(error)

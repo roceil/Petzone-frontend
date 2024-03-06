@@ -1,15 +1,23 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { orderStore } from '@/stores/order'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import ReviewModal from '@/components/ReviewModal.vue'
 
 const route = useRoute()
 const router = useRouter()
 
 const orderHandler = orderStore()
 const { order } = storeToRefs(orderHandler)
+
+const orderId = route.params.id
+
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
+const reviewModalRef = ref()
 
 onMounted(async () => {
   // console.log(route.params.id)
@@ -62,7 +70,10 @@ onMounted(async () => {
         <tr v-for="product in order.products" :key="product._id">
           <td class="w-[100px]"></td>
           <td class="py-5">
-            {{ product.name }}
+            <p v-if="!userId">{{ product.name }}</p>
+            <button class="link" @click="reviewModalRef.showModal(product)" v-else>
+              {{ product.name }}
+            </button>
           </td>
           <td class="py-5">
             <p v-if="product.price">NT$ {{ product.price }}</p>
@@ -149,4 +160,5 @@ onMounted(async () => {
       </tr>
     </table>
   </div>
+  <ReviewModal ref="reviewModalRef" :order-id="orderId"></ReviewModal>
 </template>

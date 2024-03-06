@@ -49,6 +49,8 @@ export const cartStore = defineStore('cartStore', () => {
       // console.log(cart)
       post_cart_api(userId, cart)
     }
+
+    caculate()
   }
 
   // 刪除購物車
@@ -64,15 +66,7 @@ export const cartStore = defineStore('cartStore', () => {
       delete_cart_api(userId, productId)
     }
 
-    const subTotal = cartList.value.map((item) => {
-      // console.log(item)
-      if (item.price) {
-        return item.price * item.qty
-      } else {
-        return item.originPrice * item.qty
-      }
-    })
-    totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    caculate()
   }
 
   // 取得會員購物車
@@ -103,15 +97,8 @@ export const cartStore = defineStore('cartStore', () => {
     })
     cartList.value = await Promise.all(newCart)
     // console.log(newCart, cartList.value)
-    const subTotal = cartList.value.map((item) => {
-      // console.log(item)
-      if (item.price) {
-        return item.price * item.qty
-      } else {
-        return item.originPrice * item.qty
-      }
-    })
-    totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+
+    caculate()
   }
 
   // 更新會員購物車
@@ -120,6 +107,11 @@ export const cartStore = defineStore('cartStore', () => {
     const cart = { productId, qty }
     update_cart_api(userId, cart)
 
+    caculate()
+  }
+
+  // 計算總金額
+  const caculate = () => {
     const subTotal = cartList.value.map((item) => {
       // console.log(item)
       if (item.price) {
@@ -131,5 +123,14 @@ export const cartStore = defineStore('cartStore', () => {
     totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
   }
 
-  return { cartList, totalPrice, finalPrice, addToCart, deleteFromCart, getCart, updatedCart }
+  return {
+    cartList,
+    totalPrice,
+    finalPrice,
+    addToCart,
+    deleteFromCart,
+    getCart,
+    updatedCart,
+    caculate
+  }
 })

@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, watch } from 'vue'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import Modal from '@/components/modal/Modal.vue'
@@ -8,6 +8,8 @@ import { headerLinks } from '@/constants'
 import { useAuthStore } from '@/stores/auth'
 import { useModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
+import { cartStore } from '@/stores/cart'
+import { storeToRefs } from 'pinia'
 import LoginModal from './modal/LoginModal.vue'
 import SignUpModal from './modal/SignUpModal.vue'
 import ResetPasswordModal from './modal/ResetPasswordModal.vue'
@@ -17,6 +19,13 @@ import CartDropDownList from './CartDropDownList.vue'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const cartHandler = cartStore()
+const { cartList } = storeToRefs(cartHandler)
+
+// 購物車效果
+watch(cartList.value, () => {
+  console.log(cartList.value)
+})
 
 // 判斷前後台
 const route = useRoute()
@@ -58,7 +67,7 @@ const modalStore = useModalStore()
         <template v-if="!isAdmin">
           <!-- Nav -->
           <ul class="flex space-x-12 text-2xl text-font">
-            <li v-for="link in headerLinks" :key="link.name">
+            <li class="hover:text-secondary" v-for="link in headerLinks" :key="link.name">
               <RouterLink :to="link.link">{{ link.name }}</RouterLink>
             </li>
           </ul>
@@ -66,7 +75,14 @@ const modalStore = useModalStore()
           <!-- 購物車＆登入 -->
           <div class="flex space-x-[50px] mr-[25px] items-center">
             <!-- 購物車下拉視窗 -->
-            <CartDropDownList />
+
+            <CartDropDownList class="relative"></CartDropDownList>
+            <div
+              class="absolute top-5 w-6 h-6 bg-[#F16C5D] rounded-full text-font text-center"
+              v-if="cartList.length"
+            >
+              {{ cartList.length }}
+            </div>
 
             <!-- 登入按鈕 -->
             <button

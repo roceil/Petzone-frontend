@@ -13,9 +13,10 @@ const config = () => {
 // 取得所有 tags
 export const get_tags_api = async () => {
   try {
-    return axios.get(`${VITE_API_BASE_URL}/api/tags`)
+    return await axios.get(`${VITE_API_BASE_URL}/api/tags`)
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -25,15 +26,17 @@ export const get_posts_api = async (params) => {
     return await axios.get(`${VITE_API_BASE_URL}/api/posts`, { params })
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
 // 取得單一貼文詳情
 export const get_post_api = async (postId) => {
   try {
-    return axios.get(`${VITE_API_BASE_URL}/api/post/${postId}`)
+    return await axios.get(`${VITE_API_BASE_URL}/api/post/${postId}`)
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -43,6 +46,7 @@ export const post_post_api = async (data) => {
     return await axios.post(`${VITE_API_BASE_URL}/api/post`, data, config())
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -52,6 +56,7 @@ export const put_post_api = async (postId, data) => {
     return await axios.put(`${VITE_API_BASE_URL}/api/post/${postId}`, data, config())
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -61,6 +66,7 @@ export const delete_post_api = async (postId) => {
     return await axios.delete(`${VITE_API_BASE_URL}/api/post/${postId}`, config())
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -70,6 +76,7 @@ export const post_post_like_api = async (postId) => {
     return await axios.post(`${VITE_API_BASE_URL}/api/post/${postId}/like`, {}, config())
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -79,6 +86,7 @@ export const put_post_like_api = async (postId, data) => {
     return await axios.put(`${VITE_API_BASE_URL}/api/post/${postId}/like`, data, config())
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -88,6 +96,7 @@ export const post_post_comment_api = async (postId, data) => {
     return await axios.post(`${VITE_API_BASE_URL}/api/post/${postId}/comment`, data, config())
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -101,6 +110,7 @@ export const put_post_comment_api = async (params, data) => {
     )
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -112,6 +122,7 @@ export const delete_post_comment_api = async (params) => {
     )
   } catch (error) {
     console.error(error)
+    return Promise.reject(error)
   }
 }
 
@@ -119,6 +130,16 @@ export const delete_post_comment_api = async (params) => {
 export const get_random_posts_api = async () => {
   try {
     return await axios.get(`${VITE_API_BASE_URL}/api/posts/random`)
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 取得使用者單一貼文詳情
+export const get_user_posts_api = async (userId) => {
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/posts/user/${userId}`)
   } catch (error) {
     console.error(error)
     return Promise.reject(error)

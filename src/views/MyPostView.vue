@@ -1,66 +1,139 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 import { get_member_data_api } from '@/api/user'
+import { get_user_posts_api } from '@/api/community'
+import avatar from '@/assets/avatar.svg'
+import EditPostModal from '@/components/EditPostModal.vue'
+
+const route = useRoute()
+const router = useRouter()
+const { id } = route.params
 
 // 使用者資料
 const userStore = useUserStore()
-const userId = userStore.userId
+const { userId } = storeToRefs(userStore)
 const userData = ref({})
 
 // 取得使用者資料
-const getMemberData = async (userId) => {
+const getMemberData = async () => {
   try {
-    const data = await get_member_data_api(userId)
+    const data = await get_member_data_api(id)
     userData.value = data
-    console.log(userData.value)
   } catch (error) {
     console.error(error)
-    alert('取得使用者資料失敗')
+  }
+}
+
+// 取得貼文資料
+const posts = ref([])
+const getPosts = async () => {
+  try {
+    const res = await get_user_posts_api(id)
+    posts.value = res.data
+  } catch (error) {
+    console.error(error)
   }
 }
 
 onMounted(() => {
-  getMemberData(userId)
+  getMemberData()
+  getPosts()
 })
+
+const editPostModalRef = ref()
 </script>
 
 <template>
   <div class="MyPostView">
-    <div class="container mt-[25px] max-w-[970px] mb-[211px]">
+    <div class="container mt-10 max-w-[970px] mb-10">
       <!-- 自我介紹區塊 -->
-      <div
-        class="flex justify-center items-end border-b border-secondary pb-[25px] px-[85px] space-x-[288px]"
-      >
-        <div class="w-[381px] h-[178px] px-[10px] flex justify-between">
+      <div class="flex justify-between items-end border-b border-secondary pb-10 px-20 mb-10">
+        <div class="flex">
           <div class="">
             <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
-              <img v-if="userData.photo" :src="userData.photo" alt="user_photo" class="object-cover w-full h-full"/>
-              <img v-else :src="default_avatar" alt="default_avatar" />
+              <img
+                :src="userData.photo || avatar"
+                alt="user_photo"
+                class="object-cover w-full h-full"
+              />
             </div>
 
-            <p class="text-font font-semibold mt-5 text-center">{{ userData.nickName }}</p>
+            <p class="text-font font-semibold mt-4 text-center">{{ userData.nickName }}</p>
           </div>
 
-          <div class="text-font leading-5 w-[211px] flex items-center">
+          <div class="text-font leading-5 flex items-center ml-10">
             <p>{{ userData.intro }}</p>
           </div>
         </div>
 
         <button
-          class="btn bg-secondary hover:bg-font border-none text-white font-semibold px-[30px] py-[9px] text-base"
+          class="btn bg-secondary hover:bg-font border-none text-white font-semibold px-6 py-2 text-base"
+          v-if="userId === userData._id"
+          @click="editPostModalRef.showModal(null)"
         >
           新增貼文
         </button>
       </div>
 
       <!-- 貼文區塊 -->
+      <div class="text-center" v-if="!posts.length">尚無貼文</div>
+      <div class="grid grid-cols-3 gap-10" v-else>
+        <button
+          class="relative overflow-hidden rounded-lg aspect-square"
+          v-for="post in posts"
+          :key="post._id"
+          @click="router.push(`/community/${post._id}`)"
+        >
+          <div class="w-full h-full group">
+            <div class="w-full h-full transition bg-secondary hover:blur-sm">
+              <img class="w-full h-full object-cover" :src="post.photo" alt="" />
+            </div>
+            <div
+              class="absolute text-white transition opacity-0 right-2 bottom-2 group-hover:opacity-100"
+            >
+              <span class="me-2">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="inline w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  />
+                </svg>
+                {{ post.likesLength }}
+              </span>
 
-      <ul class="px-[29px] flex flex-wrap justify-center gap-[50px] mt-[47px]">
-        <li v-for="num in 9" :key="num">
-          <div class="w-[220px] h-[220px] bg-slate-300 rounded-[10px]"></div>
-        </li>
-      </ul>
+              <span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="inline w-6 h-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+                  />
+                </svg>
+                {{ post.commentsLength }}
+              </span>
+            </div>
+          </div>
+        </button>
+      </div>
     </div>
+    <EditPostModal ref="editPostModalRef" @getPosts="getPosts" />
   </div>
 </template>

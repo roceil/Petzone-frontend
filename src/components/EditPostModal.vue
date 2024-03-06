@@ -70,10 +70,12 @@ const handleFileChange = (e) => {
 // 發佈
 const handleSend = async () => {
   if (postId.value) {
-    const res = await put_post_api(postId.value, postData.value)
-    if (res) {
+    try {
+      await put_post_api(postId.value, postData.value)
       alert('編輯成功')
       emit('getPost')
+    } catch (error) {
+      console.error(error)
     }
   } else {
     if (!files.value.length && !postData.value.photos.length) {
@@ -84,19 +86,17 @@ const handleSend = async () => {
     files.value.forEach((item) => {
       formData.append('files', item)
     })
-    const photos = await post_upload_images(formData)
-    if (!photos) {
-      alert('上傳圖片失敗')
-      return
-    }
-    const data = {
-      ...postData.value,
-      photos
-    }
-    const res = await post_post_api(data)
-    if (res) {
+    try {
+      const photos = await post_upload_images(formData)
+      const data = {
+        ...postData.value,
+        photos
+      }
+      await post_post_api(data)
       alert('新增成功')
       emit('getPosts')
+    } catch (error) {
+      console.error(error)
     }
   }
   hideModal()

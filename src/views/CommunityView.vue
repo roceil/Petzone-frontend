@@ -18,17 +18,19 @@ const getPosts = async () => {
     nickName: keyword.value,
     tag: searchTag.value
   }
-  const res = await get_posts_api(params)
-  posts.value = res.data
-  router.replace({
-    path: '/community',
-    query: {
-      keyword: keyword.value,
-      tag: searchTag.value
-    }
-  })
-
-  console.log(posts.value)
+  try {
+    const res = await get_posts_api(params)
+    posts.value = res.data
+    router.replace({
+      path: '/community',
+      query: {
+        keyword: keyword.value,
+        tag: searchTag.value
+      }
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const handleClickTag = (tag) => {

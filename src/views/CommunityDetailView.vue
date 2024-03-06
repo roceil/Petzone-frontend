@@ -29,18 +29,17 @@ const getPost = async () => {
   post.value = res.data
 }
 onMounted(async () => {
-  if (!userId.value) {
-    await userStore.getUserId()
-  }
   await getPost()
 })
 
 // 刪除貼文
 const deletePost = async () => {
-  const res = await delete_post_api(route.params.id)
-  if (res) {
+  try {
+    await delete_post_api(route.params.id)
     alert('刪除成功')
-    router.push('/community')
+    router.push(`/mypost/${userId.value}`)
+  } catch (error) {
+    console.error(error)
   }
 }
 
@@ -52,17 +51,21 @@ const isLiked = computed(() => {
 const handleClickLike = async () => {
   const like = post.value.likes.find((item) => item.userId === userId.value)
   if (!like) {
-    const res = await post_post_like_api(post.value._id)
-    if (res) {
+    try {
+      await post_post_like_api(post.value._id)
       getPost()
+    } catch (error) {
+      console.error(error)
     }
   } else {
     const data = {
       isLiked: !isLiked.value
     }
-    const res = await put_post_like_api(post.value._id, data)
-    if (res) {
+    try {
+      await put_post_like_api(post.value._id, data)
       getPost()
+    } catch (error) {
+      console.error(error)
     }
   }
 }
@@ -73,13 +76,15 @@ const commentData = ref({
   content: ''
 })
 const createComment = async () => {
-  const res = await post_post_comment_api(post.value._id, commentData.value)
-  if (res) {
+  try {
+    await post_post_comment_api(post.value._id, commentData.value)
     alert('留言成功')
     commentData.value = {
       content: ''
     }
     getPost()
+  } catch (error) {
+    console.error(error)
   }
 }
 const deleteComment = async (commentId) => {
@@ -87,11 +92,17 @@ const deleteComment = async (commentId) => {
     postId: post.value._id,
     commentId
   }
-  const res = await delete_post_comment_api(params)
-  if (res) {
+  try {
+    await delete_post_comment_api(params)
     alert('刪除留言成功')
     getPost()
+  } catch (error) {
+    console.error(error)
   }
+}
+
+const goUserPage = (id) => {
+  router.push(`/mypost/${id}`)
 }
 
 const editPostModalRef = ref()
@@ -101,10 +112,13 @@ const editPostModalRef = ref()
     <section class="container flex flex-col justify-center my-10 max-w-[800px] space-y-4">
       <div class="p-10">
         <div class="flex items-center mb-4 space-x-4">
-          <div class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden">
-            <img :src="post.user.photo" alt="" class="w-full h-full object-cover"/>
-          </div>
-          <span>{{ post.user.nickName }}</span>
+          <button
+            class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden"
+            @click="goUserPage(post.user._id)"
+          >
+            <img :src="post.user.photo" alt="" class="w-full h-full object-cover" />
+          </button>
+          <button @click="goUserPage(post.user._id)">{{ post.user.nickName }}</button>
           <span>於 {{ dayjs(post.createAt).format('YYYY/MM/DD') }} 分享</span>
         </div>
         <div class="mb-4 space-x-2 text-end" v-if="userId === post.user._id">
@@ -188,10 +202,13 @@ const editPostModalRef = ref()
           :key="comment._id"
         >
           <div class="flex items-center space-x-4">
-            <div class="w-[48px] h-[48px] rounded-full bg-third overflow-hidden">
+            <button
+              class="w-[48px] h-[48px] rounded-full bg-third overflow-hidden"
+              @click="goUserPage(comment.user._id)"
+            >
               <img :src="comment.user.photo" alt="" />
-            </div>
-            <span>{{ comment.user.nickName }}</span>
+            </button>
+            <button @click="goUserPage(comment.user._id)">{{ comment.user.nickName }}</button>
             <p>{{ comment.content }}</p>
           </div>
           <div class="space-x-4" v-if="comment.user._id === userId">

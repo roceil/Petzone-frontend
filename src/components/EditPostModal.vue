@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { post_post_api, put_post_api } from '@/api/community'
+import { post_upload_images } from '@/api/products'
 import { useCommunityStore } from '@/stores/community'
 import { storeToRefs } from 'pinia'
 import close from '@/assets/header/close-btn.svg'
@@ -37,7 +38,7 @@ const hideModal = () => {
     tags: [],
     photos: []
   }
-  images.value = []
+  files.value = []
   dialogRef.value.close()
 }
 
@@ -50,28 +51,52 @@ const postData = ref({
 })
 
 // 選擇圖檔
-const images = ref([])
+const files = ref([])
+const images = computed(() => {
+  return files.value.map((item) => URL.createObjectURL(item))
+})
 const fileInputRef = ref()
 const chooseFile = () => {
   fileInputRef.value.click()
 }
 const handleFileChange = (e) => {
-  images.value = [...e.target.files].map((item) => URL.createObjectURL(item))
+  if (e.target.files.length > 3) {
+    alert('圖片數量不可超過 3 張')
+  } else {
+    files.value = [...e.target.files]
+  }
 }
 
 // 發佈
 const handleSend = async () => {
   if (postId.value) {
-    const res = await put_post_api(postId.value, postData.value)
-    if (res) {
+    try {
+      await put_post_api(postId.value, postData.value)
       alert('編輯成功')
       emit('getPost')
+    } catch (error) {
+      console.error(error)
     }
   } else {
-    const res = await post_post_api(postData.value)
-    if (res) {
+    if (!files.value.length && !postData.value.photos.length) {
+      alert('至少需上傳一張圖片')
+      return
+    }
+    const formData = new FormData()
+    files.value.forEach((item) => {
+      formData.append('files', item)
+    })
+    try {
+      const photos = await post_upload_images(formData)
+      const data = {
+        ...postData.value,
+        photos
+      }
+      await post_post_api(data)
       alert('新增成功')
       emit('getPosts')
+    } catch (error) {
+      console.error(error)
     }
   }
   hideModal()
@@ -144,7 +169,7 @@ defineExpose({ showModal })
           </Swiper>
           <div class="flex items-center justify-between">
             <label>請從電腦中選擇圖檔</label>
-            <button class="btn btn-primary" @click="chooseFile">選擇照片</button>
+            <button class="btn btn-secondary text-white" @click="chooseFile">選擇照片</button>
             <input
               class="hidden"
               ref="fileInputRef"
@@ -161,7 +186,7 @@ defineExpose({ showModal })
           v-model="postData.content"
         />
         <div class="text-end">
-          <button class="px-8 btn btn-primary" @click="handleSend">發佈</button>
+          <button class="px-8 btn btn-secondary text-white" @click="handleSend">發佈</button>
         </div>
       </form>
     </div>

@@ -60,7 +60,7 @@ const router = createRouter({
       component: () => import('../views/OrdersHistoryView.vue')
     },
     {
-      path: '/mypost',
+      path: '/mypost/:id',
       name: 'mypost',
       component: () => import('../views/MyPostView.vue')
     },

@@ -16,9 +16,11 @@ export const useCommunityStore = defineStore('community', () => {
     }, [])
   })
   const getTags = async () => {
-    const { data } = await get_tags_api()
-    if (data) {
+    try {
+      const { data } = await get_tags_api()
       tags.value = data
+    } catch (error) {
+      console.error(error)
     }
   }
 

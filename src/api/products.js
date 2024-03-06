@@ -11,3 +11,17 @@ export const get_recommend_product_api = async () => {
     console.error(error)
   }
 }
+
+// 上傳多個圖檔
+export const post_upload_images = async (files) => {
+  try {
+    const { data } = await axios.post(`${VITE_API_BASE_URL}/api/upload/images`, files, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return data
+  } catch (error) {
+    console.error(error)
+  }
+}

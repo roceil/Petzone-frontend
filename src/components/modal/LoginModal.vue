@@ -33,7 +33,6 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
     return
   }
   authStore.set_token(accessToken)
-  await userStore.getUserId()
   userStore.setUserPhotoPath(photo)
   userStore.setUserId(userId)
 

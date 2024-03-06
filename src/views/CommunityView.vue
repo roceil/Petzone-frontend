@@ -18,17 +18,19 @@ const getPosts = async () => {
     nickName: keyword.value,
     tag: searchTag.value
   }
-  const res = await get_posts_api(params)
-  posts.value = res.data
-  router.replace({
-    path: '/community',
-    query: {
-      keyword: keyword.value,
-      tag: searchTag.value
-    }
-  })
-
-  console.log(posts.value)
+  try {
+    const res = await get_posts_api(params)
+    posts.value = res.data
+    router.replace({
+      path: '/community',
+      query: {
+        keyword: keyword.value,
+        tag: searchTag.value
+      }
+    })
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 const handleClickTag = (tag) => {
@@ -60,7 +62,10 @@ const editPostModalRef = ref()
     <section class="container my-10">
       <div class="flex justify-between">
         <h1 class="text-5xl font-bold">貼文專區</h1>
-        <button class="px-10 text-white btn btn-primary" @click="editPostModalRef.showModal(null)">
+        <button
+          class="px-10 text-white btn btn-secondary"
+          @click="editPostModalRef.showModal(null)"
+        >
           新增貼文
         </button>
       </div>

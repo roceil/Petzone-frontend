@@ -23,8 +23,8 @@ export const productStore = defineStore('productStore', () => {
       const { data } = await get_products_by_type_api(categoryType)
       // console.log(data)
       products.value = data.products
-    } else if (search === 'productName') {
-      const { data } = await get_products_by_name_api(search)
+    } else if (search === 'name') {
+      const { data } = await get_products_by_name_api(productName)
       // console.log(data)
       products.value = data.products
     }

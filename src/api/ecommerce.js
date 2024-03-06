@@ -23,7 +23,9 @@ export const get_products_by_type_api = async (categoryType) => {
 // 取得特定名稱產品資料
 export const get_products_by_name_api = async (search) => {
   try {
-    return axios.get(`${VITE_API_BASE_URL}/api/products?category=${search}`)
+    // console.log(search.value)
+    const productName = search.value
+    return axios.get(`${VITE_API_BASE_URL}/api/products?name=${productName}`)
   } catch (error) {
     console.error(error)
   }

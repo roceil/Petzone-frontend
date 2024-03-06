@@ -5,7 +5,6 @@ import { cartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import LoginAlertModal from '@/components/LoginAlertModal.vue'
-// import post_cart_api from '@/api/ecommerce'
 
 const router = useRouter()
 

@@ -1,9 +1,11 @@
 <script setup>
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { orderStore } from '@/stores/order'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import ReviewModal from '@/components/ReviewModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -11,10 +13,36 @@ const router = useRouter()
 const orderHandler = orderStore()
 const { order } = storeToRefs(orderHandler)
 
+const orderId = route.params.id
+
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
+const reviewModalRef = ref()
+
 onMounted(async () => {
   // console.log(route.params.id)
   await orderHandler.GetOrder(route.params.id)
-  // console.log(order)
+  // console.log(order.value)
+  switch (order.value.status) {
+    case 'unPaid':
+      order.value.status = '未付款'
+      break
+    case 'hasPaid':
+      order.value.status = '已付款'
+      break
+    case 'done':
+      order.value.status = '已完成'
+      break
+    case 'cancel':
+      order.value.status = '已取消'
+      break
+  }
+
+  if (order.value.paymentType === 'cash') {
+    order.value.paymentType = '現金'
+  } else {
+    order.value.paymentType = '信用卡'
+  }
 })
 </script>
 <template>
@@ -27,7 +55,7 @@ onMounted(async () => {
     <!-- 訂單編號及狀態 -->
     <p class="text-xl font-bold text-right">訂單狀態：{{ order.status }}</p>
     <div class="flex">
-      <p class="w-1/2 text-xl">訂單編號：{{ order._id }}</p>
+      <p class="w-1/2 text-xl">訂單編號：# {{ order.orderId }}</p>
       <p class="w-1/2 text-xl text-right">下單日期：{{ order.createdAt }}</p>
     </div>
     <table class="w-[900px] text-font rounded-[10px] shadow">
@@ -42,7 +70,10 @@ onMounted(async () => {
         <tr v-for="product in order.products" :key="product._id">
           <td class="w-[100px]"></td>
           <td class="py-5">
-            {{ product.name }}
+            <p v-if="!userId">{{ product.name }}</p>
+            <button class="link" @click="reviewModalRef.showModal(product)" v-else>
+              {{ product.name }}
+            </button>
           </td>
           <td class="py-5">
             <p v-if="product.price">NT$ {{ product.price }}</p>
@@ -129,4 +160,5 @@ onMounted(async () => {
       </tr>
     </table>
   </div>
+  <ReviewModal ref="reviewModalRef" :order-id="orderId"></ReviewModal>
 </template>

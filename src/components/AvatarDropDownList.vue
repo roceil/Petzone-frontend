@@ -1,6 +1,6 @@
 <script setup>
 import { drop_down_links } from '@/constants'
-import default_avatar from '@/assets/default_avatar.png'
+import avatar from '@/assets/avatar.svg'
 
 defineProps({
   logout: {
@@ -16,9 +16,14 @@ defineProps({
 
 <template>
   <div class="AvatarDropDownList">
-    <div tabindex="0" class="w-[50px] h-[50px] rounded-full">
-      <img v-if="userPhotoPath" :src="userPhotoPath" alt="user_photo" />
-      <img v-else :src="default_avatar" alt="default_avatar" />
+    <div tabindex="0" class="w-[50px] h-[50px] rounded-full overflow-hidden">
+      <img
+        v-if="userPhotoPath"
+        :src="userPhotoPath"
+        alt="user_photo"
+        class="object-cover w-full h-full"
+      />
+      <img v-else :src="avatar" alt="avatar" class="object-cover w-full h-full" />
     </div>
 
     <ul

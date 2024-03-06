@@ -1,13 +1,20 @@
 <script setup>
-import { watch, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { cartStore } from '@/stores/cart'
+import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import LoginAlertModal from '@/components/LoginAlertModal.vue'
 
 const router = useRouter()
 
 const cartHandler = cartStore()
 const { cartList, totalPrice } = storeToRefs(cartHandler)
+
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
+
+const loginAlertModalRef = ref()
 
 watch(cartList.value, () => {
   const subTotal = cartList.value.map((item) => {
@@ -32,7 +39,15 @@ onMounted(() => {
     }
   })
   totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-  // console.log(subTotal, total)
+  // console.log(subTotal)
+
+  //確認是否已登入，如未登入導向登入
+  userStore.getUserId()
+  if (!userId.value) {
+    loginAlertModalRef.value.showModal()
+  } else {
+    cartHandler.getCart()
+  }
 })
 </script>
 
@@ -41,7 +56,7 @@ onMounted(() => {
   <div class="container relative">
     <h1 class="m-10 text-font text-5xl font-bold">你的購物車</h1>
   </div>
-  <div class="container">
+  <div class="container" v-if="cartList.length !== 0">
     <!-- 購買商品明細 -->
     <div class="mt-10">
       <table class="text-font">
@@ -77,6 +92,11 @@ onMounted(() => {
                   min="0"
                   required
                   v-model="product.qty"
+                  @change="
+                    (e) => {
+                      cartHandler.updatedCart(product._id, e.target.value)
+                    }
+                  "
                 />
               </div>
             </td>
@@ -165,4 +185,6 @@ onMounted(() => {
       </tbody>
     </table>
   </div>
+  <div class="text-font text-5xl font-bold text-center" v-else>購物車內無產品</div>
+  <LoginAlertModal ref="loginAlertModalRef"></LoginAlertModal>
 </template>

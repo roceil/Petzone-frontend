@@ -63,7 +63,7 @@ onMounted(() => {
         />
         <button
           class="absolute inset-y-0 right-0 mr-2 top-0 mt-1"
-          @click.prevent="productHandler.userGetProducts('productName')"
+          @click.prevent="productHandler.userGetProducts('name')"
         >
           <img src="../assets/search.svg" alt="search" />
         </button>
@@ -74,7 +74,7 @@ onMounted(() => {
   <!-- 商品列表 -->
   <div class="container mt-10 text-font grid grid-cols-3 gap-8">
     <div class="w-full" v-for="product in products" :key="product.name">
-      <a @click.prevent="directToProductPage(product._id)">
+      <a class="cursor-pointer" @click.prevent="directToProductPage(product._id)">
         <img
           class="w-full h-[300px] rounded-[10px] object-cover"
           :src="product.photos[0]"

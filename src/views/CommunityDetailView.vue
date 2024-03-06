@@ -102,7 +102,7 @@ const editPostModalRef = ref()
       <div class="p-10">
         <div class="flex items-center mb-4 space-x-4">
           <div class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden">
-            <img :src="post.user.photo" alt="" />
+            <img :src="post.user.photo" alt="" class="w-full h-full object-cover"/>
           </div>
           <span>{{ post.user.nickName }}</span>
           <span>於 {{ dayjs(post.createAt).format('YYYY/MM/DD') }} 分享</span>

@@ -27,6 +27,8 @@ const getPosts = async () => {
       tag: searchTag.value
     }
   })
+
+  console.log(posts.value)
 }
 
 const handleClickTag = (tag) => {

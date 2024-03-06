@@ -11,6 +11,7 @@ import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
+import { get_product_reviews_api } from '@/api/ecommerce'
 
 const route = useRoute()
 const router = useRouter()
@@ -20,27 +21,17 @@ const { product, products } = storeToRefs(productHandler)
 
 const cartHandler = cartStore()
 
-const productReview = ref([
-  {
-    username: '拉拉熊',
-    score: 5,
-    content:
-      '這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容',
-    createAt: '2024/01/01'
-  },
-  {
-    username: '拉拉熊1',
-    score: 1,
-    content:
-      '這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容這是評價內容',
-    createAt: '2024/01/01'
-  }
-])
-
 // 商品圖片切換
 const thumbsSwiper = ref(null)
 const setThumbsSwiper = (swiper) => {
   thumbsSwiper.value = swiper
+}
+
+// 取得四樣推薦商品
+const recommendProduct = ref([])
+const getRecommendProduct = () => {
+  const tempProduct = products.value
+  recommendProduct.value = tempProduct.slice(0, 4)
 }
 
 // 點擊推薦商品商品資料更新
@@ -64,11 +55,29 @@ const directToCartPage = (productId) => {
   })
 }
 
+// 取得商品評論
+const getProductReviews = async () => {
+  const data = await get_product_reviews_api(productId.value)
+  // productReviews.value = JSON.parse(JSON.stringify(data))
+  productReviews.value = data.map((review) => {
+    const createAt = review['createAt']
+    const updatedAt = review['updatedAt']
+    review['createAt'] = createAt.slice(0, 10)
+    review['updatedAt'] = updatedAt.slice(0, 10)
+    return review
+  })
+  // productReviews.value = productReviews.value.updatedAt.slice(0, 10)
+  // console.log(data, productReviews.value)
+}
+const productReviews = ref([])
+
 onMounted(() => {
   // console.log(route.query.productId, product)
   productId.value = route.query.productId
   productHandler.userGetProduct(productId.value)
   productHandler.userGetProducts()
+  getRecommendProduct()
+  getProductReviews()
 })
 </script>
 
@@ -86,7 +95,7 @@ onMounted(() => {
         >
           <SwiperSlide v-for="img in product.photos" :key="img">
             <div class="rounded-[10px] bg-third group overflow-hidden">
-              <img class="w-full" :src="img" alt="" />
+              <img class="w-full object-cover" :src="img" alt="商品圖" />
             </div>
           </SwiperSlide>
         </Swiper>
@@ -99,7 +108,7 @@ onMounted(() => {
           :watchSlidesProgress="true"
         >
           <swiper-slide v-for="img in product.photos" :key="img"
-            ><img class="rounded-[10px]" :src="img"
+            ><img class="rounded-[10px] cursor-pointer" :src="img"
           /></swiper-slide>
         </swiper>
       </div>
@@ -140,10 +149,10 @@ onMounted(() => {
     <!-- 推薦商品 -->
     <p class="text-2xl font-bold mt-10 ml-10">你也許也會喜歡...</p>
     <div class="flex mt-10 ml-10">
-      <div class="w-[300px] mr-4" v-for="product in products" :key="product._id">
+      <div class="max-w-[350px] mr-4" v-for="product in recommendProduct" :key="product._id">
         <button type="button" @click="productId = product._id">
           <img
-            class="w-[300px] h-[160px] rounded-[10px] object-fill"
+            class="w-[350px] h-[160px] rounded-[10px] object-cover"
             :src="product.photos[0]"
             alt="推薦商品圖"
           />
@@ -164,17 +173,13 @@ onMounted(() => {
     <!-- 商品評論 -->
     <p class="text-2xl font-bold mt-10 ml-10">商品評論</p>
     <div class="grid justify-items-center my-10 ml-10">
-      <div class="flex w-[1024px] mt-10" v-for="review in productReview" :key="review.username">
+      <div class="flex w-[1024px] mt-10" v-for="review in productReviews" :key="review">
         <div class="w-2/12">
-          <img
-            class="w-[150px] h-[150px] rounded-full object-fill"
-            src="https://picsum.photos/id/235/200/300"
-            alt=""
-          />
+          <img class="w-[150px] h-[150px] rounded-full object-fill" :src="review.photo" alt="" />
         </div>
         <div class="w-10/12">
           <div class="flex m-4">
-            <p>{{ review.username }}</p>
+            <p>{{ review.nickName }}</p>
             <p class="mx-2">於{{ review.createAt }}評價</p>
             <div class="rating mx-2">
               <input
@@ -183,6 +188,7 @@ onMounted(() => {
                 :checked="index === review.score"
                 v-for="index in 5"
                 :key="index"
+                disabled
               />
             </div>
           </div>

@@ -98,16 +98,9 @@ export const get_cart_api = async (userId) => {
 export const update_cart_api = async (userId, cart) => {
   // console.log(userId, cart)
   try {
-<<<<<<< HEAD
     return await axios.put(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart, config()).then(() => {
       // console.log(res.data)
     })
-=======
-    return await axios.put(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart)
-    // .then((res) => {
-    //   console.log(res.data)
-    // })
->>>>>>> origin/main
   } catch (error) {
     console.error(error)
   }

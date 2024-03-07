@@ -2,6 +2,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { productStore } from '@/stores/product'
 import { cartStore } from '@/stores/cart'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
@@ -11,7 +12,11 @@ import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
-import { get_product_reviews_api } from '@/api/ecommerce'
+import {
+  get_product_reviews_api,
+  update_product_review_api,
+  delete_product_review_api
+} from '@/api/ecommerce'
 
 const route = useRoute()
 const router = useRouter()
@@ -20,6 +25,9 @@ const productHandler = productStore()
 const { product, products } = storeToRefs(productHandler)
 
 const cartHandler = cartStore()
+
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
 
 // 商品圖片切換
 const thumbsSwiper = ref(null)
@@ -38,13 +46,13 @@ const getRecommendProduct = () => {
 const productId = ref('')
 watch(productId, async (newId) => {
   // console.log(newId)
-  router.push({
-    name: 'product',
-    query: {
-      productId: newId
-    }
-  })
+  router.push({ name: 'product', query: { productId: newId } })
   await productHandler.userGetProduct(newId)
+  getProductReviews()
+})
+
+watch(userId, async () => {
+  CurrentUserReviewOnTop()
 })
 
 // 將商品加入購物車並導向購物車頁面
@@ -56,9 +64,10 @@ const directToCartPage = (productId) => {
 }
 
 // 取得商品評論
+const productReviews = ref([])
 const getProductReviews = async () => {
   const data = await get_product_reviews_api(productId.value)
-  // productReviews.value = JSON.parse(JSON.stringify(data))
+  // 時間取年月日
   productReviews.value = data.map((review) => {
     const createAt = review['createAt']
     const updatedAt = review['updatedAt']
@@ -66,10 +75,44 @@ const getProductReviews = async () => {
     review['updatedAt'] = updatedAt.slice(0, 10)
     return review
   })
-  // productReviews.value = productReviews.value.updatedAt.slice(0, 10)
-  // console.log(data, productReviews.value)
+
+  CurrentUserReviewOnTop()
 }
-const productReviews = ref([])
+
+// 將目前登入會員自己的評論放到最上方
+const currentUserReview = ref({})
+const CurrentUserReviewOnTop = async () => {
+  currentUserReview.value = await productReviews.value.find((item) => {
+    if (item.userId === userId.value) {
+      return item
+    }
+  })
+
+  const currentUserReviewIndex = productReviews.value.findIndex(
+    (item) => item.userId === userId.value
+  )
+  if (currentUserReviewIndex !== 0) {
+    productReviews.value.splice(currentUserReviewIndex, 1)
+    productReviews.value.unshift(currentUserReview.value)
+  }
+}
+
+// 編輯、刪除目前登入會員自己的評論
+const editMode = ref(false)
+const updateReview = async (score, content) => {
+  // console.log(productId.value, userId.value)
+  const newReview = { score, content }
+  // console.log(newReview)
+  const message = await update_product_review_api(productId.value, userId.value, newReview)
+  alert(message.message)
+  editMode.value = false
+}
+
+const deleteReview = async () => {
+  const message = await delete_product_review_api(productId.value, userId.value)
+  alert(message.message)
+  getProductReviews()
+}
 
 onMounted(() => {
   // console.log(route.query.productId, product)
@@ -171,13 +214,17 @@ onMounted(() => {
     </div>
 
     <!-- 商品評論 -->
-    <p class="text-2xl font-bold mt-10 ml-10">商品評論</p>
+    <p class="text-2xl font-bold mt-10 ml-10" v-if="productReviews.length !== 0">商品評論</p>
     <div class="grid justify-items-center my-10 ml-10">
       <div class="flex w-[1024px] mt-10" v-for="review in productReviews" :key="review">
         <div class="w-2/12">
-          <img class="w-[150px] h-[150px] rounded-full object-fill" :src="review.photo" alt="" />
+          <img
+            class="w-[150px] h-[150px] rounded-full object-fill"
+            :src="review.photo"
+            alt="會員大頭照"
+          />
         </div>
-        <div class="w-10/12">
+        <div class="w-10/12 relative">
           <div class="flex m-4">
             <p>{{ review.nickName }}</p>
             <p class="mx-2">於{{ review.createAt }}評價</p>
@@ -188,15 +235,37 @@ onMounted(() => {
                 :checked="index === review.score"
                 v-for="index in 5"
                 :key="index"
-                disabled
+                :value="index"
+                v-model="review.score"
+                :disabled="review.userId !== userId || !editMode"
               />
             </div>
           </div>
           <textarea
             class="w-10/12 p-4 border rounded-[10px] resize-none outline-none"
             v-model="review.content"
-            readonly
+            :readonly="review.userId !== userId || !editMode"
+            v-if="review.content || editMode"
           ></textarea>
+          <div class="flex absolute right-36">
+            <button
+              class="link m-2"
+              @click.prevent="editMode = true"
+              v-if="review.userId === userId && !editMode"
+            >
+              編輯
+            </button>
+            <button
+              class="link m-2"
+              @click.prevent="updateReview(review.score, review.content)"
+              v-if="review.userId === userId && editMode"
+            >
+              送出
+            </button>
+            <button class="link m-2" @click.prevent="deleteReview" v-if="review.userId === userId">
+              刪除
+            </button>
+          </div>
         </div>
       </div>
     </div>

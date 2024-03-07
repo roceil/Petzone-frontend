@@ -1,5 +1,4 @@
 <script setup>
-import { onMounted } from 'vue'
 import { cartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import shopping_cart_icon from '@/assets/header/shopping-cart.svg'
@@ -9,10 +8,6 @@ import shopping_cart_icon from '@/assets/header/shopping-cart.svg'
 
 const cartHandler = cartStore()
 const { cartList } = storeToRefs(cartHandler)
-
-onMounted(() => {
-  console.log(cartList.value)
-})
 </script>
 
 <template>

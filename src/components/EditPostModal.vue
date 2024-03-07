@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import { post_post_api, put_post_api } from '@/api/community'
 import { post_upload_images } from '@/api/products'
 import { useCommunityStore } from '@/stores/community'
@@ -11,12 +11,7 @@ import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 
 const communityStore = useCommunityStore()
-const { tags, tagsOptions } = storeToRefs(communityStore)
-onMounted(() => {
-  if (!tags.value.length) {
-    communityStore.getTags()
-  }
-})
+const { tagsOptions } = storeToRefs(communityStore)
 
 const dialogRef = ref()
 const showModal = (post) => {

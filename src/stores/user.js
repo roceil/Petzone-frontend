@@ -45,6 +45,10 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  const reset_photo_path = () => {
+    userPhotoPath.value = ''
+  }
+
   // 初始化時讀取 cookie
   const read_cookie = () => {
     const cookie_userId = Cookies.get('userId')
@@ -58,5 +62,22 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { userId, getUserId, resetUserId, setUserId, userPhotoPath, setUserPhotoPath, read_cookie }
+  // 登出時清除 cookie
+  const user_logout = () => {
+    Cookies.remove('userId')
+    Cookies.remove('userPhotoPath')
+    resetUserId()
+    reset_photo_path()
+  }
+
+  return {
+    userId,
+    getUserId,
+    resetUserId,
+    setUserId,
+    userPhotoPath,
+    setUserPhotoPath,
+    read_cookie,
+    user_logout
+  }
 })

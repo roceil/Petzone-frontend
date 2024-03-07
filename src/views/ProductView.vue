@@ -12,7 +12,11 @@ import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
-import { get_product_reviews_api } from '@/api/ecommerce'
+import {
+  get_product_reviews_api,
+  update_product_review_api,
+  delete_product_review_api
+} from '@/api/ecommerce'
 
 const route = useRoute()
 const router = useRouter()
@@ -75,7 +79,7 @@ const getProductReviews = async () => {
   CurrentUserReviewOnTop()
 }
 
-// 將會員自己評論放到最上方
+// 將目前登入會員自己的評論放到最上方
 const currentUserReview = ref({})
 const CurrentUserReviewOnTop = async () => {
   currentUserReview.value = await productReviews.value.find((item) => {
@@ -87,20 +91,27 @@ const CurrentUserReviewOnTop = async () => {
   const currentUserReviewIndex = productReviews.value.findIndex(
     (item) => item.userId === userId.value
   )
-  if (currentUserReviewIndex != 0) {
+  if (currentUserReviewIndex !== 0) {
+    productReviews.value.splice(currentUserReviewIndex, 1)
     productReviews.value.unshift(currentUserReview.value)
-    productReviews.value.pop()
   }
 }
 
-// 編輯、刪除評論
+// 編輯、刪除目前登入會員自己的評論
 const editMode = ref(false)
-const updateReview = async () => {
-  console.log(1)
+const updateReview = async (score, content) => {
+  // console.log(productId.value, userId.value)
+  const newReview = { score, content }
+  // console.log(newReview)
+  const message = await update_product_review_api(productId.value, userId.value, newReview)
+  alert(message.message)
+  editMode.value = false
 }
 
 const deleteReview = async () => {
-  console.log(1)
+  const message = await delete_product_review_api(productId.value, userId.value)
+  alert(message.message)
+  getProductReviews()
 }
 
 onMounted(() => {
@@ -207,7 +218,11 @@ onMounted(() => {
     <div class="grid justify-items-center my-10 ml-10">
       <div class="flex w-[1024px] mt-10" v-for="review in productReviews" :key="review">
         <div class="w-2/12">
-          <img class="w-[150px] h-[150px] rounded-full object-fill" :src="review.photo" alt="" />
+          <img
+            class="w-[150px] h-[150px] rounded-full object-fill"
+            :src="review.photo"
+            alt="會員大頭照"
+          />
         </div>
         <div class="w-10/12 relative">
           <div class="flex m-4">
@@ -220,6 +235,8 @@ onMounted(() => {
                 :checked="index === review.score"
                 v-for="index in 5"
                 :key="index"
+                :value="index"
+                v-model="review.score"
                 :disabled="review.userId !== userId || !editMode"
               />
             </div>
@@ -228,6 +245,7 @@ onMounted(() => {
             class="w-10/12 p-4 border rounded-[10px] resize-none outline-none"
             v-model="review.content"
             :readonly="review.userId !== userId || !editMode"
+            v-if="review.content || editMode"
           ></textarea>
           <div class="flex absolute right-36">
             <button
@@ -239,7 +257,7 @@ onMounted(() => {
             </button>
             <button
               class="link m-2"
-              @click.prevent="updateReview"
+              @click.prevent="updateReview(review.score, review.content)"
               v-if="review.userId === userId && editMode"
             >
               送出

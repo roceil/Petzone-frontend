@@ -1,6 +1,14 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 const { VITE_API_BASE_URL } = import.meta.env
+const config = () => {
+  return {
+    headers: {
+      authorization: `Bearer ${Cookies.get('token')}`
+    }
+  }
+}
 
 // 取得所有產品資料
 export const get_products_api = async () => {
@@ -64,9 +72,11 @@ export const get_order_by_id_api = async (orderId) => {
 export const post_cart_api = async (userId, cart) => {
   try {
     // console.log(userId, cart)
-    return await axios.post(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart).then((res) => {
-      return res.data
-    })
+    return await axios
+      .post(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart, config())
+      .then((res) => {
+        return res.data
+      })
   } catch (error) {
     console.error(error)
   }
@@ -76,7 +86,7 @@ export const post_cart_api = async (userId, cart) => {
 export const get_cart_api = async (userId) => {
   // console.log(userId)
   try {
-    return await axios.get(`${VITE_API_BASE_URL}/api/cart/${userId}`).then((res) => {
+    return await axios.get(`${VITE_API_BASE_URL}/api/cart/${userId}`, config()).then((res) => {
       return res.data
     })
   } catch (error) {
@@ -88,7 +98,7 @@ export const get_cart_api = async (userId) => {
 export const update_cart_api = async (userId, cart) => {
   // console.log(userId, cart)
   try {
-    return await axios.put(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart).then((res) => {
+    return await axios.put(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart, config()).then(() => {
       // console.log(res.data)
     })
   } catch (error) {
@@ -101,8 +111,8 @@ export const delete_cart_api = async (userId, productId) => {
   // console.log(userId, productId)
   try {
     return await axios
-      .delete(`${VITE_API_BASE_URL}/api/cart/${userId}/${productId}`)
-      .then((res) => {
+      .delete(`${VITE_API_BASE_URL}/api/cart/${userId}/${productId}`, config())
+      .then(() => {
         // console.log(res.data)
       })
   } catch (error) {
@@ -114,7 +124,7 @@ export const delete_cart_api = async (userId, productId) => {
 export const delete_all_cart_api = async (userId) => {
   // console.log(userId)
   try {
-    return await axios.delete(`${VITE_API_BASE_URL}/api/cart/${userId}`).then((res) => {
+    return await axios.delete(`${VITE_API_BASE_URL}/api/cart/${userId}`, config()).then(() => {
       // console.log(res.data)
     })
   } catch (error) {
@@ -127,7 +137,7 @@ export const post_product_review_api = async (productId, review) => {
   try {
     console.log(productId, review)
     return await axios
-      .post(`${VITE_API_BASE_URL}/api/product/review/${productId}`, review)
+      .post(`${VITE_API_BASE_URL}/api/product/review/${productId}`, review, config())
       .then((res) => {
         return res.data
       })
@@ -143,6 +153,32 @@ export const get_product_reviews_api = async (productId) => {
     return await axios.get(`${VITE_API_BASE_URL}/api/product/reviews/${productId}`).then((res) => {
       return res.data
     })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 會員更新產品評論
+export const update_product_review_api = async (productId, userId, newReview) => {
+  try {
+    return await axios
+      .put(`${VITE_API_BASE_URL}/api/product/review/${productId}/${userId}`, newReview, config())
+      .then((res) => {
+        return res.data
+      })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 會員刪除產品評論
+export const delete_product_review_api = async (userId, productId) => {
+  try {
+    return await axios
+      .delete(`${VITE_API_BASE_URL}/api/product/review/${userId}/${productId}`, config())
+      .then((res) => {
+        return res.data
+      })
   } catch (error) {
     console.error(error)
   }

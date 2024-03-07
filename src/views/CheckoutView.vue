@@ -58,8 +58,9 @@ const onSubmit = async (recipient, paymentType, totalPrice) => {
   // console.log(message)
   if (message.message === '訂單新增成功') {
     await delete_all_cart_api(userId.value)
+    await cartHandler.getCart()
+    directToOrderPage(message.orderId)
   }
-  directToOrderPage(message.orderId)
 }
 
 const directToOrderPage = (orderId) => {

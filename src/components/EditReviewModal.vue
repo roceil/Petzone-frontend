@@ -36,7 +36,9 @@ const hideModal = () => {
 }
 const postReview = async () => {
   const message = await post_product_review_api(productId.value, review.value)
-  alert(message.message)
+  if (message) {
+    alert(message.message)
+  }
   hideModal()
 }
 defineExpose({ showModal })

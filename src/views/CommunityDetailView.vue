@@ -11,6 +11,7 @@ import {
   delete_post_comment_api
 } from '@/api/community'
 import { useUserStore } from '@/stores/user'
+import { useCommunityStore } from '@/stores/community'
 import { storeToRefs } from 'pinia'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
@@ -22,6 +23,8 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const { userId } = storeToRefs(userStore)
+const communityStore = useCommunityStore()
+const { tags } = storeToRefs(communityStore)
 
 const post = ref(null)
 const getPost = async () => {
@@ -29,6 +32,9 @@ const getPost = async () => {
   post.value = res.data
 }
 onMounted(async () => {
+  if (!tags.value.length) {
+    communityStore.getTags()
+  }
   await getPost()
 })
 

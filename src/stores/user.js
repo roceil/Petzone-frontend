@@ -58,5 +58,11 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  return { userId, getUserId, resetUserId, setUserId, userPhotoPath, setUserPhotoPath, read_cookie }
+  // 登出時清除 cookie
+  const clear_cookie = () => {
+    Cookies.remove('userId')
+    Cookies.remove('userPhotoPath')
+  }
+
+  return { userId, getUserId, resetUserId, setUserId, userPhotoPath, setUserPhotoPath, read_cookie, clear_cookie}
 })

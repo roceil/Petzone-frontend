@@ -47,6 +47,7 @@ const GotoHome = () => {
 const logout = () => {
   authStore.clear_token()
   userStore.resetUserId()
+  userStore.clear_cookie()
   router.push({ name: 'home' })
 }
 

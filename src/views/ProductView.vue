@@ -220,7 +220,7 @@ onMounted(() => {
         <div class="w-2/12">
           <img
             class="w-[150px] h-[150px] rounded-full object-fill"
-            :src="review.photo"
+            :src="review?.photo"
             alt="會員大頭照"
           />
         </div>

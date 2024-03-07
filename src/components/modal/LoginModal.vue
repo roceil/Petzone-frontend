@@ -70,7 +70,7 @@ const google_redirect = () => {
     <!-- 表單內容 -->
     <form class="mt-[25px] w-full space-y-5">
       <label v-for="item in login_modal_form_items" :key="item.tag" class="flex flex-col space-y-5">
-        <p class="font-semibold text-font">會員帳號</p>
+        <p class="font-semibold text-font">{{ item.label }}</p>
         <FormInput :name="item.tag" :type="item.type" :placeholder="item.label" />
       </label>
     </form>

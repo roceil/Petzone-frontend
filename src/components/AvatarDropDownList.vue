@@ -1,6 +1,8 @@
 <script setup>
 import { drop_down_links } from '@/constants'
 import avatar from '@/assets/avatar.svg'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '../stores/user'
 
 defineProps({
   logout: {
@@ -12,6 +14,16 @@ defineProps({
     required: true
   }
 })
+
+const router = useRouter()
+const userStore = useUserStore()
+const goLink = (link) => {
+  if (link === '/mypost') {
+    router.push(`/myPost/${userStore.userId}`)
+  } else {
+    router.push(link)
+  }
+}
 </script>
 
 <template>
@@ -36,9 +48,9 @@ defineProps({
         class="hover:bg-[#EEF1F4] h-[43px] flex justify-center"
       >
         <template v-if="link.name !== '會員登出'">
-          <RouterLink :to="link.link">
+          <button @click="goLink(link.link)">
             <p>{{ link.name }}</p>
-          </RouterLink>
+          </button>
         </template>
 
         <template v-else>

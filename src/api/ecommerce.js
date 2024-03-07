@@ -98,9 +98,16 @@ export const get_cart_api = async (userId) => {
 export const update_cart_api = async (userId, cart) => {
   // console.log(userId, cart)
   try {
+<<<<<<< HEAD
     return await axios.put(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart, config()).then(() => {
       // console.log(res.data)
     })
+=======
+    return await axios.put(`${VITE_API_BASE_URL}/api/cart/${userId}`, cart)
+    // .then((res) => {
+    //   console.log(res.data)
+    // })
+>>>>>>> origin/main
   } catch (error) {
     console.error(error)
   }
@@ -135,7 +142,6 @@ export const delete_all_cart_api = async (userId) => {
 // 會員新增產品評論
 export const post_product_review_api = async (productId, review) => {
   try {
-    console.log(productId, review)
     return await axios
       .post(`${VITE_API_BASE_URL}/api/product/review/${productId}`, review, config())
       .then((res) => {

@@ -5,7 +5,7 @@ import MemberCenterDetail from '@/containers/layouts/MemberCenterDetail.vue'
 import { get_order_by_user_api } from '@/api/order.js'
 import { useUserStore } from '@/stores/user'
 
-const order_history_status_buttons = ['未付款', '已付款', '已取消']
+const order_history_status_buttons = ['未付款', '已付款', '已完成', '已取消']
 
 const button_status = ref('未付款')
 
@@ -13,15 +13,18 @@ const button_border_position = computed(() => {
   if (button_status.value === '未付款') {
     return 'translate-x-[99px]'
   } else if (button_status.value === '已付款') {
-    return 'translate-x-[466px]'
+    return 'translate-x-[351px]'
+  } else if (button_status.value === '已完成') {
+    return 'translate-x-[602px]'
   } else if (button_status.value === '已取消') {
-    return 'translate-x-[850px]'
+    return 'translate-x-[854px]'
   }
 
   return 'translate-x-[99px]'
 })
 
 const change_button_status = (status) => {
+  console.log(status)
   button_status.value = status
 }
 
@@ -44,13 +47,20 @@ const getOrders = async () => {
 const showOrders = computed(() => {
   if (button_status.value === '未付款') {
     console.log(1)
-    return allOrders.value.filter((order) => order.status === 'unPaid')
+    const filterOrders = allOrders.value.filter((order) => order.status === 'unPaid')
+    return filterOrders
   } else if (button_status.value === '已付款') {
     console.log(2)
-    return allOrders.value.filter((order) => order.status === 'hasPaid')
-  } else if (button_status.value === '已取消'){
+    const filterOrders = allOrders.value.filter((order) => order.status === 'hasPaid')
+    return filterOrders
+  } else if (button_status.value === '已完成') {
     console.log(3)
-    return allOrders.value.filter((order) => order.status === 'cancel')
+    const filterOrders = allOrders.value.filter((order) => order.status === 'done')
+    return filterOrders
+  } else if (button_status.value === '已取消') {
+    console.log(3)
+    const filterOrders = allOrders.value.filter((order) => order.status === 'cancel')
+    return filterOrders
   }
 
   return allOrders.value
@@ -73,7 +83,7 @@ getOrders()
   <div class="OrderHistoryView">
     <MemberCenterDetail title="購買訂單">
       <div class="flex justify-center items-center mt-6">
-        <div class="">
+        <div class="min-w-[1090px]">
           <!-- 按鈕 -->
           <ul class="flex justify-between px-[100px] border-b border-font relative">
             <li v-for="status in order_history_status_buttons" :key="status">
@@ -102,52 +112,58 @@ getOrders()
           <ul
             class="w-full h-[395px] rounded-[10px] px-7 py-6 border border-input_font custom-shadow overflow-y-scroll"
           >
-            <li
-              class="flex items-center py-[26px] text-font text-xl justify-between"
-              v-for="order in showOrders"
-              :key="order._id"
-            >
-              <!-- 訂單編號 -->
-              <div class="mr-[118px]">
-                <p># {{ order.orderId }}</p>
-              </div>
-
-              <!-- 下單日期 -->
-              <div class="mr-[120px]">
-                <p>{{ formatDate(order.createdAt) }}</p>
-              </div>
-
-              <!-- 購買項目 -->
-              <div class="mr-[125px]">
-                <div class="w-[100px] h-[100px] bg-slate-300 rounded-[10px] overflow-hidden">
-                  <img
-                    :src="order.products[0].photos[0]"
-                    :alt="order.products[0].name"
-                    class="w-full h-full object-cover"
-                  />
+            <template v-if="showOrders.length > 0">
+              <li
+                class="flex items-center py-[26px] text-font text-xl justify-between"
+                v-for="order in showOrders"
+                :key="order._id"
+              >
+                <!-- 訂單編號 -->
+                <div class="mr-[118px]">
+                  <p># {{ order.orderId }}</p>
                 </div>
-              </div>
 
-              <!-- 訂單金額 -->
-              <div class="mr-[116px]">
-                <p>NT$ {{ formatPrice(order.totalPrice) }}</p>
-              </div>
+                <!-- 下單日期 -->
+                <div class="mr-[120px]">
+                  <p>{{ formatDate(order.createdAt) }}</p>
+                </div>
 
-              <!-- 按鈕 -->
-              <div class="ecommerce/order/65e72b6e112adefffed61962">
-                <RouterLink
-                :to="`/ecommerce/order/${order._id}`"
-                  class="btn bg-secondary hover:bg-font border-none text-white font-semibold px-[30px] py-[9px] text-base"
-                >
-                  訂單詳情
-                </RouterLink>
-              </div>
-            </li>
+                <!-- 購買項目 -->
+                <div class="mr-[125px]">
+                  <div class="w-[100px] h-[100px] bg-slate-300 rounded-[10px] overflow-hidden">
+                    <img
+                      :src="order.products[0].photos[0]"
+                      :alt="order.products[0].name"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
+                </div>
+
+                <!-- 訂單金額 -->
+                <div class="mr-[116px]">
+                  <p>NT$ {{ formatPrice(order.totalPrice) }}</p>
+                </div>
+
+                <!-- 按鈕 -->
+                <div class="ecommerce/order/65e72b6e112adefffed61962">
+                  <RouterLink
+                    :to="`/ecommerce/order/${order._id}`"
+                    class="btn bg-secondary hover:bg-font border-none text-white font-semibold px-[30px] py-[9px] text-base"
+                  >
+                    訂單詳情
+                  </RouterLink>
+                </div>
+              </li>
+            </template>
+
+            <template v-else>
+              <li class="flex justify-center items-center h-full w-full">
+                <p class="text-font font-semibold text-3xl">目前尚無訂單資訊</p>
+              </li>
+            </template>
           </ul>
         </div>
       </div>
     </MemberCenterDetail>
   </div>
 </template>
-import { get_order_by_user_api } from '@/api/order';import dayjs from 'dayjs';import { RouterLink }
-from 'vue-router'

@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import crown from '@/assets/home/crown.svg'
 import donor_bg from '@/assets/home/donor_bg.svg'
 import { get_monthly_donate_rank_api } from '@/api/user'
@@ -20,6 +21,11 @@ const getMonthlyDonateRank = async () => {
 
 const numberFormatter = (num) => {
   return new Intl.NumberFormat('zh-TW').format(num)
+}
+
+const router = useRouter()
+const goUserPage = (id) => {
+  router.push(`/mypost/${id}`)
 }
 
 onMounted(() => {
@@ -71,9 +77,12 @@ onMounted(() => {
       <!-- 捐款者清單 -->
       <ul class="flex items-center justify-center space-x-[100px] mt-6">
         <li v-for="donor in donorList.topDonators" :key="donor">
-          <div class="rounded-full overflow-hidden flex justify-center items-center">
+          <button
+            class="rounded-full overflow-hidden flex justify-center items-center"
+            @click="goUserPage(donor.userId)"
+          >
             <img :src="donor.photo" :alt="donor.name" class="object-cover w-[200px] h-[200px]" />
-          </div>
+          </button>
         </li>
       </ul>
 

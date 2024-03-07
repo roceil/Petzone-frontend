@@ -37,3 +37,16 @@ export const sign_up_api = async (email, password, name, nickName, phone, addres
     console.error(error)
   }
 }
+
+// 檢查用戶是否存在
+export const check_user_api = async () => {
+  try {
+    const res = await axios.get(`${VITE_API_BASE_URL}/auth/login/success`,{
+      withCredentials: true,
+    })
+    console.log(res)
+    return 
+  } catch (error) {
+    console.error(error)
+  }
+}

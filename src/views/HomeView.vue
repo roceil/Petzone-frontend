@@ -42,8 +42,7 @@ import {check_user_api} from '@/api/auth'
 //     // 觸發事件
 //     document.dispatchEvent(event)
 //   }, 3000)
-// })
-
+// }
 onMounted(() => {
   check_user_api()
 })

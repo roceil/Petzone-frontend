@@ -1,4 +1,5 @@
 <script setup>
+import {onMounted} from 'vue'
 import WaterFall from '@/containers/WaterFall.vue'
 import Footer from '../components/Footer.vue'
 import ProductSuggestion from '@/containers/ProductSuggestion.vue'
@@ -6,6 +7,7 @@ import DonorList from '@/containers/DonorList.vue'
 import { blocks } from '@/constants'
 import banner_img from '@/assets/home/banner.jpg'
 import banner_bottom from '@/assets/home/banner_bottom.svg'
+import {check_user_api} from '@/api/auth'
 
 // import { ref, onMounted, reactive } from 'vue'
 // import { Application } from '@splinetool/runtime'
@@ -40,7 +42,11 @@ import banner_bottom from '@/assets/home/banner_bottom.svg'
 //     // 觸發事件
 //     document.dispatchEvent(event)
 //   }, 3000)
-// })
+// }
+onMounted(() => {
+  check_user_api()
+})
+
 </script>
 
 <template>
@@ -94,4 +100,5 @@ import banner_bottom from '@/assets/home/banner_bottom.svg'
     <!-- Footer -->
     <Footer />
   </div>
-</template>
+</template>import { check_user_api } from '@/api/auth'
+

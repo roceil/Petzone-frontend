@@ -6,6 +6,7 @@ import { orderStore } from '@/stores/order'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import EditReviewModal from '@/components/EditReviewModal.vue'
+import { checkout } from '@/api/checkout';
 
 const route = useRoute()
 const router = useRouter()
@@ -18,6 +19,16 @@ const orderId = route.params.id
 const userStore = useUserStore()
 const { userId } = storeToRefs(userStore)
 const reviewModalRef = ref()
+
+const handlePayment = async (order) => {
+    try {
+      const url = await checkout(orderId, order)
+      window.location.href = url?.url
+    } catch (error) {
+      console.log(error);
+      alert('付款失敗')
+    }
+}
 
 onMounted(async () => {
   // console.log(route.params.id)
@@ -155,6 +166,7 @@ onMounted(async () => {
             </button>
             <button
               type="button"
+              @click="handlePayment(order)"
               class="w-[80px] h-[40px] m-5 bg-secondary rounded-md text-primary"
             >
               前往付款

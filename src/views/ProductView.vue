@@ -89,7 +89,7 @@ onMounted(() => {
   <div class="container mt-5 text-font">
     <div class="flex flex-nowrap">
       <!-- 商品圖片 -->
-      <div class="w-6/12 ml-10">
+      <div class="w-6/12 m-10">
         <Swiper
           class="w-full rounded-[10px] overflow-hidden"
           :navigation="true"
@@ -118,7 +118,7 @@ onMounted(() => {
       </div>
 
       <!-- 商品資訊 -->
-      <div class="w-6/12 px-10 mt-10 mr-10">
+      <div class="w-6/12 mt-10">
         <p class="text-5xl font-bold">{{ product.name }}</p>
         <p class="text-2xl text-secondary mt-10">{{ product.description }}</p>
         <div class="flex justify-between mt-10 text-2xl">
@@ -176,7 +176,7 @@ onMounted(() => {
 
     <!-- 商品評論 -->
     <p class="text-2xl font-bold mt-10 ml-10" v-if="productReviews.length !== 0">商品評論</p>
-    <div class="grid justify-items-center my-10 ml-10">
+    <div class="grid justify-items-center ml-10">
       <div class="flex w-[1024px] mt-10" v-for="review in productReviews" :key="review">
         <div class="w-2/12">
           <img

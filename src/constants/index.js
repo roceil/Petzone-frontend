@@ -11,7 +11,7 @@ export const headerLinks = [
   {
     name: 'ECommerce',
     link: '/ecommerce',
-    hoverName: '商品'
+    hoverName: '商店'
   },
   {
     name: 'Community',
@@ -41,21 +41,19 @@ export const fake_shopping_cart = [
 // 首頁瀑布流假資料
 export const blocks = [
   {
-    "_id": "65e52936168da9d515515fbf",
-    "user": "65e520c0dbabe56f1109b69e",
-    "tags": [
-      "俄羅斯藍貓"
+    _id: '65e52936168da9d515515fbf',
+    user: '65e520c0dbabe56f1109b69e',
+    tags: ['俄羅斯藍貓'],
+    photos: [
+      'https://storage.cloud.google.com/vue-petzone.appspot.com/milada-vigerova-BgRs4dzW4Js-unsplash.jpg'
     ],
-    "photos": [
-      "https://storage.cloud.google.com/vue-petzone.appspot.com/milada-vigerova-BgRs4dzW4Js-unsplash.jpg"
-    ],
-    "content": "我家貓貓",
-    "likes": [],
-    "comments": [],
-    "createdAt": "2024-03-04T01:51:50.663Z",
-    "updatedAt": "2024-03-04T01:51:50.663Z",
-    "__v": 0
-  },
+    content: '我家貓貓',
+    likes: [],
+    comments: [],
+    createdAt: '2024-03-04T01:51:50.663Z',
+    updatedAt: '2024-03-04T01:51:50.663Z',
+    __v: 0
+  }
 
   // {
   //   content: '1',

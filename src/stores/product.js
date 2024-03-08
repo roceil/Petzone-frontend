@@ -25,7 +25,12 @@ export const productStore = defineStore('productStore', () => {
       products.value = data.products
     } else if (search === 'name') {
       const { data } = await get_products_by_name_api(productName)
-      // console.log(data)
+
+      if (data.message === '查無此商品') {
+        alert('查無此商品')
+        return
+      }
+
       products.value = data.products
     }
   }

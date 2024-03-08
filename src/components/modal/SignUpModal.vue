@@ -41,7 +41,7 @@ const onSubmit = handleSubmit(async ({ email, password, name, nickName, phone, a
 </script>
 
 <template>
-  <div class="modal-box relative flex flex-col items-center px-[57px]">
+  <div class="modal-box relative flex flex-col items-center px-[57px] max-h-none">
     <!-- 關閉按鈕 -->
     <div class="absolute right-[29px] top-[33px]">
       <button @click="modalStore.handleCloseModal"><img :src="close" alt="close-btn" /></button>
@@ -69,10 +69,17 @@ const onSubmit = handleSubmit(async ({ email, password, name, nickName, phone, a
     </form>
 
     <!-- 註冊按鈕 -->
-    <div class="w-full flex justify-end">
+    <div class="w-full flex justify-end items-center mt-[30px] space-x-5">
+      <button
+        @click="modalStore.openModal('login')"
+        class="btn bg-third text-font font-semibold rounded px-5 text-base w-[125px] border-none hover:opacity-80 hover:bg-third"
+      >
+        登入
+      </button>
+
       <button
         @click="onSubmit"
-        class="btn bg-secondary hover:bg-font text-white font-semibold rounded px-5 text-base mt-[30px] w-[125px]"
+        class="btn bg-secondary hover:bg-font text-white font-semibold rounded px-5 text-base w-[125px]"
       >
         註冊
       </button>

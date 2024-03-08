@@ -69,7 +69,10 @@ const modalStore = useModalStore()
           <!-- Nav -->
           <ul class="flex space-x-12 text-2xl text-font">
             <li class="hover:text-secondary" v-for="link in headerLinks" :key="link.name">
-              <RouterLink :to="link.link">{{ link.name }}</RouterLink>
+              <RouterLink :to="link.link" class="flex relative px-5 py-4 overflow-hidden group">
+                <p class="absolute left-0 -translate-x-full group-hover:-translate-x-1/2 group-hover:left-1/2 duration-300 ease-in-out">{{ link.hoverName }}</p>
+                <p class=" group-hover:translate-x-[150%] duration-300 ease-in-out">{{ link.name }}</p>
+              </RouterLink>
             </li>
           </ul>
 

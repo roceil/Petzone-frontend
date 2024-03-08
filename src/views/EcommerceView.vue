@@ -44,8 +44,12 @@ onMounted(() => {
 
     <!-- 專區按鈕 -->
     <div class="flex justify-evenly text-2xl font-bold">
-      <div v-for="link in ecommerceLinks" :key="link.name" class="flex justify-center items-center">
-        <img :src="link.icon" :alt="link.name" />
+      <div
+        v-for="link in ecommerceLinks"
+        :key="link.name"
+        class="flex justify-center items-center group space-x-2"
+      >
+        <img :src="link.icon" :alt="link.name" class="group-hover:animate-upDown" />
         <button @click.prevent="categoryType = link.type">{{ link.name }}</button>
       </div>
     </div>
@@ -60,10 +64,11 @@ onMounted(() => {
           class="w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font placeholder:text-gray-400 focus:outline-none"
           placeholder="請輸入商品名稱"
           v-model="productName"
+          @keydown.enter="productHandler.userGetProducts('name')"
         />
         <button
           class="absolute inset-y-0 right-0 mr-2 top-0 mt-1"
-          @click.prevent="productHandler.userGetProducts('name')"
+          @click="productHandler.userGetProducts('name')"
         >
           <img src="../assets/search.svg" alt="search" />
         </button>

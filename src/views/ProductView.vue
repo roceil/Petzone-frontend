@@ -12,17 +12,13 @@ import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
-import {
-  get_product_reviews_api,
-  update_product_review_api,
-  delete_product_review_api
-} from '@/api/ecommerce'
+import { update_product_review_api, delete_product_review_api } from '@/api/ecommerce'
 
 const route = useRoute()
 const router = useRouter()
 
 const productHandler = productStore()
-const { product, products } = storeToRefs(productHandler)
+const { product, products, productReviews } = storeToRefs(productHandler)
 
 const cartHandler = cartStore()
 
@@ -48,12 +44,12 @@ watch(productId, async (newId) => {
   // console.log(newId)
   router.push({ name: 'product', query: { productId: newId } })
   await productHandler.userGetProduct(newId)
-  getProductReviews()
+  await productHandler.getProductReviews(productId.value)
 })
 
-watch(userId, async () => {
-  CurrentUserReviewOnTop()
-})
+// watch(userId, async (newUserId) => {
+//   productHandler.CurrentUserReviewOnTop(newUserId)
+// })
 
 // 將商品加入購物車並導向購物車頁面
 const directToCartPage = (productId) => {
@@ -61,40 +57,6 @@ const directToCartPage = (productId) => {
   router.push({
     name: 'cart'
   })
-}
-
-// 取得商品評論
-const productReviews = ref([])
-const getProductReviews = async () => {
-  const data = await get_product_reviews_api(productId.value)
-  // 時間取年月日
-  productReviews.value = data.map((review) => {
-    const createAt = review['createAt']
-    const updatedAt = review['updatedAt']
-    review['createAt'] = createAt.slice(0, 10)
-    review['updatedAt'] = updatedAt.slice(0, 10)
-    return review
-  })
-
-  CurrentUserReviewOnTop()
-}
-
-// 將目前登入會員自己的評論放到最上方
-const currentUserReview = ref({})
-const CurrentUserReviewOnTop = async () => {
-  currentUserReview.value = await productReviews.value.find((item) => {
-    if (item.userId === userId.value) {
-      return item
-    }
-  })
-
-  const currentUserReviewIndex = productReviews.value.findIndex(
-    (item) => item.userId === userId.value
-  )
-  if (currentUserReviewIndex !== 0) {
-    productReviews.value.splice(currentUserReviewIndex, 1)
-    productReviews.value.unshift(currentUserReview.value)
-  }
 }
 
 // 編輯、刪除目前登入會員自己的評論
@@ -111,16 +73,15 @@ const updateReview = async (score, content) => {
 const deleteReview = async () => {
   const message = await delete_product_review_api(productId.value, userId.value)
   alert(message.message)
-  getProductReviews()
+  productHandler.getProductReviews(productId.value)
 }
 
 onMounted(() => {
   // console.log(route.query.productId, product)
   productId.value = route.query.productId
   productHandler.userGetProduct(productId.value)
-  productHandler.userGetProducts()
   getRecommendProduct()
-  getProductReviews()
+  productHandler.getProductReviews(productId.value)
 })
 </script>
 
@@ -128,7 +89,7 @@ onMounted(() => {
   <div class="container mt-5 text-font">
     <div class="flex flex-nowrap">
       <!-- 商品圖片 -->
-      <div class="w-6/12 ml-10">
+      <div class="w-6/12 m-10">
         <Swiper
           class="w-full rounded-[10px] overflow-hidden"
           :navigation="true"
@@ -157,7 +118,7 @@ onMounted(() => {
       </div>
 
       <!-- 商品資訊 -->
-      <div class="w-6/12 px-10 mt-10 mr-10">
+      <div class="w-6/12 mt-10">
         <p class="text-5xl font-bold">{{ product.name }}</p>
         <p class="text-2xl text-secondary mt-10">{{ product.description }}</p>
         <div class="flex justify-between mt-10 text-2xl">
@@ -215,12 +176,12 @@ onMounted(() => {
 
     <!-- 商品評論 -->
     <p class="text-2xl font-bold mt-10 ml-10" v-if="productReviews.length !== 0">商品評論</p>
-    <div class="grid justify-items-center my-10 ml-10">
+    <div class="grid justify-items-center ml-10">
       <div class="flex w-[1024px] mt-10" v-for="review in productReviews" :key="review">
         <div class="w-2/12">
           <img
             class="w-[150px] h-[150px] rounded-full object-fill"
-            :src="review?.photo"
+            :src="review.photo"
             alt="會員大頭照"
           />
         </div>

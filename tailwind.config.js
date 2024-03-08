@@ -7,7 +7,9 @@ export default {
     extend: {
       container: {
         center: true,
-        padding: '1rem'
+        padding: {
+          DEFAULT: '1rem',
+        }
       },
       colors: {
         primary: '#ffffff',
@@ -15,9 +17,24 @@ export default {
         third: '#F9EFDB',
         input_font: '#9BA5B7',
         font: '#415656'
+      },
+      keyframes: {
+        upDown: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' }
+        }
+      },
+      animation: {
+        upDown: 'upDown 1s ease-in-out infinite'
       }
     },
     screens: {
+      sm: '576px',
+      // => @media (min-width: 576px) { ... }
+
+      md: '992px',
+      // => @media (min-width: 992px) { ... }
+
       lg: '1280px',
       // => @media (min-width: 1280px) { ... }
 
@@ -42,5 +59,5 @@ export default {
       }
     ]
   },
-  plugins: [daisyui]
+  plugins: [daisyui, require('@tailwindcss/container-queries'),]
 }

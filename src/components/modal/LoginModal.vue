@@ -11,6 +11,7 @@ import { useUserStore } from '@/stores/user'
 import { login_api } from '@/api/auth'
 import FormInput from '../validate/FormInput.vue'
 import { login_modal_form_items } from '@/constants'
+import { closeSidebar } from '@/lib'
 
 const modalStore = useModalStore()
 const authStore = useAuthStore()
@@ -26,8 +27,6 @@ const { handleSubmit } = useForm({
 
 const onSubmit = handleSubmit(async ({ email, password }) => {
   const { accessToken, photo, userId } = await login_api(email, password)
-  console.log(accessToken)
-
   if (!accessToken) {
     alert('登入失敗，請檢查帳號密碼是否正確')
     return
@@ -37,20 +36,9 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
   userStore.setUserId(userId)
 
   modalStore.handleCloseModal()
-
+  closeSidebar()
   alert('登入成功')
 })
-
-// Google 登入
-// import axios from 'axios'
-// const google_login_submit = async () => {
-//   try {
-//     const res = await axios.get('/auth/google')
-//     console.log(res)
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
 
 const google_redirect = () => {
   window.location.href = 'https://petzone-backend-dev.zeabur.app/auth/google'
@@ -58,7 +46,7 @@ const google_redirect = () => {
 </script>
 
 <template>
-  <div class="modal-box relative flex flex-col items-center px-20">
+  <div class="modal-box relative flex flex-col items-center md:px-20">
     <!-- 關閉按鈕 -->
     <div class="absolute right-[29px] top-[33px]">
       <button @click="modalStore.handleCloseModal"><img :src="close" alt="close-btn" /></button>
@@ -69,7 +57,12 @@ const google_redirect = () => {
 
     <!-- 表單內容 -->
     <form class="mt-[25px] w-full space-y-5">
-      <label v-for="item in login_modal_form_items" :key="item.tag" class="flex flex-col space-y-5">
+      <label
+        v-for="item in login_modal_form_items"
+        :key="item.tag"
+        class="flex flex-col space-y-5"
+        @keydown.enter="onSubmit"
+      >
         <p class="font-semibold text-font">{{ item.label }}</p>
         <FormInput :name="item.tag" :type="item.type" :placeholder="item.label" />
       </label>
@@ -83,17 +76,17 @@ const google_redirect = () => {
     </div>
 
     <!-- 註冊按鈕 -->
-    <div class="w-full flex justify-between px-[35px] mt-[29px]">
+    <div class="w-full flex justify-center space-x-4 md:justify-between md:px-[35px] mt-[29px]">
       <button
         @click="modalStore.openModal('sign_up')"
-        class="btn bg-third text-font font-semibold rounded px-5 text-base w-[125px] border-none hover:opacity-80 hover:bg-third"
+        class="btn bg-third text-font font-semibold rounded px-5 text-base w-1/2 md:w-[125px] border-none hover:opacity-80 hover:bg-third"
       >
         註冊
       </button>
 
       <button
         @click="onSubmit"
-        class="btn bg-secondary hover:bg-font text-white font-semibold rounded px-5 text-base w-[125px]"
+        class="btn bg-secondary hover:bg-font text-white font-semibold rounded px-5 text-base w-1/2 md:w-[125px]"
       >
         登入
       </button>
@@ -114,3 +107,4 @@ const google_redirect = () => {
     </div>
   </div>
 </template>
+import { closeSidebar } from '@/lib'closeSidebar,

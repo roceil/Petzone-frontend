@@ -25,7 +25,7 @@ defineProps({
         <img
           :src="product.photos[0]"
           :alt="product.name"
-          class="w-[250px] h-[188px] object-cover mr-5 rounded-[10px]"
+          class="w-[180px] h-[135px] md:w-[250px] md:h-[188px] object-cover mr-5 rounded-[10px]"
         />
 
         <div

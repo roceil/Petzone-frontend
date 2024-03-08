@@ -28,4 +28,3 @@ onMounted(async () => {
   <Header />
   <RouterView />
 </template>
-import { useAuthStore } from './stores/auth'

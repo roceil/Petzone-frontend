@@ -7,7 +7,9 @@ export default {
     extend: {
       container: {
         center: true,
-        padding: '1rem'
+        padding: {
+          DEFAULT: '1rem',
+        }
       },
       colors: {
         primary: '#ffffff',
@@ -27,7 +29,13 @@ export default {
       }
     },
     screens: {
-      lg: '1024px',
+      sm: '576px',
+      // => @media (min-width: 576px) { ... }
+
+      md: '992px',
+      // => @media (min-width: 992px) { ... }
+
+      lg: '1280px',
       // => @media (min-width: 1280px) { ... }
 
       xl: '1440px'
@@ -51,5 +59,5 @@ export default {
       }
     ]
   },
-  plugins: [daisyui]
+  plugins: [daisyui, require('@tailwindcss/container-queries'),]
 }

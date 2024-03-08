@@ -22,11 +22,11 @@ export const headerLinks = [
 
 // Header 頭貼下拉選單選項
 export const drop_down_links = [
-  { name: '我的會員中心', link: '/membercenter' },
-  { name: '我的歷史訂單', link: '/membercenter/ordershistory' },
-  { name: '我的貼文專區', link: '/mypost' },
+  { name: '我的會員中心', link: '/membercenter', sm_name: '我的資料' },
+  { name: '我的歷史訂單', link: '/membercenter/ordershistory', sm_name: '我的訂單' },
+  { name: '我的貼文專區', link: '/mypost', sm_name: '我的貼文' },
   // { name: '後台管理', link: '/item4' },
-  { name: '會員登出', link: '/item5' }
+  { name: '會員登出', link: '/item5', sm_name: '會員登出' }
 ]
 
 // Header 購物車下拉選單假資料

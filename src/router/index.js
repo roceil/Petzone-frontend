@@ -68,4 +68,10 @@ const router = createRouter({
   ]
 })
 
+
+import { closeSidebar } from '@/lib';
+router.afterEach((to, from) => {
+  closeSidebar()
+})
+
 export default router

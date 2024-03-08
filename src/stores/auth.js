@@ -27,8 +27,15 @@ export const useAuthStore = defineStore('auth', () => {
   // 初始化時讀取 cookie
   const read_cookie = () => {
     const cookie = Cookies.get('token')
+    const accessToken = Cookies.get('accessToken')
     if (cookie) {
       token.value = cookie
+      return
+    }
+
+    if (accessToken) {
+      token.value = accessToken
+      return
     }
   }
 

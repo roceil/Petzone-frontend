@@ -29,7 +29,7 @@ watch(
 </script>
 
 <template>
-  <div class="alert">
+  <div class="alert" v-if="alertStore.isOrderShow">
     <div
       class="fixed z-[9999] top-10 left-1/2 -translate-x-1/2 transition-transform duration-500"
       :class="showAlert"

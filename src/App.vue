@@ -17,13 +17,13 @@ onMounted(async () => {
     const userId = data.user._id
     userStore.setUserPhotoPath(photoPath)
     userStore.setUserId(userId)
-    authStore.read_cookie()
-    userStore.read_cookie()
   } catch (error) {
     console.error(error)
+  } finally {
+    authStore.read_cookie()
+    userStore.read_cookie()
   }
 })
-
 </script>
 
 <template>

@@ -110,4 +110,5 @@ import banner_bottom from '@/assets/home/banner_bottom.svg'
     <!-- Footer -->
     <Footer />
   </div>
+
 </template>

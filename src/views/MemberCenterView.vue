@@ -4,6 +4,10 @@ import { useUserStore } from '@/stores/user'
 import { get_member_data_api, put_user_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
 import default_avatar from '@/assets/avatar.svg'
+import {useAlertStore} from '@/stores/alert'
+
+
+const alertStore = useAlertStore()
 
 const formItems = ref([
   {
@@ -53,20 +57,20 @@ function triggerFileInput() {
 const handleFileChange = (event) => {
   const file = event.target.files[0]
   if (!file) {
-    alert('請選擇一個檔案')
+    alertStore.openAlert('error', '請選擇一個檔案')
     return
   }
 
   // 檢查檔案類型
   if (file.type !== 'image/png') {
-    alert('檔案類型必須是 PNG')
+    alertStore.openAlert('error', '檔案類型必須是 PNG')
     return
   }
 
   // 檢查檔案大小（5MB）
   const maxSize = 5 * 1024 * 1024 // 5MB
   if (file.size > maxSize) {
-    alert('檔案大小必須低於 5MB')
+    alertStore.openAlert('error', '檔案大小必須低於 5MB')
     return
   }
   fileName.value = file.name // 顯示檔案名稱
@@ -141,10 +145,10 @@ const submit = async () => {
     userIntro.value = ''
 
     // 5. 提示使用者資料已更新
-    alert('使用者資料已更新')
+    alertStore.openAlert('success', '使用者資料已更新')
   } catch (error) {
     console.error(error)
-    alert('使用者資料更新失敗')
+    alertStore.openAlert('error', '使用者資料更新失敗')
   }
 }
 
@@ -152,7 +156,7 @@ const submit = async () => {
 const donatePoint = ref()
 const donateSubmit = async () => {
   if (isNaN(donatePoint.value)) {
-    alert('請輸入數字')
+    alertStore.openAlert('error', '請輸入數字')
     return
   }
 
@@ -160,10 +164,10 @@ const donateSubmit = async () => {
     await donate_point_api(userId, donatePoint.value)
     await getMemberData(userId)
     donatePoint.value = ''
-    alert('捐贈成功')
+    alertStore.openAlert('success', '捐贈成功')
   } catch (error) {
     console.error(error)
-    alert('捐贈失敗')
+    alertStore.openAlert('error', '捐贈失敗')
   }
 }
 
@@ -287,4 +291,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
-import { upload_image_api } from '@/api/upload'import { up } from 'inquirer/lib/utils/readline'
+

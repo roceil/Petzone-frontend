@@ -8,6 +8,7 @@ import google_icon from '@/assets/modal/google_icon.svg'
 import { useModalStore } from '@/stores/modal'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
+import { useAlertStore } from '@/stores/alert'
 import { login_api } from '@/api/auth'
 import FormInput from '../validate/FormInput.vue'
 import { login_modal_form_items } from '@/constants'
@@ -16,6 +17,7 @@ import { closeSidebar } from '@/lib'
 const modalStore = useModalStore()
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const alertStore = useAlertStore()
 
 const validationSchema = z.object({
   email: z.string().email('Email 格式不正確').min(1, '信箱欄位為必填'),
@@ -28,16 +30,14 @@ const { handleSubmit } = useForm({
 const onSubmit = handleSubmit(async ({ email, password }) => {
   const { accessToken, photo, userId } = await login_api(email, password)
   if (!accessToken) {
-    alert('登入失敗，請檢查帳號密碼是否正確')
+    alertStore.openAlert('error', '登入失敗，請檢查帳號密碼是否正確')
     return
   }
   authStore.set_token(accessToken)
   userStore.setUserPhotoPath(photo)
   userStore.setUserId(userId)
-
-  modalStore.handleCloseModal()
   closeSidebar()
-  alert('登入成功')
+  alertStore.openAlert('success', '登入成功')
 })
 
 const google_redirect = () => {
@@ -107,4 +107,4 @@ const google_redirect = () => {
     </div>
   </div>
 </template>
-import { closeSidebar } from '@/lib'closeSidebar,
+

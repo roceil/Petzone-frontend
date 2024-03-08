@@ -18,6 +18,7 @@
     "@heroicons/vue": "^2.1.1",
     "@splinetool/loader": "^1.0.39",
     "@splinetool/runtime": "^1.0.39",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@vee-validate/i18n": "^4.12.5",
     "@vee-validate/rules": "^4.12.5",
     "@vee-validate/zod": "^4.12.5",

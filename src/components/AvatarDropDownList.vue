@@ -19,7 +19,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const goLink = (link) => {
   if (link === '/mypost') {
-    router.push(`/myPost/${userStore.userId}`)
+    router.push(`/mypost/${userStore.userId}`)
   } else {
     router.push(link)
   }

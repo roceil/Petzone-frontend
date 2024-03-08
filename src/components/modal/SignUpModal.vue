@@ -5,11 +5,13 @@ import { z } from 'zod'
 
 import close from '@/assets/header/close-btn.svg'
 import { useModalStore } from '@/stores/modal'
+import {useAlertStore} from '@/stores/alert'
 import FormInput from '../validate/FormInput.vue'
 import { sign_up_modal_form_items } from '@/constants'
 import { sign_up_api } from '@/api/auth'
 
 const modalStore = useModalStore()
+const alertStore = useAlertStore()
 
 const validationSchema = z.object({
   email: z.string().email('Email 格式不正確').min(1, '信箱欄位為必填'),
@@ -29,13 +31,13 @@ const onSubmit = handleSubmit(async ({ email, password, name, nickName, phone, a
     const status = await sign_up_api(email, password, name, nickName, phone, address)
     if (status === 'success') {
       modalStore.openModal('login')
-      alert('註冊成功')
+      alertStore.openAlert('success', '註冊成功')
       return
     }
     throw new Error('註冊失敗')
   } catch (error) {
     console.error(error)
-    alert('註冊失敗')
+    alertStore.openAlert('error', '註冊失敗')
   }
 })
 </script>

@@ -19,9 +19,11 @@ import CartDropDownList from './CartDropDownList.vue'
 import default_user_icon_sm from '@/assets/header/default_user_icon_sm.svg'
 import shopping_cart_icon from '@/assets/header/shopping-cart.svg'
 import { drop_down_links } from '@/constants'
+import { useAlertStore } from '@/stores/alert'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const alertStore = useAlertStore()
 const cartHandler = cartStore()
 const { cartList } = storeToRefs(cartHandler)
 
@@ -51,7 +53,7 @@ const logout = () => {
   authStore.clear_token()
   userStore.resetUserId()
   userStore.user_logout()
-  alert('登出成功')
+  alertStore.openAlert('success', '登出成功')
   router.push({ name: 'home' })
 }
 

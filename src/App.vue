@@ -5,6 +5,7 @@ import Header from './components/Header.vue'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
 import { check_user_api } from '@/api/auth'
+import Alert from '@/components/alert/Alert.vue'
 
 const userStore = useUserStore()
 const authStore = useAuthStore()
@@ -22,9 +23,11 @@ onMounted(async () => {
     console.error(error)
   }
 })
+
 </script>
 
 <template>
   <Header />
   <RouterView />
+  <Alert />
 </template>

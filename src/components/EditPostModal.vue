@@ -9,7 +9,10 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
+import {useAlertStore} from '@/stores/alert'
 
+
+const alertStore = useAlertStore()
 const communityStore = useCommunityStore()
 const { tagsOptions } = storeToRefs(communityStore)
 
@@ -56,7 +59,7 @@ const chooseFile = () => {
 }
 const handleFileChange = (e) => {
   if (e.target.files.length > 3) {
-    alert('圖片數量不可超過 3 張')
+    alertStore.openAlert('error', '圖片數量不可超過 3 張')
   } else {
     files.value = [...e.target.files]
   }
@@ -67,14 +70,14 @@ const handleSend = async () => {
   if (postId.value) {
     try {
       await put_post_api(postId.value, postData.value)
-      alert('編輯成功')
+      alertStore.openAlert('success', '編輯成功')
       emit('getPost')
     } catch (error) {
       console.error(error)
     }
   } else {
     if (!files.value.length && !postData.value.photos.length) {
-      alert('至少需上傳一張圖片')
+      alertStore.openAlert('error', '至少需上傳一張圖片')
       return
     }
     const formData = new FormData()
@@ -88,7 +91,7 @@ const handleSend = async () => {
         photos
       }
       await post_post_api(data)
-      alert('新增成功')
+      alertStore.openAlert('success', '貼文發佈成功')
       emit('getPosts')
     } catch (error) {
       console.error(error)
@@ -190,4 +193,5 @@ defineExpose({ showModal })
     </form>
   </dialog>
 </template>
-<style scoped></style>
+
+

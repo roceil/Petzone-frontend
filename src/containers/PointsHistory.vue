@@ -6,6 +6,7 @@ import dayjs from 'dayjs'
 import decoration from '@/assets/points_history/decoration.svg'
 import { useUserStore } from '@/stores/user'
 import { get_member_data_api } from '@/api/user'
+import { useAlertStore } from '@/stores/alert'
 
 const points_history_table_title = [
   '序號',
@@ -16,6 +17,7 @@ const points_history_table_title = [
   '異動後點數'
 ]
 
+const alertStore = useAlertStore()
 
 // 使用者的積分詳情
 const userPointsHistory = ref([])
@@ -27,10 +29,9 @@ const getMemberData = async (userId) => {
   try {
     const { pointsRecord } = await get_member_data_api(userId)
     userPointsHistory.value = pointsRecord.reverse()
-    console.log(userPointsHistory.value)
   } catch (error) {
     console.error(error)
-    alert('取得使用者積分紀錄失敗')
+    alertStore.openAlert('error', '取得使用者積分紀錄失敗')
   }
 }
 
@@ -64,7 +65,9 @@ onMounted(() => {
         </ul>
 
         <!-- 表格內容 -->
-        <ul class="w-full h-[500px] rounded-[10px] custom-shadow border border-input_font relative overflow-y-scroll">
+        <ul
+          class="w-full h-[500px] rounded-[10px] custom-shadow border border-input_font relative overflow-y-scroll"
+        >
           <li
             class="flex py-4 text-center text-font"
             v-for="(item, index) in userPointsHistory"

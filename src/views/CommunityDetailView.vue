@@ -18,7 +18,9 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 import EditPostModal from '@/components/EditPostModal.vue'
+import { useAlertStore } from '@/stores/alert'
 
+const alertStore = useAlertStore()
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
@@ -42,7 +44,7 @@ onMounted(async () => {
 const deletePost = async () => {
   try {
     await delete_post_api(route.params.id)
-    alert('刪除成功')
+    alertStore.openAlert('success', '刪除成功')
     router.push(`/mypost/${userId.value}`)
   } catch (error) {
     console.error(error)
@@ -84,7 +86,7 @@ const commentData = ref({
 const createComment = async () => {
   try {
     await post_post_comment_api(post.value._id, commentData.value)
-    alert('留言成功')
+    alertStore.openAlert('success', '留言成功')
     commentData.value = {
       content: ''
     }
@@ -100,7 +102,7 @@ const deleteComment = async (commentId) => {
   }
   try {
     await delete_post_comment_api(params)
-    alert('刪除留言成功')
+    alertStore.openAlert('success', '刪除留言成功')
     getPost()
   } catch (error) {
     console.error(error)

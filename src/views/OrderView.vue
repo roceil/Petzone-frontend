@@ -7,7 +7,9 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import EditReviewModal from '@/components/EditReviewModal.vue'
 import { checkout } from '@/api/checkout';
+import { useAlertStore } from '@/stores/alert'
 
+const alertStore = useAlertStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -26,7 +28,7 @@ const handlePayment = async (order) => {
       window.location.href = url?.url
     } catch (error) {
       console.log(error);
-      alert('付款失敗')
+      alertStore.openAlert('error', '付款失敗')
     }
 }
 

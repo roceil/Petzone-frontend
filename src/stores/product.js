@@ -7,6 +7,7 @@ import { get_products_by_name_api } from '@/api/ecommerce'
 import { get_product_by_id_api } from '@/api/ecommerce'
 import { get_product_reviews_api } from '@/api/ecommerce'
 
+
 export const productStore = defineStore('productStore', () => {
   // 取得所有產品資料
   const products = ref([])
@@ -27,6 +28,7 @@ export const productStore = defineStore('productStore', () => {
       const { data } = await get_products_by_name_api(productName)
 
       if (data.message === '查無此商品') {
+        // alertStore.openAlert('error', '查無此商品')
         alert('查無此商品')
         return
       }

@@ -61,20 +61,63 @@ const editPostModalRef = ref()
   <div class="Community text-font">
     <section class="container my-10">
       <div class="flex justify-between">
-        <h1 class="text-5xl font-bold">貼文專區</h1>
+        <h1 class="text-2xl text-md-5xl font-bold">貼文專區</h1>
         <button
-          class="px-10 text-white btn btn-secondary"
+          class="fixed bottom-4 left-8 right-8 z-10 max-w-[502px] mx-auto md:mx-0 md:static px-10 text-white btn btn-secondary"
           @click="editPostModalRef.showModal(null)"
         >
           新增貼文
         </button>
       </div>
     </section>
-    <section class="container mb-10">
-      <div class="grid grid-cols-12 gap-10">
-        <div class="col-span-8">
+    <section class="container mb-20">
+      <div class="grid grid-cols-12 gap-4 md:gap-10">
+        <div class="col-span-12 md:col-span-4 md:order-2">
+          <div class="relative">
+            <input
+              class="w-full p-4 border rounded-md border-font focus:outline-none"
+              type="text"
+              placeholder="請輸入貼文作者"
+              v-model="keyword"
+            />
+            <button class="absolute inset-y-0 flex items-center pr-2 right-2" @click="getPosts">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="hidden md:block">
+            <h5 class="mt-10 text-xl font-bold">Recommended topics</h5>
+            <div class="mt-4" v-for="tag in tagsOptions" :key="tag.type">
+              <h6 class="text-lg font-bold">{{ tag.type }}</h6>
+              <div class="flex flex-wrap mt-4">
+                <button
+                  class="px-4 py-2 mb-4 border rounded-full me-6"
+                  :class="searchTag === name ? 'bg-third' : ''"
+                  v-for="name in tag.name"
+                  :key="name"
+                  @click="handleClickTag(name)"
+                >
+                  {{ name }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-12 md:col-span-8 md:order-1">
           <div class="text-center" v-if="!posts.length">尚無貼文</div>
-          <div class="grid grid-cols-3 gap-10" v-else>
+          <div class="grid grid-cols-3 gap-4 md:gap-10" v-else>
             <button
               class="relative overflow-hidden rounded-lg aspect-square"
               v-for="post in posts"
@@ -127,49 +170,6 @@ const editPostModalRef = ref()
               </div>
             </button>
           </div>
-        </div>
-        <div class="col-span-4">
-          <div class="relative">
-            <input
-              class="w-full p-4 border rounded-md border-font focus:outline-none"
-              type="text"
-              placeholder="請輸入貼文作者"
-              v-model="keyword"
-            />
-            <button class="absolute inset-y-0 flex items-center pr-2 right-2" @click="getPosts">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-                />
-              </svg>
-            </button>
-          </div>
-          <h5 class="mt-10 text-xl font-bold">Recommended topics</h5>
-
-          <div class="mt-4" v-for="tag in tagsOptions" :key="tag.type">
-            <h6 class="text-lg font-bold">{{ tag.type }}</h6>
-            <div class="flex flex-wrap mt-4">
-              <button
-                class="px-4 py-2 mb-4 border rounded-full me-6"
-                :class="searchTag === name ? 'bg-third' : ''"
-                v-for="name in tag.name"
-                :key="name"
-                @click="handleClickTag(name)"
-              >
-                {{ name }}
-              </button>
-            </div>
-          </div>
-          <!-- <button class="mt-4 ms-4">see more...</button> -->
         </div>
       </div>
     </section>

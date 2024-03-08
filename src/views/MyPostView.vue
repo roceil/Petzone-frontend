@@ -50,7 +50,9 @@ const editPostModalRef = ref()
   <div class="MyPostView">
     <div class="container mt-10 max-w-[970px] mb-10">
       <!-- 自我介紹區塊 -->
-      <div class="flex justify-between items-end border-b border-secondary pb-10 px-20 mb-10">
+      <div
+        class="flex justify-between items-end border-b border-secondary pb-10 px-4 md:px-20 mb-10"
+      >
         <div class="flex">
           <div class="">
             <div class="w-[100px] h-[100px] rounded-full overflow-hidden">
@@ -80,7 +82,7 @@ const editPostModalRef = ref()
 
       <!-- 貼文區塊 -->
       <div class="text-center" v-if="!posts.length">尚無貼文</div>
-      <div class="grid grid-cols-3 gap-10" v-else>
+      <div class="grid grid-cols-3 gap-4 md:gap-10 px-4 md:px-20" v-else>
         <button
           class="relative overflow-hidden rounded-lg aspect-square"
           v-for="post in posts"

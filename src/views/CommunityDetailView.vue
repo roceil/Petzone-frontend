@@ -116,7 +116,7 @@ const editPostModalRef = ref()
 <template>
   <div class="CommunityDetail text-font" v-if="post">
     <section class="container flex flex-col justify-center my-10 max-w-[800px] space-y-4">
-      <div class="p-10">
+      <div class="md:p-10">
         <div class="flex items-center mb-4 space-x-4">
           <button
             class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden"
@@ -195,9 +195,13 @@ const editPostModalRef = ref()
             </svg>
           </button>
         </div>
-        <div class="flex space-x-2">
-          <div class="px-4 py-2 border rounded-full" v-for="(tag, index) in post.tags" :key="index">
-            {{ tag }}
+        <div class="flex space-x-2 ml-4">
+          <div
+            class="px-1 py-2 md:px-4 md:border rounded-full"
+            v-for="(tag, index) in post.tags"
+            :key="index"
+          >
+            <span class="md:hidden">#</span>{{ tag }}
           </div>
         </div>
       </div>

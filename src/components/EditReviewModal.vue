@@ -4,8 +4,10 @@ import { storeToRefs } from 'pinia'
 import close from '@/assets/header/close-btn.svg'
 import { useUserStore } from '@/stores/user'
 import { post_product_review_api } from '@/api/ecommerce'
+import {useAlertStore} from '@/stores/alert'
 
 const userStore = useUserStore()
+const alertStore = useAlertStore()
 const { userId } = storeToRefs(userStore)
 
 const props = defineProps(['orderId'])
@@ -37,7 +39,7 @@ const hideModal = () => {
 const postReview = async () => {
   const message = await post_product_review_api(productId.value, review.value)
   if (message) {
-    alert(message.message)
+    alertStore.openAlert('success', message.message)
   }
   hideModal()
 }
@@ -93,4 +95,4 @@ defineExpose({ showModal })
     </div>
   </dialog>
 </template>
-<style scoped></style>
+

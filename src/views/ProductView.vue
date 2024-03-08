@@ -13,7 +13,9 @@ import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import { update_product_review_api, delete_product_review_api } from '@/api/ecommerce'
+import {useAlertStore} from '@/stores/alert'
 
+const alertStore = useAlertStore()
 const route = useRoute()
 const router = useRouter()
 
@@ -66,13 +68,13 @@ const updateReview = async (score, content) => {
   const newReview = { score, content }
   // console.log(newReview)
   const message = await update_product_review_api(productId.value, userId.value, newReview)
-  alert(message.message)
+  alertStore.openAlert('success', message.message)
   editMode.value = false
 }
 
 const deleteReview = async () => {
   const message = await delete_product_review_api(productId.value, userId.value)
-  alert(message.message)
+  alertStore.openAlert('success', message.message)
   productHandler.getProductReviews(productId.value)
 }
 
@@ -232,4 +234,4 @@ onMounted(() => {
     </div>
   </div>
 </template>
-<style scoped></style>
+

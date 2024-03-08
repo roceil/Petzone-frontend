@@ -17,7 +17,7 @@ export const useAlertStore = defineStore('alertStore', () => {
     isOrderShow.value = true
 
     setTimeout(() => {
-      if (type === 'success') {
+      if (type === 'success' && message !== '登出成功') {
         modalStore.handleCloseModal()
       }
     }, 2000)

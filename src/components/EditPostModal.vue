@@ -105,7 +105,7 @@ defineExpose({ showModal })
 </script>
 <template>
   <dialog ref="dialogRef" class="modal">
-    <div class="relative items-center px-20 modal-box max-w-[90%]">
+    <div class="relative items-center px-20 modal-box">
       <!-- 關閉按鈕 -->
       <div class="absolute right-[29px] top-[33px]">
         <button @click="hideModal"><img :src="close" alt="close-btn" /></button>
@@ -157,7 +157,7 @@ defineExpose({ showModal })
         </div>
         <template v-if="!postId">
           <Swiper
-            class="w-full rounded-[10px] overflow-hidden"
+            class="w-full max-w-[320px] rounded-[10px] overflow-hidden"
             :navigation="true"
             :modules="[Navigation]"
           >

@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted} from 'vue'
+import { onMounted } from 'vue'
 import WaterFall from '@/containers/WaterFall.vue'
 import Footer from '../components/Footer.vue'
 import ProductSuggestion from '@/containers/ProductSuggestion.vue'
@@ -7,7 +7,10 @@ import DonorList from '@/containers/DonorList.vue'
 import { blocks } from '@/constants'
 import banner_img from '@/assets/home/banner.jpg'
 import banner_bottom from '@/assets/home/banner_bottom.svg'
-import {check_user_api} from '@/api/auth'
+import { check_user_api } from '@/api/auth'
+import Cookies from 'js-cookie'
+import useAuthStore from '@/stores/auth'
+import useUserStore from '@/stores/user'
 
 // import { ref, onMounted, reactive } from 'vue'
 // import { Application } from '@splinetool/runtime'
@@ -43,10 +46,25 @@ import {check_user_api} from '@/api/auth'
 //     document.dispatchEvent(event)
 //   }, 3000)
 // }
-onMounted(() => {
-  check_user_api()
-})
 
+const authStore = useAuthStore()
+const userStore = useUserStore()
+
+onMounted(async () => {
+  try {
+    const { user } = await check_user_api()
+
+    // 檢查 accessToken 是否有被寫入 cookie
+    if (Cookies.get('accessToken')) {
+      authStore.set_token(Cookies.get('accessToken'))
+      userStore.setUserPhotoPath(user.photo)
+      userStore.setUserId(user._id)
+      return
+    }
+  } catch (error) {
+    console.error(error)
+  }
+})
 </script>
 
 <template>
@@ -100,5 +118,6 @@ onMounted(() => {
     <!-- Footer -->
     <Footer />
   </div>
-</template>import { check_user_api } from '@/api/auth'
-
+</template>
+import Cookies from 'js-cookie'import Cookies from 'js-cookie'import { useAuthStore } from
+'@/stores/auth'

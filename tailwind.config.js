@@ -15,6 +15,15 @@ export default {
         third: '#F9EFDB',
         input_font: '#9BA5B7',
         font: '#415656'
+      },
+      keyframes: {
+        upDown: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' }
+        }
+      },
+      animation: {
+        upDown: 'upDown 1s ease-in-out infinite'
       }
     },
     screens: {

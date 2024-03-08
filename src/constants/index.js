@@ -10,11 +10,13 @@ import coupon from '../assets/sidebar/coupon.svg'
 export const headerLinks = [
   {
     name: 'ECommerce',
-    link: '/ecommerce'
+    link: '/ecommerce',
+    hoverName: '商品'
   },
   {
     name: 'Community',
-    link: '/community'
+    link: '/community',
+    hoverName: '社群'
   }
 ]
 

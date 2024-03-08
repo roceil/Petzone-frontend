@@ -26,8 +26,6 @@ const { handleSubmit } = useForm({
 
 const onSubmit = handleSubmit(async ({ email, password }) => {
   const { accessToken, photo, userId } = await login_api(email, password)
-  console.log(accessToken)
-
   if (!accessToken) {
     alert('登入失敗，請檢查帳號密碼是否正確')
     return
@@ -40,17 +38,6 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
 
   alert('登入成功')
 })
-
-// Google 登入
-// import axios from 'axios'
-// const google_login_submit = async () => {
-//   try {
-//     const res = await axios.get('/auth/google')
-//     console.log(res)
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
 
 const google_redirect = () => {
   window.location.href = 'https://petzone-backend-dev.zeabur.app/auth/google'
@@ -69,7 +56,12 @@ const google_redirect = () => {
 
     <!-- 表單內容 -->
     <form class="mt-[25px] w-full space-y-5">
-      <label v-for="item in login_modal_form_items" :key="item.tag" class="flex flex-col space-y-5">
+      <label
+        v-for="item in login_modal_form_items"
+        :key="item.tag"
+        class="flex flex-col space-y-5"
+        @keydown.enter="onSubmit"
+      >
         <p class="font-semibold text-font">{{ item.label }}</p>
         <FormInput :name="item.tag" :type="item.type" :placeholder="item.label" />
       </label>

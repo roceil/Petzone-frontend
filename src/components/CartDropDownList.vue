@@ -28,7 +28,7 @@ const { cartList } = storeToRefs(cartHandler)
         <div
           class="flex flex-row items-center justify-between w-full flex-nowrap"
           v-for="item in cartList"
-          :key="item.fake_shopping_cartid"
+          :key="item._id"
         >
           <!-- 商品圖片 -->
           <div class="m-2">

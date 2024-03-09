@@ -53,6 +53,7 @@ const logout = () => {
   authStore.clear_token()
   userStore.resetUserId()
   userStore.user_logout()
+  cartList.value = []
   alertStore.openAlert('success', '登出成功')
   router.push({ name: 'home' })
 }

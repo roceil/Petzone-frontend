@@ -5,49 +5,50 @@ import { cartStore } from '@/stores/cart'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import LoginAlertModal from '@/components/LoginAlertModal.vue'
+import { get_member_data_api } from '@/api/user'
 
 const router = useRouter()
 
 const cartHandler = cartStore()
-const { cartList, totalPrice } = storeToRefs(cartHandler)
+const { cartList, totalPrice, usePoints, finalPrice } = storeToRefs(cartHandler)
 
 const userStore = useUserStore()
 const { userId } = storeToRefs(userStore)
 
 const loginAlertModalRef = ref()
+const userPoints = ref(0)
+const informMessage = ref('')
 
-watch(cartList.value, () => {
-  const subTotal = cartList.value.map((item) => {
-    // console.log(item)
-    if (item.price) {
-      return item.price * item.qty
-    } else {
-      return item.originPrice * item.qty
-    }
-  })
-  totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-  return totalPrice.value
+const checkInput = () => {
+  if (usePoints.value > userPoints.value) {
+    informMessage.value = '欲使用積分不可大於可使用積分'
+  } else {
+    informMessage.value = ''
+    finalPrice.value = totalPrice.value - usePoints.value / 10
+  }
+}
+
+watch(userId, async (newUserId) => {
+  // console.log(newUserId)
+  const userInfo = await get_member_data_api(newUserId)
+  userPoints.value = userInfo.points
 })
 
-onMounted(() => {
-  const subTotal = cartList.value.map((item) => {
-    // console.log(item)
-    if (item.price) {
-      return item.price * item.qty
-    } else {
-      return item.originPrice * item.qty
-    }
-  })
-  totalPrice.value = subTotal.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-  // console.log(subTotal)
-
-  //確認是否已登入，如未登入導向登入
+onMounted(async () => {
+  //確認用戶是否已登入
   userStore.getUserId()
   if (!userId.value) {
+    // 未登入導向登入
     loginAlertModalRef.value.showModal()
   } else {
-    cartHandler.getCart()
+    // 已登入取得會員購物車及積分資料
+    const userInfo = await get_member_data_api(userId.value)
+    userPoints.value = userInfo.points
   }
+
+  // 清空使用積分及最終價格
+  usePoints.value = 0
+  finalPrice.value = 0
 })
 </script>
 
@@ -149,7 +150,12 @@ onMounted(() => {
             </div>
           </td>
         </tr>
-        <tr>
+        <tr v-if="userId">
+          <td colspan="2" class="text-right pr-6 py-3 md:text-base">
+            可使用積分: {{ userPoints }} 點
+          </td>
+        </tr>
+        <tr v-if="userId">
           <td class="text-xs font-bold pl-6 py-3 md:text-base">使用會員積分折抵</td>
           <td class="flex justify-end pr-6 py-3">
             <input
@@ -158,23 +164,24 @@ onMounted(() => {
               class="block w-[80px] h-[30px] bg-gray-50 border rounded-lg text-font text-center md:text-base"
               placeholder="0"
               min="0"
+              :max="userPoints"
+              v-model="usePoints"
+              @change="checkInput()"
             />
           </td>
+          <span class="text-red-400" v-if="informMessage">{{ informMessage }}</span>
         </tr>
-        <tr class="border-b-2">
-          <td colspan="2" class="text-right pr-6 py-3 md:text-base">使用後剩餘:10點</td>
-        </tr>
-        <tr>
+        <tr class="border-t-2">
           <td class="pl-6 pt-6 md:text-sm">優惠券折扣</td>
           <td class="text-right pr-6 pt-3 md:text-sm">-0</td>
         </tr>
-        <tr>
+        <tr v-if="userId">
           <td class="pl-6 md:text-sm">會員積分折抵</td>
-          <td class="text-right pr-6 md:text-sm">-0</td>
+          <td class="text-right pr-6 md:text-sm">- {{ usePoints / 10 }}</td>
         </tr>
         <tr>
           <td colspan="2" class="text-right text-base font-bold pr-6 py-3 md:text-2xl">
-            NT$ {{ totalPrice }}
+            NT$ {{ finalPrice ? finalPrice : totalPrice }}
           </td>
         </tr>
         <tr>

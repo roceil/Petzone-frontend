@@ -11,6 +11,7 @@ import { delete_cart_api } from '@/api/ecommerce'
 export const cartStore = defineStore('cartStore', () => {
   const cartList = ref([])
   const totalPrice = ref(0)
+  const usePoints = ref(0)
   const finalPrice = ref(0)
 
   // 加入購物車
@@ -95,8 +96,10 @@ export const cartStore = defineStore('cartStore', () => {
         return newItem
       }
     })
-    cartList.value = await Promise.all(newCart)
-    // console.log(newCart, cartList.value)
+
+    const userCartList = await Promise.all(newCart)
+    cartList.value = cartList.value.concat(userCartList)
+    console.log(userCartList, cartList.value)
 
     caculate()
   }
@@ -126,6 +129,7 @@ export const cartStore = defineStore('cartStore', () => {
   return {
     cartList,
     totalPrice,
+    usePoints,
     finalPrice,
     addToCart,
     deleteFromCart,

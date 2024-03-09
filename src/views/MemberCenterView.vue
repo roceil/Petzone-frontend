@@ -1,11 +1,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useUserStore } from '@/stores/user'
 import { get_member_data_api, put_user_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
 import default_avatar from '@/assets/avatar.svg'
-import {useAlertStore} from '@/stores/alert'
-
+import { useAlertStore } from '@/stores/alert'
 
 const alertStore = useAlertStore()
 
@@ -86,15 +84,13 @@ const handleFileChange = (event) => {
 }
 
 // 使用者資料
-const userStore = useUserStore()
-const userId = userStore.userId
 const userIntro = ref('')
 const userData = ref({})
 const userAvatar = ref(default_avatar)
 
 // 取得使用者資料
-const getMemberData = async (userId) => {
-  const data = await get_member_data_api(userId)
+const getMemberData = async () => {
+  const data = await get_member_data_api()
 
   userData.value = data
 
@@ -133,10 +129,10 @@ const submit = async () => {
     userData.value.address = formItems.value[4].value || formItems.value[4].placeholder
 
     // 2. 將修改後的資料送出
-    await put_user_data_api(userId, userData.value)
+    await put_user_data_api(userData.value)
 
     // 3. 將新資料填入表單
-    await getMemberData(userId)
+    await getMemberData()
 
     // 4. 清空表單
     formItems.value.forEach((item) => {
@@ -161,8 +157,8 @@ const donateSubmit = async () => {
   }
 
   try {
-    await donate_point_api(userId, donatePoint.value)
-    await getMemberData(userId)
+    await donate_point_api(+donatePoint.value)
+    await getMemberData()
     donatePoint.value = ''
     alertStore.openAlert('success', '捐贈成功')
   } catch (error) {
@@ -172,7 +168,7 @@ const donateSubmit = async () => {
 }
 
 onMounted(() => {
-  getMemberData(userId)
+  getMemberData()
 })
 </script>
 
@@ -291,4 +287,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-

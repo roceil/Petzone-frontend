@@ -68,9 +68,8 @@ const router = createRouter({
   ]
 })
 
-
-import { closeSidebar } from '@/lib';
-router.afterEach((to, from) => {
+import { closeSidebar } from '@/lib'
+router.afterEach(() => {
   closeSidebar()
 })
 

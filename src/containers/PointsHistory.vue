@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 // import left_btn from '@/assets/pagination/left.svg'
 // import right_btn from '@/assets/pagination/right.svg'
 import decoration from '@/assets/points_history/decoration.svg'
-import { useUserStore } from '@/stores/user'
 import { get_member_data_api } from '@/api/user'
 import { useAlertStore } from '@/stores/alert'
 
@@ -21,13 +20,11 @@ const alertStore = useAlertStore()
 
 // 使用者的積分詳情
 const userPointsHistory = ref([])
-const userStore = useUserStore()
-const userId = userStore.userId
 
 // 取得使用者資料
-const getMemberData = async (userId) => {
+const getMemberData = async () => {
   try {
-    const { pointsRecord } = await get_member_data_api(userId)
+    const { pointsRecord } = await get_member_data_api()
     userPointsHistory.value = pointsRecord.reverse()
   } catch (error) {
     console.error(error)
@@ -41,7 +38,7 @@ const formatDate = (date) => {
 }
 
 onMounted(() => {
-  getMemberData(userId)
+  getMemberData()
 })
 </script>
 

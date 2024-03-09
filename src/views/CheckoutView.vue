@@ -70,7 +70,6 @@ const directToOrderPage = (orderId) => {
 
 onMounted(async () => {
   //確認是否已登入，如已登入自動帶入會員資料
-  userStore.getUserId()
   if (userId.value) {
     const userInfo = await get_member_data_api(userId.value)
     // console.log(userInfo)

@@ -57,6 +57,10 @@ const isLiked = computed(() => {
   return like && like.isLiked ? true : false
 })
 const handleClickLike = async () => {
+  if (!userId.value) {
+    alertStore.openAlert('error', '此為會員限定功能')
+    return
+  }
   const like = post.value.likes.find((item) => item.userId === userId.value)
   if (!like) {
     try {
@@ -84,6 +88,10 @@ const commentData = ref({
   content: ''
 })
 const createComment = async () => {
+  if (!userId.value) {
+    alertStore.openAlert('error', '此為會員限定功能')
+    return
+  }
   try {
     await post_post_comment_api(post.value._id, commentData.value)
     alertStore.openAlert('success', '留言成功')

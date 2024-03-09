@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { post_post_api, put_post_api } from '@/api/community'
 import { post_upload_images } from '@/api/products'
+import { useUserStore } from '@/stores/user'
 import { useCommunityStore } from '@/stores/community'
 import { storeToRefs } from 'pinia'
 import close from '@/assets/header/close-btn.svg'
@@ -9,12 +10,13 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
-import {useAlertStore} from '@/stores/alert'
-
+import { useAlertStore } from '@/stores/alert'
 
 const alertStore = useAlertStore()
 const communityStore = useCommunityStore()
+const userStore = useUserStore()
 const { tagsOptions } = storeToRefs(communityStore)
+const { userId } = storeToRefs(userStore)
 
 const dialogRef = ref()
 const showModal = (post) => {
@@ -67,6 +69,11 @@ const handleFileChange = (e) => {
 
 // 發佈
 const handleSend = async () => {
+  if (!userId.value) {
+    alertStore.openAlert('error', '此為會員限定功能')
+    hideModal()
+    return
+  }
   if (postId.value) {
     try {
       await put_post_api(postId.value, postData.value)
@@ -193,5 +200,3 @@ defineExpose({ showModal })
     </form>
   </dialog>
 </template>
-
-

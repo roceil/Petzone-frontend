@@ -45,7 +45,7 @@ export const check_user_api = async () => {
       withCredentials: true,
     })
     console.log(res)
-    return 
+    return res
   } catch (error) {
     console.error(error)
   }

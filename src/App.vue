@@ -15,6 +15,8 @@ onMounted(async () => {
     const { data } = await check_user_api()
     const photoPath = data.user.photo
     const userId = data.user._id
+    const token = data.token
+    authStore.set_token(token)
     userStore.setUserPhotoPath(photoPath)
     userStore.setUserId(userId)
   } catch (error) {

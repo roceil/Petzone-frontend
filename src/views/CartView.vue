@@ -53,25 +53,25 @@ onMounted(() => {
 
 <template>
   <!-- 頁面標題 -->
-  <div class="container relative">
-    <h1 class="m-10 text-font text-5xl font-bold">你的購物車</h1>
+  <div class="container mt-10 text-font relative">
+    <h1 class="text-xl font-bold md:mx-10 md:text-5xl">你的購物車</h1>
   </div>
-  <div class="container" v-if="cartList.length !== 0">
+  <div class="container text-font" v-if="cartList.length !== 0">
     <!-- 購買商品明細 -->
     <div class="mt-10">
-      <table class="text-font">
-        <thead class="h-[60px] bg-third text-xl">
+      <table>
+        <thead class="h-[60px] bg-third md:text-xl">
           <th class="rounded-l-[10px] text-left px-10">購買商品</th>
-          <th class="px-10">售價</th>
-          <th class="px-10">數量</th>
-          <th colspan="2" class="rounded-r-[10px] text-left px-10">金額</th>
+          <th class="px-2 md:px-10">售價</th>
+          <th class="px-2 md:px-10">數量</th>
+          <th colspan="2" class="rounded-r-[10px] text-left px-4 md:px-10">金額</th>
         </thead>
-        <tbody class="rounded-[10px] shadow">
-          <tr class="h-[116px] p-4" v-for="product in cartList" :key="product._id">
+        <tbody class="rounded-[10px] shadow text-xs md:text-base">
+          <tr class="md:p-4" v-for="product in cartList" :key="product._id">
             <td>
-              <div class="flex items-center gap-5 ml-8 mr-8 lg:mr-24">
+              <div class="flex items-center gap-4 m-2 md:mx-8 md:my-4">
                 <img
-                  class="w-[100px] h-[100px] rounded-[10px] object-cover"
+                  class="w-[50px] h-[50px] rounded-[10px] object-cover md:w-[100px] md:h-[100px]"
                   :src="product.photos[0]"
                   alt="產品圖"
                 />
@@ -87,7 +87,7 @@ onMounted(() => {
                 <input
                   id="number-input"
                   type="number"
-                  class="block w-[60px] h-[30px] bg-gray-50 border rounded-lg text-center"
+                  class="block w-[40px] h-[30px] border rounded-lg bg-gray-50 text-center md:w-[60px] md:h-[30px]"
                   placeholder="1"
                   min="0"
                   required
@@ -101,13 +101,17 @@ onMounted(() => {
               </div>
             </td>
             <td class="rounded-r-[10px]">
-              <div class="flex justify-center gap-7">
+              <div class="flex justify-center">
                 <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
                 <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
               </div>
             </td>
             <td>
-              <button type="button" @click="cartHandler.deleteFromCart(product._id)">
+              <button
+                type="button"
+                class="w-[16px] h-[16px] md:w-[24px] md:h-[24px]"
+                @click="cartHandler.deleteFromCart(product._id)"
+              >
                 <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
               </button>
             </td>
@@ -117,28 +121,28 @@ onMounted(() => {
     </div>
 
     <!-- 訂單摘要 -->
-    <table class="absolute top-[30%] left-[65%] w-[350px] text-font">
-      <thead class="h-[60px] bg-third text-2xl text-center">
+    <table class="max-w-[350px] mt-6 text-font md:absolute md:top-[30%] md:left-[70%]">
+      <thead class="h-[60px] bg-third text-center md:text-2xl">
         <th class="rounded-[10px]" colspan="2">訂單摘要</th>
       </thead>
-      <tbody class="rounded-[10px] shadow">
+      <tbody class="rounded-[10px] shadow text-xs">
         <tr>
-          <td class="text-2xl font-bold pl-6 py-3">商品總計</td>
-          <td class="text-right pr-6 py-3">NT$ {{ totalPrice }}</td>
+          <td class="text-base font-bold pl-6 py-3 md:text-2xl">商品總計</td>
+          <td class="text-right pr-6 py-3 md:text-base">NT$ {{ totalPrice }}</td>
         </tr>
         <tr>
-          <td class="font-bold pl-6 py-3">使用優惠代碼</td>
+          <td class="font-bold pl-6 py-3 md:text-base">使用優惠代碼</td>
           <td>
             <div class="flex justify-end pr-6 py-3">
               <input
                 id="coupon-input"
                 type="text"
-                class="block w-[120px] h-[30px] bg-gray-50 border rounded-l-[6px] text-font text-center"
+                class="block w-[120px] h-[30px] bg-gray-50 border rounded-l-[6px] text-font text-center md:text-base"
                 placeholder="請輸入優惠代碼"
               />
               <button
                 type="button"
-                class="w-[50px] h-[30px] bg-secondary rounded-r-[6px] text-primary"
+                class="w-[50px] h-[30px] bg-secondary rounded-r-[6px] text-primary md:text-base"
               >
                 確認
               </button>
@@ -146,36 +150,38 @@ onMounted(() => {
           </td>
         </tr>
         <tr>
-          <td class="font-bold pl-6 py-3">使用會員積分折抵</td>
+          <td class="text-xs font-bold pl-6 py-3 md:text-base">使用會員積分折抵</td>
           <td class="flex justify-end pr-6 py-3">
             <input
               id="point-input"
               type="number"
-              class="block w-[80px] h-[30px] bg-gray-50 border rounded-lg text-font text-center"
+              class="block w-[80px] h-[30px] bg-gray-50 border rounded-lg text-font text-center md:text-base"
               placeholder="0"
               min="0"
             />
           </td>
         </tr>
         <tr class="border-b-2">
-          <td colspan="2" class="text-right text-sm pr-6 py-3">使用後剩餘:10點</td>
+          <td colspan="2" class="text-right pr-6 py-3 md:text-base">使用後剩餘:10點</td>
         </tr>
         <tr>
-          <td class="text-sm pl-6 pt-6">優惠券折扣</td>
-          <td class="text-right text-sm pr-6 pt-3">-0</td>
+          <td class="pl-6 pt-6 md:text-sm">優惠券折扣</td>
+          <td class="text-right pr-6 pt-3 md:text-sm">-0</td>
         </tr>
         <tr>
-          <td class="text-sm pl-6">會員積分折抵</td>
-          <td class="text-right text-sm pr-6">-0</td>
+          <td class="pl-6 md:text-sm">會員積分折抵</td>
+          <td class="text-right pr-6 md:text-sm">-0</td>
         </tr>
         <tr>
-          <td colspan="2" class="text-right text-2xl font-bold pr-6 py-3">NT$ {{ totalPrice }}</td>
+          <td colspan="2" class="text-right text-base font-bold pr-6 py-3 md:text-2xl">
+            NT$ {{ totalPrice }}
+          </td>
         </tr>
         <tr>
           <td colspan="2" class="text-right pr-6 py-3">
             <button
               type="button"
-              class="w-[80px] h-[40px] bg-secondary rounded-md text-primary"
+              class="w-[80px] h-[40px] bg-secondary rounded-md text-primary md:text-base"
               @click="router.push(`/ecommerce/checkout`)"
             >
               來去結帳
@@ -185,6 +191,6 @@ onMounted(() => {
       </tbody>
     </table>
   </div>
-  <div class="text-font text-5xl font-bold text-center" v-else>購物車內無產品</div>
+  <div class="text-font text-2xl font-bold text-center" v-else>購物車內無產品</div>
   <LoginAlertModal ref="loginAlertModalRef"></LoginAlertModal>
 </template>

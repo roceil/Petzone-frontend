@@ -13,7 +13,7 @@ import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import { update_product_review_api, delete_product_review_api } from '@/api/ecommerce'
-import {useAlertStore} from '@/stores/alert'
+import { useAlertStore } from '@/stores/alert'
 
 const alertStore = useAlertStore()
 const route = useRoute()
@@ -89,9 +89,9 @@ onMounted(() => {
 
 <template>
   <div class="container mt-5 text-font">
-    <div class="flex flex-nowrap">
+    <div class="md:flex md:flex-nowrap">
       <!-- 商品圖片 -->
-      <div class="w-6/12 m-10">
+      <div class="md:mt-10 md:mr-10 md:w-6/12">
         <Swiper
           class="w-full rounded-[10px] overflow-hidden"
           :navigation="true"
@@ -120,10 +120,10 @@ onMounted(() => {
       </div>
 
       <!-- 商品資訊 -->
-      <div class="w-6/12 mt-10">
-        <p class="text-5xl font-bold">{{ product.name }}</p>
-        <p class="text-2xl text-secondary mt-10">{{ product.description }}</p>
-        <div class="flex justify-between mt-10 text-2xl">
+      <div class="md:w-6/12">
+        <p class="mt-6 text-xl font-bold md:mt-10 md:text-5xl">{{ product.name }}</p>
+        <p class="mt-3 text-xs text-secondary md:mt-10 md:text-2xl">{{ product.description }}</p>
+        <div class="flex justify-between mt-3 text-xs md:mt-10 md:text-2xl">
           <p>庫存量： {{ product.quantity }} {{ product.unit }}</p>
           <div>
             <p v-if="!product.price">${{ product.originPrice }}</p>
@@ -132,8 +132,9 @@ onMounted(() => {
             </p>
           </div>
         </div>
+
         <!-- 按鈕區塊 -->
-        <div class="flex justify-evenly mt-20">
+        <div class="hidden md:flex md:justify-evenly md:mt-20">
           <button
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
             @click.prevent="cartHandler.addToCart(product._id)"
@@ -153,8 +154,8 @@ onMounted(() => {
     </div>
 
     <!-- 推薦商品 -->
-    <p class="text-2xl font-bold mt-10 ml-10">你也許也會喜歡...</p>
-    <div class="flex mt-10 ml-10">
+    <p class="hidden md:block md:text-2xl md:font-bold md:mt-10">你也許也會喜歡...</p>
+    <div class="hidden md:flex md:mt-10">
       <div class="max-w-[350px] mr-4" v-for="product in recommendProduct" :key="product._id">
         <button type="button" @click="productId = product._id">
           <img
@@ -177,24 +178,26 @@ onMounted(() => {
     </div>
 
     <!-- 商品評論 -->
-    <p class="text-2xl font-bold mt-10 ml-10" v-if="productReviews.length !== 0">商品評論</p>
-    <div class="grid justify-items-center ml-10">
-      <div class="flex w-[1024px] mt-10" v-for="review in productReviews" :key="review">
+    <p class="mt-6 text-xl font-bold md:text-2xl md:mt-10" v-if="productReviews.length !== 0">
+      商品評論
+    </p>
+    <div class="grid justify-items-center md:mx-40">
+      <div class="flex md:w-full md:mt-10" v-for="review in productReviews" :key="review">
         <div class="w-2/12">
           <img
-            class="w-[150px] h-[150px] rounded-full object-fill"
+            class="w-[75px] h-[75px] rounded-full object-fill md:w-[150px] md:h-[150px]"
             :src="review.photo"
             alt="會員大頭照"
           />
         </div>
         <div class="w-10/12 relative">
-          <div class="flex m-4">
+          <div class="flex m-4 text-xs md:text-base">
             <p>{{ review.nickName }}</p>
             <p class="mx-2">於{{ review.createAt }}評價</p>
             <div class="rating mx-2">
               <input
                 type="radio"
-                class="mask mask-star-2 bg-yellow-400"
+                class="w-[12px] h-[12px] mask mask-star-2 bg-yellow-400 md:w-[24px] md:h-[24px]"
                 :checked="index === review.score"
                 v-for="index in 5"
                 :key="index"
@@ -205,12 +208,12 @@ onMounted(() => {
             </div>
           </div>
           <textarea
-            class="w-10/12 p-4 border rounded-[10px] resize-none outline-none"
+            class="w-10/12 ml-4 p-4 border rounded-[10px] text-xs resize-none outline-none md:text-base"
             v-model="review.content"
             :readonly="review.userId !== userId || !editMode"
             v-if="review.content || editMode"
           ></textarea>
-          <div class="flex absolute right-36">
+          <div class="hidden md:flex md:absolute md:right-40">
             <button
               class="link m-2"
               @click.prevent="editMode = true"
@@ -232,6 +235,12 @@ onMounted(() => {
         </div>
       </div>
     </div>
+    <button
+      class="md:hidden btn bg-white fixed bottom-4 left-8 right-8 z-10 max-w-[500px] rounded-md border-font hover:opacity-80 hover:-translate-y-1"
+      @click.prevent="cartHandler.addToCart(product._id)"
+    >
+      <p class="font-semibold">加入購物車</p>
+      <img src="../assets/ecommerce/shopping-cart.svg" alt="shopping-cart" />
+    </button>
   </div>
 </template>
-

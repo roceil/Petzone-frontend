@@ -103,7 +103,7 @@ getOrders()
 
           <!-- 表格標題 -->
           <ul
-            class="w-full h-[60px] bg-third mt-5 rounded-[10px] flex text-font text-xl items-center space-x-[138px] px-7"
+            class="w-full h-[60px] bg-third mt-5 rounded-[10px] flex text-font text-xl items-center space-x-[240px] px-7"
           >
             <li v-for="title in table_title" :key="title">{{ title }}</li>
           </ul>
@@ -120,9 +120,13 @@ getOrders()
               >
                 <!-- 訂單編號 -->
                 <div class="mr-[118px]">
-                  <p># {{ order.orderId }}</p>
+                  <RouterLink
+                    :to="`/ecommerce/order/${order._id}`"
+                    class="text-secondary font-semibold px-[30px] py-[9px] text-base hover:text-third"
+                  >
+                    # {{ order.orderId }}
+                  </RouterLink>
                 </div>
-
                 <!-- 下單日期 -->
                 <div class="mr-[120px]">
                   <p>{{ formatDate(order.createdAt) }}</p>
@@ -140,18 +144,8 @@ getOrders()
                 </div>
 
                 <!-- 訂單金額 -->
-                <div class="mr-[116px]">
+                <div class="">
                   <p>NT$ {{ formatPrice(order.totalPrice) }}</p>
-                </div>
-
-                <!-- 按鈕 -->
-                <div class="ecommerce/order/65e72b6e112adefffed61962">
-                  <RouterLink
-                    :to="`/ecommerce/order/${order._id}`"
-                    class="btn bg-secondary hover:bg-font border-none text-white font-semibold px-[30px] py-[9px] text-base"
-                  >
-                    訂單詳情
-                  </RouterLink>
                 </div>
               </li>
             </template>

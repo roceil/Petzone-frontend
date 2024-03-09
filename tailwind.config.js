@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 import daisyui from 'daisyui'
+import containerQueries from '@tailwindcss/container-queries'
 
 export default {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
@@ -8,7 +9,7 @@ export default {
       container: {
         center: true,
         padding: {
-          DEFAULT: '1rem',
+          DEFAULT: '1rem'
         }
       },
       colors: {
@@ -59,5 +60,5 @@ export default {
       }
     ]
   },
-  plugins: [daisyui, require('@tailwindcss/container-queries'),]
+  plugins: [daisyui, containerQueries]
 }

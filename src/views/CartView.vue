@@ -42,7 +42,6 @@ onMounted(() => {
   // console.log(subTotal)
 
   //確認是否已登入，如未登入導向登入
-  userStore.getUserId()
   if (!userId.value) {
     loginAlertModalRef.value.showModal()
   } else {

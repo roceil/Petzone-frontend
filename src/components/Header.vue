@@ -81,7 +81,7 @@ const goLink = (link) => {
         <template v-if="!isAdmin">
           <!-- Nav -->
           <ul class="flex space-x-12 text-2xl text-font">
-            <li class="hover:text-secondary" v-for="link in headerLinks" :key="link.name">
+            <li v-for="link in headerLinks" :key="link.name">
               <RouterLink :to="link.link" class="flex relative px-5 py-4 overflow-hidden group">
                 <p
                   class="absolute left-0 -translate-x-full group-hover:-translate-x-1/2 group-hover:left-1/2 duration-300 ease-in-out"
@@ -135,7 +135,7 @@ const goLink = (link) => {
           <div class="dropdown">
             <div class="drawer">
               <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-              <!-- 測邊欄觸發 Icon -->
+              <!-- 側邊欄觸發 Icon -->
               <div class="drawer-content">
                 <label for="my-drawer">
                   <svg
@@ -239,10 +239,16 @@ const goLink = (link) => {
             <img src="../assets/logo.svg" alt="logo" />
           </button>
         </div>
-        <div class="navbar-end space-x-5 pr-2">
+        <div class="navbar-end space-x-5 pr-2 relative">
           <RouterLink to="/ecommerce/cart" class="w-[30px] h-[30px]">
             <img tabindex="0" :src="shopping_cart_icon" alt="shopping-cart-icon" />
           </RouterLink>
+          <div
+            class="absolute top-0 w-3 h-3 bg-[#F16C5D] rounded-full text-xs text-font text-center"
+            v-if="cartList.length"
+          >
+            {{ cartList.length }}
+          </div>
 
           <!-- <button type="" class="w-5 h-5">
             <img :src="default_user_icon_sm" alt="userPhotoPath" />

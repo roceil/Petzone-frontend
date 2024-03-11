@@ -145,7 +145,9 @@ getOrders()
 
                 <!-- 訂單金額 -->
                 <div class="">
-                  <p>NT$ {{ formatPrice(order.totalPrice) }}</p>
+                  <p>
+                    NT$ {{ formatPrice(order.finalPrice ? order.finalPrice : order.totalPrice) }}
+                  </p>
                 </div>
               </li>
             </template>

@@ -88,42 +88,44 @@ onMounted(async () => {
 <template>
   <!-- 頁面標題 -->
   <div class="container">
-    <h1 class="m-10 text-font text-5xl font-bold">新增訂單</h1>
+    <h1 class="text-xl m-10 text-font font-bold md:text-5xl">新增訂單</h1>
   </div>
 
   <div class="container">
     <!-- 購買明細 -->
     <div class="mt-10 flex justify-center">
-      <table class="w-[900px] text-font">
+      <table class="w-[384px] text-font md:w-[900px]">
         <thead class="h-[60px] bg-third">
-          <th colspan="4" class="rounded-[10px] text-xl text-center">購買明細</th>
+          <th colspan="4" class="rounded-[10px] text-center md:text-xl">購買明細</th>
         </thead>
-        <tbody class="rounded-[10px] shadow">
+        <tbody class="text-xs rounded-[10px] shadow md:text-base">
           <tr v-for="product in cartList" :key="product._id">
-            <td class="px-10 py-5">
+            <td class="p-3 md:px-10 md:py-5">
               {{ product.name }}
             </td>
-            <td class="px-10 py-5">
+            <td class="p-3 md:px-10 md:py-5">
               <p v-if="product.price">$ {{ product.price }}</p>
               <p v-else>$ {{ product.originPrice }}</p>
             </td>
-            <td class="px-10 py-5">x1</td>
-            <td class="px-10 py-5 text-right">
+            <td class="p-3 md:px-10 md:py-5">x1</td>
+            <td class="p-3 text-right md:px-10 md:py-5">
               <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
               <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
             </td>
           </tr>
           <!-- <tr>
-            <td class="px-10 py-5" colspan="2">優惠券折扣</td>
+            <td class="px-10 py-5" colspan="2">優惠券折扣</td> 
             <td class="px-10 py-5 text-right" colspan="2">-0</td>
           </tr> -->
           <tr v-if="usePoints">
-            <td class="px-10 py-5" colspan="2">會員積分折抵</td>
-            <td class="px-10 py-5 text-right" colspan="2">- {{ usePoints / 10 }}</td>
+            <td class="p-3 md:px-10 md:py-5" colspan="2">會員積分折抵</td>
+            <td class="p-3 text-right md:px-10 md:py-5" colspan="2">- {{ usePoints / 10 }}</td>
           </tr>
           <tr class="border-black border-t-2">
-            <td class="px-10 py-5 text-2xl font-bold" colspan="2">訂單金額</td>
-            <td class="px-10 py-5 text-2xl font-bold text-right" colspan="2">
+            <td class="p-3 text-base font-bold md:px-10 md:py-5 md:text-2xl" colspan="2">
+              訂單金額
+            </td>
+            <td class="p-3 font-bold text-right md:px-10 md:py-5 md:text-2xl" colspan="2">
               NT$ {{ finalPrice ? finalPrice : totalPrice }}
             </td>
           </tr>
@@ -134,12 +136,17 @@ onMounted(async () => {
     <!-- 收件人資訊 & 付款方式 -->
     <div class="my-10 flex justify-center">
       <VForm
-        class="text-font border rounded-[10px] shadow"
+        class="w-[384px] text-xs text-font border rounded-[10px] shadow md:w-[900px] md:text-base"
         v-slot="{ errors }"
         @submit="onSubmit(recipient, parseInt(paymentType), totalPrice)"
       >
-        <div class="w-[900px] h-[60px] bg-third rounded-[10px]">
-          <h1 colspan="2" class="text-xl font-bold text-center leading-[60px]">收件人資訊</h1>
+        <div class="w-[384px] h-[60px] bg-third rounded-[10px] md:w-[900px]">
+          <h1
+            colspan="2"
+            class="leading-[60px] text-base font-bold text-center md:leading-[60px] md:text-xl"
+          >
+            收件人資訊
+          </h1>
         </div>
         <div class="my-5 px-10">
           <div class="my-5">
@@ -148,7 +155,7 @@ onMounted(async () => {
               type="text"
               id="name"
               name="姓名"
-              class="ml-5 border rounded-md py-1.5 pl-6 pr-20 placeholder:text-gray-400"
+              class="p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-6 md:pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人姓名"
               v-model="recipient.name"
               rules="required"
@@ -162,7 +169,7 @@ onMounted(async () => {
               type="email"
               id="email"
               name="信箱"
-              class="ml-5 border rounded-md py-1.5 pl-6 pr-20 placeholder:text-gray-400"
+              class="p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-6 md:pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人信箱"
               v-model="recipient.email"
               rules="email|required"
@@ -176,7 +183,7 @@ onMounted(async () => {
               type="tel"
               id="phone"
               name="phone"
-              class="ml-5 border rounded-md py-1.5 pl-6 pr-20 placeholder:text-gray-400"
+              class="p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-6 md:pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人電話"
               v-model="recipient.phone"
               :rules="isTel"
@@ -190,7 +197,7 @@ onMounted(async () => {
               type="text"
               id="address"
               name="地址"
-              class="w-[700px] h-[90px] ml-5 border rounded-md py-1.5 pl-6 placeholder:text-gray-400"
+              class="w-[250px] h-[60px] p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-6 md:w-[700px] md:h-[90px] placeholder:text-gray-400"
               placeholder="請輸入收件人地址"
               v-model="recipient.address"
               rules="required"
@@ -200,8 +207,13 @@ onMounted(async () => {
             <error-message name="地址" class="invalid-feedback text-red-500"></error-message>
           </div>
         </div>
-        <div class="w-[900px] h-[60px] bg-third rounded-[10px]">
-          <h1 colspan="2" class="text-xl font-bold text-center leading-[60px]">付款方式</h1>
+        <div class="w-[384px] h-[60px] bg-third rounded-[10px] md:w-[900px]">
+          <h1
+            colspan="2"
+            class="leading-[60px] text-base font-bold text-center md:leading-[60px] md:text-xl"
+          >
+            付款方式
+          </h1>
         </div>
         <div class="my-5 px-10">
           <VField

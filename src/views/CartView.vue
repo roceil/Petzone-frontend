@@ -45,7 +45,6 @@ watch(userId, async (newUserId) => {
 
 onMounted(async () => {
   //確認用戶是否已登入
-  userStore.getUserId()
   if (!userId.value) {
     // 未登入導向登入
     loginAlertModalRef.value.showModal()

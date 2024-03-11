@@ -3,12 +3,17 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { get_posts_api } from '@/api/community'
 import { useCommunityStore } from '@/stores/community'
+import { useAlertStore } from '@/stores/alert'
+import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import EditPostModal from '@/components/EditPostModal.vue'
 const route = useRoute()
 const router = useRouter()
 const communityStore = useCommunityStore()
+const alertStore = useAlertStore()
+const userStore = useUserStore()
 const { tags, tagsOptions } = storeToRefs(communityStore)
+const { userId } = storeToRefs(userStore)
 
 const posts = ref([])
 const keyword = ref('')
@@ -42,6 +47,14 @@ const handleClickTag = (tag) => {
   getPosts()
 }
 
+const handleCreatePost = () => {
+  if (!userId.value) {
+    alertStore.openAlert('error', '此為會員限定功能')
+    return
+  }
+  editPostModalRef.value.showModal(null)
+}
+
 onMounted(() => {
   if (route.query.keyword) {
     keyword.value = route.query.keyword
@@ -64,7 +77,7 @@ const editPostModalRef = ref()
         <h1 class="text-2xl text-md-5xl font-bold">貼文專區</h1>
         <button
           class="fixed bottom-4 left-8 right-8 z-10 md:z-0 max-w-[502px] mx-auto md:mx-0 md:static px-10 text-white btn btn-secondary"
-          @click="editPostModalRef.showModal(null)"
+          @click="handleCreatePost"
         >
           新增貼文
         </button>

@@ -18,13 +18,22 @@ const { userId } = storeToRefs(userStore)
 const loginAlertModalRef = ref()
 const userPoints = ref(0)
 const informMessage = ref('')
+const checkPoint = ref(true)
 
 const checkInput = () => {
-  if (usePoints.value > userPoints.value) {
+  if (usePoints.value < 0) {
+    informMessage.value = '欲使用積分不可為負數'
+    checkPoint.value = false
+  } else if (usePoints.value > userPoints.value) {
     informMessage.value = '欲使用積分不可大於可使用積分'
+    checkPoint.value = false
+  } else if (usePoints.value % 10 !== 0) {
+    informMessage.value = '10點折抵1元，請輸入10的倍數'
+    checkPoint.value = false
   } else {
     informMessage.value = ''
     finalPrice.value = totalPrice.value - usePoints.value / 10
+    checkPoint.value = true
   }
 }
 
@@ -95,7 +104,7 @@ onMounted(async () => {
                   v-model="product.qty"
                   @change="
                     (e) => {
-                      cartHandler.updatedCart(product._id, e.target.value)
+                      cartHandler.updateCart(product._id, e.target.value)
                     }
                   "
                 />
@@ -190,6 +199,7 @@ onMounted(async () => {
               type="button"
               class="w-[80px] h-[40px] bg-secondary rounded-md text-primary md:text-base"
               @click="router.push(`/ecommerce/checkout`)"
+              :disabled="checkPoint === false"
             >
               來去結帳
             </button>

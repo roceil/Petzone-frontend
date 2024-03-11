@@ -98,14 +98,41 @@ export const cartStore = defineStore('cartStore', () => {
     })
 
     const userCartList = await Promise.all(newCart)
-    cartList.value = cartList.value.concat(userCartList)
-    console.log(userCartList, cartList.value)
+    const currentCartList = JSON.parse(JSON.stringify(cartList.value))
 
+    if (currentCartList.length === 0) {
+      cartList.value = userCartList
+    } else {
+      // 目前購物車與會員購物車中找到相同產品並將數量相加整合至會員購物車
+      const productList = currentCartList.map((currentProduct) => {
+        return userCartList.filter((userProduct) => {
+          if (currentProduct._id === userProduct._id) {
+            userProduct.qty += currentProduct.qty
+          }
+          return userProduct
+        })
+      })
+      const sameProductList = productList[0]
+      console.log(sameProductList)
+
+      // 刪除目前購物車中相同產品
+      const extraProductList = currentCartList.filter((currentProduct) => {
+        const index = sameProductList.findIndex(
+          (sameProduct) => sameProduct._id === currentProduct._id
+        )
+        return index === -1
+      })
+      console.log(extraProductList)
+
+      // 整合購物車
+      cartList.value = sameProductList.concat(extraProductList)
+    }
     caculate()
   }
 
   // 更新會員購物車
-  const updatedCart = async (productId, qty) => {
+  const updateCart = async (productId, quantity) => {
+    const qty = Number(quantity)
     const { userId } = useUserStore()
     const cart = { productId, qty }
     update_cart_api(userId, cart)
@@ -134,7 +161,7 @@ export const cartStore = defineStore('cartStore', () => {
     addToCart,
     deleteFromCart,
     getCart,
-    updatedCart,
+    updateCart,
     caculate
   }
 })

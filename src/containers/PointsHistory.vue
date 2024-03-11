@@ -1,11 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/user'
 // import left_btn from '@/assets/pagination/left.svg'
 // import right_btn from '@/assets/pagination/right.svg'
 import decoration from '@/assets/points_history/decoration.svg'
 import { get_member_data_api } from '@/api/user'
 import { useAlertStore } from '@/stores/alert'
+
+const userStore = useUserStore()
+const { userId } = storeToRefs(userStore)
 
 const points_history_table_title = [
   '序號',
@@ -24,7 +29,7 @@ const userPointsHistory = ref([])
 // 取得使用者資料
 const getMemberData = async () => {
   try {
-    const { pointsRecord } = await get_member_data_api()
+    const { pointsRecord } = await get_member_data_api(userId.value)
     userPointsHistory.value = pointsRecord.reverse()
   } catch (error) {
     console.error(error)

@@ -1,14 +1,14 @@
 <script setup></script>
 <template>
-  <div class="col-span-10 text-font">
-    <!-- 頁面標題 -->
+  <div class="flex justify-center col-span-10 text-font">
     <div>
-      <h1 class="mt-10 ml-10 text-5xl font-bold">商品管理</h1>
-    </div>
+      <!-- 頁面標題 -->
+      <div>
+        <h1 class="my-10 text-5xl font-bold">商品管理</h1>
+      </div>
 
-    <div class="mt-6 ml-10 mr-10">
       <!-- 搜尋、分類區塊 -->
-      <div class="flex justify-center">
+      <div class="flex">
         <div class="flex items-center">
           <label for="name" class="mr-2 text-xl">商品名稱</label>
           <div class="relative">
@@ -53,7 +53,7 @@
           </select>
         </div>
         <div>
-          <button class="flex items-center max-w-[125px] mx-2 ml-6 btn btn-secondary text-white">
+          <button class="flex items-center max-w-[125px] mx-2 ml-3 btn btn-secondary text-white">
             新增商品
           </button>
         </div>
@@ -88,7 +88,7 @@
                     查看詳情
                   </button>
                   <button class="ml-3 btn text-white bg-secondary p-0 hover:bg-font">
-                    新增商品
+                    編輯商品
                   </button>
                 </div>
               </td>

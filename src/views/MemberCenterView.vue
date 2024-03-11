@@ -94,7 +94,7 @@ const userAvatar = ref(default_avatar)
 
 // 取得使用者資料
 const getMemberData = async () => {
-  const data = await get_member_data_api(userId.value)
+  const data = await get_member_data_api()
 
   userData.value = data
 
@@ -133,7 +133,7 @@ const submit = async () => {
     userData.value.address = formItems.value[4].value || formItems.value[4].placeholder
 
     // 2. 將修改後的資料送出
-    await put_member_data_api(userId.value, userData.value)
+    await put_member_data_api(userData.value)
 
     // 3. 將新資料填入表單
     await getMemberData()
@@ -161,7 +161,7 @@ const donateSubmit = async () => {
   }
 
   try {
-    await donate_point_api(userId.value, +donatePoint.value)
+    await donate_point_api(+donatePoint.value)
     await getMemberData()
     donatePoint.value = ''
     alertStore.openAlert('success', '捐贈成功')

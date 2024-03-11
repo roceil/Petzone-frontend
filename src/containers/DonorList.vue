@@ -14,7 +14,7 @@ const getMonthlyDonateRank = async () => {
   try {
     const res = await get_monthly_donate_rank_api()
     donorList.value = res
-    console.log(donorList.value)
+    // console.log(donorList.value)
   } catch (error) {
     console.error(error)
   }
@@ -71,7 +71,9 @@ onMounted(() => {
       </div>
 
       <!-- 文字區塊 -->
-      <p class="mt-6 text-xs md:text-2xl md:leading-8 max-w-[300px] md:max-w-[945px] text-secondary">
+      <p
+        class="mt-6 text-xs md:text-2xl md:leading-8 max-w-[300px] md:max-w-[945px] text-secondary"
+      >
         在PetZone你可以透過社群互動獲得積分，並選擇捐贈積分給可愛的毛寶寶們，捐贈的積分將提供給XX平台為流浪的毛小孩們提供必要的食物、醫療照護。您的善舉不僅提供了關懷也為牠們點燃了希望的燈火。
       </p>
 
@@ -88,7 +90,7 @@ onMounted(() => {
       </ul>
 
       <!-- 累積金額 -->
-      <p class="mt-6 text-xs  md:text-2xl font-bold text-font text-end w-full  md:max-w-[1124px]">
+      <p class="mt-6 text-xs md:text-2xl font-bold text-font text-end w-full md:max-w-[1124px]">
         平台總累積捐贈金額：<span ref="totalDonationRef"
           >NT${{ numberFormatter(donorList.totalDonation) }}</span
         >

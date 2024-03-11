@@ -40,6 +40,7 @@ const checkInput = () => {
 watch(userId, async (newUserId) => {
   // console.log(newUserId)
   const userInfo = await get_member_data_api(newUserId)
+  // console.log(userInfo)
   userPoints.value = userInfo.points
 })
 
@@ -50,7 +51,8 @@ onMounted(async () => {
     loginAlertModalRef.value.showModal()
   } else {
     // 已登入取得會員購物車及積分資料
-    const userInfo = await get_member_data_api(userId.value)
+    const userInfo = await get_member_data_api()
+    // console.log(userInfo)
     userPoints.value = userInfo.points
   }
 
@@ -185,7 +187,7 @@ onMounted(async () => {
         </tr>
         <tr v-if="userId">
           <td class="pl-6 md:text-sm">會員積分折抵</td>
-          <td class="text-right pr-6 md:text-sm">- {{ usePoints / 10 }}</td>
+          <td class="text-right pr-6 md:text-sm">{{ -usePoints / 10 }}</td>
         </tr>
         <tr>
           <td colspan="2" class="text-right text-base font-bold pr-6 py-3 md:text-2xl">

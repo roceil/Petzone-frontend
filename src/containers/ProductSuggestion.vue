@@ -13,7 +13,7 @@ const downSuggestProductList = ref([])
 // 取得推薦商品
 const getRecommendProduct = async () => {
   const { products } = await get_recommend_product_api()
-  console.log(products)
+  // console.log(products)
   upSuggestProductList.value = products.slice(0, 5)
   downSuggestProductList.value = products.slice(5, 10)
 }

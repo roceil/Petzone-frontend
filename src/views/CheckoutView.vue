@@ -87,8 +87,8 @@ onMounted(async () => {
 </script>
 <template>
   <!-- 頁面標題 -->
-  <div class="container">
-    <h1 class="text-xl m-10 text-font font-bold md:text-5xl">新增訂單</h1>
+  <div class="container mt-10 text-font relative">
+    <h1 class="text-xl font-bold md:mx-10 md:text-5xl">新增訂單</h1>
   </div>
 
   <div class="container">
@@ -136,11 +136,11 @@ onMounted(async () => {
     <!-- 收件人資訊 & 付款方式 -->
     <div class="my-10 flex justify-center">
       <VForm
-        class="w-[384px] text-xs text-font border rounded-[10px] shadow md:w-[900px] md:text-base"
+        class="w-[370px] text-xs text-font border rounded-[10px] shadow md:w-[900px] md:text-base"
         v-slot="{ errors }"
         @submit="onSubmit(recipient, parseInt(paymentType), totalPrice)"
       >
-        <div class="w-[384px] h-[60px] bg-third rounded-[10px] md:w-[900px]">
+        <div class="w-[370px] h-[60px] bg-third rounded-[10px] md:w-[900px]">
           <h1
             colspan="2"
             class="leading-[60px] text-base font-bold text-center md:leading-[60px] md:text-xl"
@@ -207,7 +207,7 @@ onMounted(async () => {
             <error-message name="地址" class="invalid-feedback text-red-500"></error-message>
           </div>
         </div>
-        <div class="w-[384px] h-[60px] bg-third rounded-[10px] md:w-[900px]">
+        <div class="w-[370px] h-[60px] bg-third rounded-[10px] md:w-[900px]">
           <h1
             colspan="2"
             class="leading-[60px] text-base font-bold text-center md:leading-[60px] md:text-xl"

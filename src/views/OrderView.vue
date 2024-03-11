@@ -60,12 +60,12 @@ onMounted(async () => {
 </script>
 <template>
   <!-- 頁面標題 -->
-  <div class="container">
-    <h1 class="text-xl m-10 text-font font-bold md:text-5xl">訂單詳情</h1>
+  <div class="container mt-10 text-font relative">
+    <h1 class="text-xl font-bold md:mx-10 md:text-5xl">訂單詳情</h1>
   </div>
 
   <div
-    class="containter w-[384px] text-xs m-auto mb-10 justify-center text-font md:text-base md:w-[900px]"
+    class="containter w-[370px] text-xs m-auto mb-10 justify-center text-font md:text-base md:w-[900px]"
   >
     <!-- 訂單編號及狀態 -->
     <p class="text-base font-bold text-right md:text-xl">訂單狀態：{{ order.status }}</p>
@@ -73,7 +73,7 @@ onMounted(async () => {
       <p class="w-1/2 text-base md:text-xl">訂單編號：# {{ order.orderId }}</p>
       <p class="w-1/2 text-base text-right md:text-xl">下單日期：{{ order.createdAt }}</p>
     </div>
-    <table class="w-[384px] text-font rounded-[10px] shadow md:w-[900px]">
+    <table class="w-[370px] text-font rounded-[10px] shadow md:w-[900px]">
       <!-- 購買明細 -->
       <thead class="h-[60px] bg-third">
         <th colspan="5" class="rounded-[10px] text-base text-center md:text-xl">購買明細</th>

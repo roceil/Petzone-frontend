@@ -11,6 +11,7 @@ import { delete_cart_api } from '@/api/ecommerce'
 export const cartStore = defineStore('cartStore', () => {
   const cartList = ref([])
   const totalPrice = ref(0)
+  const usePoints = ref(0)
   const finalPrice = ref(0)
 
   // 加入購物車
@@ -95,14 +96,43 @@ export const cartStore = defineStore('cartStore', () => {
         return newItem
       }
     })
-    cartList.value = await Promise.all(newCart)
-    // console.log(newCart, cartList.value)
 
+    const userCartList = await Promise.all(newCart)
+    const currentCartList = JSON.parse(JSON.stringify(cartList.value))
+
+    if (currentCartList.length === 0) {
+      cartList.value = userCartList
+    } else {
+      // 目前購物車與會員購物車中找到相同產品並將數量相加整合至會員購物車
+      const productList = currentCartList.map((currentProduct) => {
+        return userCartList.filter((userProduct) => {
+          if (currentProduct._id === userProduct._id) {
+            userProduct.qty += currentProduct.qty
+          }
+          return userProduct
+        })
+      })
+      const sameProductList = productList[0]
+      console.log(sameProductList)
+
+      // 刪除目前購物車中相同產品
+      const extraProductList = currentCartList.filter((currentProduct) => {
+        const index = sameProductList.findIndex(
+          (sameProduct) => sameProduct._id === currentProduct._id
+        )
+        return index === -1
+      })
+      console.log(extraProductList)
+
+      // 整合購物車
+      cartList.value = sameProductList.concat(extraProductList)
+    }
     caculate()
   }
 
   // 更新會員購物車
-  const updatedCart = async (productId, qty) => {
+  const updateCart = async (productId, quantity) => {
+    const qty = Number(quantity)
     const { userId } = useUserStore()
     const cart = { productId, qty }
     update_cart_api(userId, cart)
@@ -126,11 +156,12 @@ export const cartStore = defineStore('cartStore', () => {
   return {
     cartList,
     totalPrice,
+    usePoints,
     finalPrice,
     addToCart,
     deleteFromCart,
     getCart,
-    updatedCart,
+    updateCart,
     caculate
   }
 })

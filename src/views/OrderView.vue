@@ -6,7 +6,7 @@ import { orderStore } from '@/stores/order'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import EditReviewModal from '@/components/EditReviewModal.vue'
-import { checkout } from '@/api/checkout';
+import { checkout } from '@/api/checkout'
 import { useAlertStore } from '@/stores/alert'
 
 const alertStore = useAlertStore()
@@ -23,13 +23,13 @@ const { userId } = storeToRefs(userStore)
 const reviewModalRef = ref()
 
 const handlePayment = async (order) => {
-    try {
-      const url = await checkout(orderId, order)
-      window.location.href = url?.url
-    } catch (error) {
-      console.log(error);
-      alertStore.openAlert('error', '付款失敗')
-    }
+  try {
+    const url = await checkout(orderId, order)
+    window.location.href = url?.url
+  } catch (error) {
+    console.log(error)
+    alertStore.openAlert('error', '付款失敗')
+  }
 }
 
 onMounted(async () => {
@@ -63,7 +63,6 @@ onMounted(async () => {
   <div class="container">
     <h1 class="mt-10 ml-10 text-font text-5xl font-bold">訂單詳情</h1>
   </div>
-
   <div class="containter w-[900px] m-auto mb-10 justify-center text-font">
     <!-- 訂單編號及狀態 -->
     <p class="text-xl font-bold text-right">訂單狀態：{{ order.status }}</p>
@@ -112,20 +111,22 @@ onMounted(async () => {
         <tr v-if="order.finalPrice !== 0">
           <td colspan="5" class="pl-5 py-5 text-xl">折抵明細</td>
         </tr>
-        <tr v-if="order.finalPrice !== 0">
+        <tr v-if="order.couponDiscount != 0">
           <td class="w-[100px]"></td>
           <td class="py-5" colspan="2">優惠券折扣</td>
           <td class="px-5 py-5 text-right" colspan="2">-0</td>
         </tr>
-        <tr v-if="order.finalPrice !== 0">
+        <tr v-if="order.pointsDiscount != 0">
           <td class="w-[100px]"></td>
           <td class="py-5 border-black border-b-2" colspan="2">會員積分折抵</td>
-          <td class="px-5 py-5 border-black border-b-2 text-right" colspan="2">-0</td>
+          <td class="px-5 py-5 border-black border-b-2 text-right" colspan="2">
+            {{ order.pointsDiscount }}
+          </td>
         </tr>
         <tr class="border-b-2">
           <td class="px-5 py-5 text-2xl font-bold" colspan="3">訂單金額</td>
           <td class="px-5 py-5 text-2xl font-bold text-right" colspan="2">
-            NT$ {{ order.totalPrice }}
+            NT$ {{ order.finalPrice ? order.finalPrice : order.totalPrice }}
           </td>
         </tr>
       </tbody>

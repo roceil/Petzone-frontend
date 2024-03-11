@@ -8,6 +8,7 @@ import google_icon from '@/assets/modal/google_icon.svg'
 import { useModalStore } from '@/stores/modal'
 import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
+import { cartStore } from '@/stores/cart'
 import { useAlertStore } from '@/stores/alert'
 import { login_api } from '@/api/auth'
 import FormInput from '../validate/FormInput.vue'
@@ -17,6 +18,7 @@ import { closeSidebar } from '@/lib'
 const modalStore = useModalStore()
 const authStore = useAuthStore()
 const userStore = useUserStore()
+const cartHandler = cartStore()
 const alertStore = useAlertStore()
 
 const validationSchema = z.object({
@@ -36,6 +38,7 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
   authStore.set_token(accessToken)
   userStore.setUserPhotoPath(photo)
   userStore.setUserId(userId)
+  cartHandler.getCart()
   closeSidebar()
   alertStore.openAlert('success', '登入成功')
 })
@@ -107,4 +110,3 @@ const google_redirect = () => {
     </div>
   </div>
 </template>
-

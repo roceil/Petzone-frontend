@@ -17,7 +17,7 @@ import { delete_all_cart_api } from '@/api/ecommerce'
 const router = useRouter()
 
 const cartHandler = cartStore()
-const { cartList, totalPrice } = storeToRefs(cartHandler)
+const { cartList, totalPrice, usePoints, finalPrice } = storeToRefs(cartHandler)
 const orderHandler = orderStore()
 const userStore = useUserStore()
 const { userId } = storeToRefs(userStore)
@@ -46,13 +46,15 @@ const isTel = (value) => {
   return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
 }
 
-const onSubmit = async (recipient, paymentType, totalPrice) => {
-  // console.log(recipient, paymentType, totalPrice)
+const onSubmit = async (recipient, paymentType) => {
+  // console.log(recipient, paymentType)
   const neworder = {
     products: cartList.value,
     recipient: recipient,
-    totalPrice: totalPrice,
-    paymentType: paymentType
+    totalPrice: totalPrice.value,
+    paymentType: paymentType,
+    pointsDiscount: -usePoints.value / 10,
+    finalPrice: finalPrice.value
   }
   const message = await orderHandler.addOrder(neworder)
   // console.log(message)
@@ -115,14 +117,14 @@ onMounted(async () => {
             <td class="px-10 py-5" colspan="2">優惠券折扣</td>
             <td class="px-10 py-5 text-right" colspan="2">-0</td>
           </tr> -->
-          <!-- <tr class="border-black border-b-2">
+          <tr v-if="usePoints">
             <td class="px-10 py-5" colspan="2">會員積分折抵</td>
-            <td class="px-10 py-5 text-right" colspan="2">-0</td>
-          </tr> -->
-          <tr class="border-b-2">
+            <td class="px-10 py-5 text-right" colspan="2">- {{ usePoints / 10 }}</td>
+          </tr>
+          <tr class="border-black border-t-2">
             <td class="px-10 py-5 text-2xl font-bold" colspan="2">訂單金額</td>
             <td class="px-10 py-5 text-2xl font-bold text-right" colspan="2">
-              NT$ {{ totalPrice }}
+              NT$ {{ finalPrice ? finalPrice : totalPrice }}
             </td>
           </tr>
         </tbody>

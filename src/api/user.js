@@ -10,10 +10,10 @@ const config = () => {
   }
 }
 
-// 取得自己的會員資料
-export const get_member_data_api = async () => {
+// 取得所有會員資料
+export const get_members_data_api = async () => {
   try {
-    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/userInfo`, config())
+    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/usersInfo`, config())
     return data
   } catch (error) {
     console.error(error)
@@ -21,10 +21,10 @@ export const get_member_data_api = async () => {
   }
 }
 
-// 取得會員資料
-export const get_memberById_data_api = async (userId) => {
+// 取得自己的會員資料
+export const get_member_data_api = async (userId) => {
   try {
-    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/userInfo/${userId}`, config())
+    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/usersInfoById/${userId}`, config())
     return data
   } catch (error) {
     console.error(error)
@@ -33,9 +33,13 @@ export const get_memberById_data_api = async (userId) => {
 }
 
 // 更改自己的會員資料
-export const put_user_data_api = async (userData) => {
+export const put_member_data_api = async (userId, userData) => {
   try {
-    const { data } = await axios.patch(`${VITE_API_BASE_URL}/api/userInfo`, userData, config())
+    const { data } = await axios.patch(
+      `${VITE_API_BASE_URL}/api/usersInfoById/${userId}`,
+      userData,
+      config()
+    )
     if (!data) throw new Error('更新會員資料失敗')
 
     return data
@@ -46,10 +50,10 @@ export const put_user_data_api = async (userData) => {
 }
 
 // 捐贈點數
-export const donate_point_api = async (points) => {
+export const donate_point_api = async (userId, points) => {
   try {
     const { data } = await axios.put(
-      `${VITE_API_BASE_URL}/api/donatePoints`,
+      `${VITE_API_BASE_URL}/api/donatePointsById/${userId}`,
       {
         points
       },

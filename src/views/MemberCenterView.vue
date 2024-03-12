@@ -1,7 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/stores/user'
 import { useAlertStore } from '@/stores/alert'
 import { get_member_data_api, put_member_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
@@ -86,8 +84,6 @@ const handleFileChange = (event) => {
 }
 
 // 使用者資料
-const userStore = useUserStore()
-const { userId } = storeToRefs(userStore)
 const userIntro = ref('')
 const userData = ref({})
 const userAvatar = ref(default_avatar)

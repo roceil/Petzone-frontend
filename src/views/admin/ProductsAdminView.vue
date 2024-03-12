@@ -1,61 +1,112 @@
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import PaginationComponent from '@/components/PaginationComponent.vue'
+import { get_products_api } from '@/api/ecommerceAdmin'
+
+const products = ref([])
+const productName = ref('')
+const categoryName = ref('請選擇商品類型')
+const isEnabled = ref(1)
+const pagination = ref(1)
+
+const searchProducts = async (query) => {
+  const { data } = await get_products_api(query, productName.value)
+  products.value = data.data.products
+  pagination.value = data.pagination
+}
+
+const filterProducts = async (query, queryValue) => {
+  if (query === 'category') {
+    const { data } = await get_products_api(query, categoryName.value)
+    if (data.message === '查無相關商品') {
+      products.value = []
+    } else {
+      products.value = data.data.products
+      pagination.value = data.pagination
+    }
+  } else if (query === 'isEnabled') {
+    const { data } = await get_products_api(query, parseInt(isEnabled.value))
+    if (data.message === '查無相關商品') {
+      products.value = []
+    } else {
+      products.value = data.data.products
+      pagination.value = data.pagination
+    }
+  } else {
+    const { data } = await get_products_api('page', queryValue)
+    products.value = data.data.products
+    pagination.value = data.pagination
+  }
+}
+
+onMounted(async () => {
+  const { data } = await get_products_api('page', 1)
+  products.value = data.data.products
+  pagination.value = data.pagination
+})
+</script>
 <template>
-  <div class="flex justify-center col-span-10 text-font">
+  <div class="ml-10 mt-10 flex justify-center col-span-10 text-font">
     <div>
       <!-- 頁面標題 -->
-      <div>
-        <h1 class="my-10 text-5xl font-bold">商品管理</h1>
+      <div class="flex justify-between">
+        <h1 class="text-5xl font-bold">商品管理</h1>
+        <button class="max-w-[125px] btn btn-secondary text-white">新增商品</button>
       </div>
-
       <!-- 搜尋、分類區塊 -->
-      <div class="flex">
+      <div class="flex justify-center mt-4">
         <div class="flex items-center">
-          <label for="name" class="mr-2 text-xl">商品名稱</label>
+          <label for="name" class="mr-1 text-xl">商品名稱</label>
           <div class="relative">
             <input
               type="text"
               id="name"
               name="name"
-              class="max-w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+              class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
               placeholder="請輸入商品名稱"
+              v-model="productName"
             />
-            <button class="absolute inset-y-0 right-0 mr-2 top-0 mt-1">
+            <button
+              class="absolute inset-y-0 right-0 mr-2 top-0 mt-1"
+              @click.prevent="searchProducts(name)"
+            >
               <img src="../../assets/search.svg" alt="search" />
             </button>
           </div>
         </div>
         <div class="flex items-center">
-          <label for="category" class="mx-2 text-xl">商品類型</label>
+          <label for="category" class="mx-1 text-xl">商品類型</label>
           <select
             id="category"
             class="max-w-[200px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            v-model="categoryName"
+            @change="filterProducts('category')"
           >
             <option disabled>請選擇商品類型</option>
-            <option value="1">狗狗主食</option>
-            <option value="2">狗狗零食</option>
-            <option value="3">貓貓主食</option>
-            <option value="4">貓貓零食</option>
-            <option value="5">貓砂系列</option>
-            <option value="6">保健系列</option>
-            <option value="7">沐浴 & 清潔</option>
-            <option value="8">生活用品 & 玩具</option>
+            <option value="狗狗主食">狗狗主食</option>
+            <option value="狗狗零食">狗狗零食</option>
+            <option value="狗狗玩具與用品">狗狗玩具 & 用品</option>
+            <option value="貓貓主食">貓貓主食</option>
+            <option value="貓貓零食">貓貓零食</option>
+            <option value="貓貓玩具與用品">貓貓玩具 & 用品</option>
+            <option value="貓砂系列">貓砂系列</option>
+            <option value="保健系列">保健系列</option>
+            <option value="清潔系列">清潔系列</option>
+            <option value="通用玩具與生活用品">通用生活用品 & 玩具</option>
           </select>
         </div>
         <div class="flex items-center">
-          <label for="isEnabled" class="mx-2 text-xl">商品狀態</label>
+          <label for="isEnabled" class="mx-1 text-xl">商品狀態</label>
           <select
             id="isEnabled"
-            class="max-w-[120px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            v-model="isEnabled"
+            @click="filterProducts('isEnabled')"
           >
-            <option disabled>請選擇商品狀態</option>
+            <option value="-1" disabled>請選擇商品狀態</option>
             <option value="0">下架</option>
             <option value="1">上架</option>
           </select>
-        </div>
-        <div>
-          <button class="flex items-center max-w-[125px] mx-2 ml-3 btn btn-secondary text-white">
-            新增商品
-          </button>
         </div>
       </div>
 
@@ -63,23 +114,25 @@
       <div class="flex justify-center mt-4">
         <table>
           <thead class="h-[60px] bg-third text-xl">
-            <th class="w-[200px] rounded-l-[10px] text-left p-1">商品編號</th>
-            <th class="w-[200px] text-left">商品名稱</th>
-            <th class="w-[100px] text-left">商品類型</th>
-            <th class="w-[100px] text-left">價格</th>
-            <th class="w-[80px] text-left">庫存量</th>
-            <th class="w-[80px] text-left">狀態</th>
-            <th class="w-[200px] rounded-r-[10px] text-left">操作</th>
+            <th class="max-w-[150px] rounded-l-[10px] text-left px-4">商品編號</th>
+            <th class="max-w-[150px] text-left px-4">商品名稱</th>
+            <th class="max-w-[150px] text-left px-4">商品類型</th>
+            <th class="max-w-[100px] text-left px-4">價格</th>
+            <th class="max-w-[80px] text-left px-4">庫存量</th>
+            <th class="max-w-[80px] text-left px-4">狀態</th>
+            <th class="max-w-[200px] rounded-r-[10px] text-left px-4">操作</th>
           </thead>
           <tbody class="rounded-[10px] shadow">
-            <tr v-for="item in 5" :key="item">
-              <td class="p-1">#123456</td>
-              <td class="">皇家狗飼料</td>
-              <td>狗狗主食</td>
-              <td>$ 999</td>
-              <td>10</td>
-              <td>
-                <p v-if="0">上架</p>
+            <tr v-for="product in products" :key="product._id">
+              <td class="p-1"># {{ product.productId }}</td>
+              <td>{{ product.name }}</td>
+              <td>{{ product.category.name }}</td>
+              <td class="text-right">
+                $ {{ product.price ? product.price : product.originPrice }}
+              </td>
+              <td class="text-center">{{ product.quantity }}</td>
+              <td class="text-center">
+                <p v-if="product.isEnabled">上架</p>
                 <p class="text-gray-400" v-else>下架</p>
               </td>
               <td colspan="2">
@@ -96,6 +149,10 @@
           </tbody>
         </table>
       </div>
+      <PaginationComponent
+        :pagination="pagination"
+        :filterProducts="filterProducts"
+      ></PaginationComponent>
     </div>
   </div>
 </template>

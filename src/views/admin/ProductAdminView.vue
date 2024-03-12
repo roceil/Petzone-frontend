@@ -28,15 +28,16 @@
             id="category"
             class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
           >
-            <option disabled>請選擇商品類型</option>
-            <option value="1">狗狗主食</option>
-            <option value="2">狗狗零食</option>
-            <option value="3">貓貓主食</option>
-            <option value="4">貓貓零食</option>
-            <option value="5">貓砂系列</option>
-            <option value="6">保健系列</option>
-            <option value="7">沐浴 & 清潔</option>
-            <option value="8">生活用品 & 玩具</option>
+            <option value="狗狗主食">狗狗主食</option>
+            <option value="狗狗零食">狗狗零食</option>
+            <option value="狗狗玩具與用品">狗狗玩具 & 用品</option>
+            <option value="貓貓主食">貓貓主食</option>
+            <option value="貓貓零食">貓貓零食</option>
+            <option value="貓貓玩具與用品">貓貓玩具 & 用品</option>
+            <option value="貓砂系列">貓砂系列</option>
+            <option value="保健系列">保健系列</option>
+            <option value="清潔系列">清潔系列</option>
+            <option value="通用玩具與生活用品">通用生活用品 & 玩具</option>
           </select>
         </div>
         <div>

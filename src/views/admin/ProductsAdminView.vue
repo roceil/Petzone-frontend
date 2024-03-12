@@ -20,6 +20,7 @@ const filterProducts = async (query, queryValue) => {
     const { data } = await get_products_api(query, categoryName.value)
     if (data.message === '查無相關商品') {
       products.value = []
+      pagination.value = 0
     } else {
       products.value = data.data.products
       pagination.value = data.pagination
@@ -28,6 +29,7 @@ const filterProducts = async (query, queryValue) => {
     const { data } = await get_products_api(query, parseInt(isEnabled.value))
     if (data.message === '查無相關商品') {
       products.value = []
+      pagination.value = 0
     } else {
       products.value = data.data.products
       pagination.value = data.pagination
@@ -68,7 +70,7 @@ onMounted(async () => {
             />
             <button
               class="absolute inset-y-0 right-0 mr-2 top-0 mt-1"
-              @click.prevent="searchProducts(name)"
+              @click.prevent="searchProducts('name')"
             >
               <img src="../../assets/search.svg" alt="search" />
             </button>

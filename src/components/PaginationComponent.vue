@@ -3,20 +3,20 @@ import { ref, defineProps } from 'vue'
 const props = defineProps(['pagination', 'filterProducts'])
 
 const currentPage = ref(1)
+
 const changePage = (page) => {
   if (page < 1) {
-    return
+    page = 1
   } else if (page > props.pagination) {
-    return
-  } else {
-    currentPage.value = page
-    props.filterProducts('page', currentPage.value)
+    page = props.pagination
   }
+  currentPage.value = page
+  props.filterProducts('page', currentPage.value)
 }
 </script>
 
 <template>
-  <div class="flex justify-center mt-4">
+  <div class="flex justify-center mt-4" v-if="pagination !== 0">
     <nav class="inline-flex" aria-label="Pagination">
       <ul class="page-item">
         <li

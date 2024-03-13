@@ -18,3 +18,21 @@ export const get_products_api = async (query, queryValue) => {
     console.error(error)
   }
 }
+
+// 取得單一產品資料
+export const get_product_api = async (productId) => {
+  try {
+    return axios.get(`${VITE_API_BASE_URL}/api/product/admin/${productId}`, config())
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 新增產品
+export const post_product_api = async (newProduct) => {
+  try {
+    return axios.post(`${VITE_API_BASE_URL}/api/product`, newProduct, config())
+  } catch (error) {
+    console.error(error)
+  }
+}

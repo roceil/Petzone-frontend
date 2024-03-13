@@ -15,6 +15,7 @@ import FormInput from '../validate/FormInput.vue'
 import { login_modal_form_items } from '@/constants'
 import { closeSidebar } from '@/lib'
 
+const { VITE_API_BASE_URL } = import.meta.env
 const modalStore = useModalStore()
 const authStore = useAuthStore()
 const userStore = useUserStore()
@@ -44,7 +45,7 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
 })
 
 const google_redirect = () => {
-  window.location.href = 'https://petzone-backend-dev.zeabur.app/auth/google'
+  window.location.href = `${VITE_API_BASE_URL}/auth/google`
 }
 </script>
 

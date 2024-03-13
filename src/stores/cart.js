@@ -113,7 +113,7 @@ export const cartStore = defineStore('cartStore', () => {
         })
       })
       const sameProductList = productList[0]
-      console.log(sameProductList)
+      // console.log(sameProductList)
 
       // 刪除目前購物車中相同產品
       const extraProductList = currentCartList.filter((currentProduct) => {
@@ -122,7 +122,7 @@ export const cartStore = defineStore('cartStore', () => {
         )
         return index === -1
       })
-      console.log(extraProductList)
+      // console.log(extraProductList)
 
       // 整合購物車
       cartList.value = sameProductList.concat(extraProductList)

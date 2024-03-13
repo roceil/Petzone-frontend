@@ -84,8 +84,8 @@ onMounted(() => {
             class="rounded-full overflow-hidden flex justify-center items-center w-20 h-20 md:w-[200px] md:h-[200px]"
             @click="goUserPage(donor.userId)"
           >
-            <img :src="donor.photo" :alt="donor.name" class="object-cover w-full h-full" />
-          </button>
+          <img :src="donor.photo" :alt="donor.name" class="object-cover w-full h-full" />
+        </button>
         </li>
       </ul>
 

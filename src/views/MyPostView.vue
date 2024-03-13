@@ -21,6 +21,8 @@ const userData = ref({})
 const getMemberData = async () => {
   try {
     const data = await get_member_data_api(id)
+    console.log('id',id)
+    console.log('data',data)
     userData.value = data
   } catch (error) {
     console.error(error)

@@ -3,8 +3,6 @@ import { ref, onMounted } from 'vue'
 import dayjs from 'dayjs'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/user'
-// import left_btn from '@/assets/pagination/left.svg'
-// import right_btn from '@/assets/pagination/right.svg'
 import decoration from '@/assets/points_history/decoration.svg'
 import { get_member_data_api } from '@/api/user'
 import { useAlertStore } from '@/stores/alert'
@@ -48,13 +46,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="PointsHistory">
+  <div class="PointsHistory mb-20 md:mb-0">
     <div class="flex justify-center items-center mt-[31px]">
       <div class="w-[660px]">
-        <p class="text-font">只顯示最近一個月內的積分異動資料</p>
+        <p class="text-font text-xs md:text-base">只顯示最近一個月內的積分異動資料</p>
 
-        <!-- 表格標題 -->
-        <ul class="bg-third w-full h-[60px] mt-[5px] rounded-[10px] flex items-center text-font">
+        <!-- 表格標題：電腦版 -->
+        <ul
+          class="bg-third w-full h-[60px] mt-[5px] rounded-[10px] items-center text-font hidden md:flex"
+        >
           <li v-for="title in points_history_table_title" :key="title" class="text-center">
             <template v-if="title === '序號'">
               <p class="w-[60px]">{{ title }}</p>
@@ -66,9 +66,9 @@ onMounted(() => {
           </li>
         </ul>
 
-        <!-- 表格內容 -->
+        <!-- 表格內容：電腦版 -->
         <ul
-          class="w-full h-[500px] rounded-[10px] custom-shadow border border-input_font relative overflow-y-scroll"
+          class="w-full h-[500px] rounded-[10px] custom-shadow border border-input_font relative overflow-y-scroll hidden md:block"
         >
           <li
             class="flex py-4 text-center text-font"
@@ -114,32 +114,53 @@ onMounted(() => {
           />
         </ul>
 
-        <!-- 分頁按鈕 -->
-        <!-- <div class="w-full mt-[15px] flex justify-center items-center">
-          <ul class="w-[269px] h-6 flex justify-between items-center text-center space-x-[10px]">
-            <li class="hover:opacity-80 flex items-center">
-              <button>
-                <img :src="left_btn" alt="left_btn" />
-              </button>
-            </li>
+        <!-- 表格內容：手機版 -->
+        <ul class="md:hidden mt-6 space-y-6">
+          <li
+            v-for="(item, index) in userPointsHistory"
+            :key="item.id"
+            class="w-full rounded-[10px] border border-font text-font text-xs"
+          >
+            <!-- 第一欄 -->
+            <div class="flex py-[15px] px-2">
+              <div class="flex w-1/2">
+                <p class="w-1/2">序號</p>
+                <p class="w1/2">{{ index + 1 }}</p>
+              </div>
 
-            <li
-              v-for="page in fake_total_page"
-              :key="page"
-              class="text-font font-medium hover:opacity-80 h-full"
-            >
-              <button class="border-b-2 border-font">
-                <p class="h-full">{{ page }}</p>
-              </button>
-            </li>
+              <div class="flex w-1/2">
+                <p class="w-1/2">異動前點數</p>
+                <p class="w-1/2">{{ item.beforePoints }}</p>
+              </div>
+            </div>
 
-            <li class="hover:opacity-80 flex items-center">
-              <button>
-                <img :src="right_btn" alt="right_btn" />
-              </button>
-            </li>
-          </ul>
-        </div> -->
+            <!-- 第二欄 -->
+            <div class="flex py-[15px] bg-third px-2">
+              <div class="flex w-1/2">
+                <p class="w-1/2">異動日期</p>
+                <p class="w1/2">{{ formatDate(item.createAt) }}</p>
+              </div>
+
+              <div class="flex w-1/2">
+                <p class="w-1/2">異動點數</p>
+                <p class="w-1/2">{{ item.changePoints }}</p>
+              </div>
+            </div>
+
+            <!-- 第三欄 -->
+            <div class="flex py-[15px] px-2">
+              <div class="flex w-1/2">
+                <p class="w-1/2">異動原因</p>
+                <p class="w1/2">{{ item.reason }}</p>
+              </div>
+
+              <div class="flex w-1/2">
+                <p class="w-1/2">異動後點數</p>
+                <p class="w-1/2">{{ item.afterPoints }}</p>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

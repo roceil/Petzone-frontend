@@ -60,28 +60,31 @@ onMounted(async () => {
 </script>
 <template>
   <!-- 頁面標題 -->
-  <div class="container">
-    <h1 class="mt-10 ml-10 text-font text-5xl font-bold">訂單詳情</h1>
+  <div class="container mt-10 text-font relative">
+    <h1 class="text-xl font-bold md:mx-10 md:text-5xl">訂單詳情</h1>
   </div>
-  <div class="containter w-[900px] m-auto mb-10 justify-center text-font">
+
+  <div
+    class="containter w-[370px] text-xs m-auto mb-10 justify-center text-font md:text-base md:w-[900px]"
+  >
     <!-- 訂單編號及狀態 -->
-    <p class="text-xl font-bold text-right">訂單狀態：{{ order.status }}</p>
+    <p class="text-base font-bold text-right md:text-xl">訂單狀態：{{ order.status }}</p>
     <div class="flex">
-      <p class="w-1/2 text-xl">訂單編號：# {{ order.orderId }}</p>
-      <p class="w-1/2 text-xl text-right">下單日期：{{ order.createdAt }}</p>
+      <p class="w-1/2 text-base md:text-xl">訂單編號：# {{ order.orderId }}</p>
+      <p class="w-1/2 text-base text-right md:text-xl">下單日期：{{ order.createdAt }}</p>
     </div>
-    <table class="w-[900px] text-font rounded-[10px] shadow">
+    <table class="w-[370px] text-font rounded-[10px] shadow md:w-[900px]">
       <!-- 購買明細 -->
       <thead class="h-[60px] bg-third">
-        <th colspan="5" class="rounded-[10px] text-xl text-center">購買明細</th>
+        <th colspan="5" class="rounded-[10px] text-base text-center md:text-xl">購買明細</th>
       </thead>
       <tbody>
         <tr>
-          <td colspan="5" class="pl-5 py-5 text-xl">商品明細</td>
+          <td colspan="5" class="p-3 text-base md:pl-5 md:py-5 md:text-xl">商品明細</td>
         </tr>
         <tr v-for="product in order.products" :key="product._id">
           <td class="w-[100px]"></td>
-          <td class="py-5">
+          <td class="py-3 md:py-5">
             <button
               class="link"
               @click="reviewModalRef.showModal(product)"
@@ -91,12 +94,12 @@ onMounted(async () => {
             </button>
             <p v-else>{{ product.name }}</p>
           </td>
-          <td class="py-5">
+          <td class="py-3 md:py-5">
             <p v-if="product.price">NT$ {{ product.price }}</p>
             <p v-else>NT$ {{ product.originPrice }}</p>
           </td>
-          <td class="py-5">x {{ product.qty }}</td>
-          <td class="pr-5 py-5 text-right">
+          <td class="py-3 md:py-5">x {{ product.qty }}</td>
+          <td class="text-right pr-5 md:py-5">
             <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
             <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
           </td>
@@ -109,23 +112,23 @@ onMounted(async () => {
           </td>
         </tr>
         <tr v-if="order.finalPrice !== 0">
-          <td colspan="5" class="pl-5 py-5 text-xl">折抵明細</td>
+          <td colspan="5" class="p-3 text-base md:pl-5 md:py-5 md:text-xl">折抵明細</td>
         </tr>
         <tr v-if="order.couponDiscount != 0">
           <td class="w-[100px]"></td>
-          <td class="py-5" colspan="2">優惠券折扣</td>
-          <td class="px-5 py-5 text-right" colspan="2">-0</td>
+          <td class="py-3 md:py-5" colspan="2">優惠券折扣</td>
+          <td class="px-5 py-3 md:py-5 text-right" colspan="2">-0</td>
         </tr>
         <tr v-if="order.pointsDiscount != 0">
           <td class="w-[100px]"></td>
-          <td class="py-5 border-black border-b-2" colspan="2">會員積分折抵</td>
-          <td class="px-5 py-5 border-black border-b-2 text-right" colspan="2">
+          <td class="py-3 border-black border-b-2 md:py-5" colspan="2">會員積分折抵</td>
+          <td class="border-black border-b-2 text-right px-5 py-3 md:py-5" colspan="2">
             {{ order.pointsDiscount }}
           </td>
         </tr>
         <tr class="border-b-2">
-          <td class="px-5 py-5 text-2xl font-bold" colspan="3">訂單金額</td>
-          <td class="px-5 py-5 text-2xl font-bold text-right" colspan="2">
+          <td class="text-base font-bold px-5 py-3 md:py-5 md:text-2xl" colspan="3">訂單金額</td>
+          <td class="text-base font-bold text-right px-5 py-3 md:py-5 md:text-2xl" colspan="2">
             NT$ {{ order.finalPrice ? order.finalPrice : order.totalPrice }}
           </td>
         </tr>

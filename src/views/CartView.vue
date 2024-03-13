@@ -67,6 +67,7 @@ onMounted(async () => {
   <div class="container mt-10 text-font relative">
     <h1 class="text-xl font-bold md:mx-10 md:text-5xl">你的購物車</h1>
   </div>
+
   <div class="container text-font" v-if="cartList.length !== 0">
     <!-- 購買商品明細 -->
     <div class="mt-10">

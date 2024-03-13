@@ -1,7 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/stores/user'
 import { useAlertStore } from '@/stores/alert'
 import { get_member_data_api, put_member_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
@@ -86,8 +84,6 @@ const handleFileChange = (event) => {
 }
 
 // 使用者資料
-const userStore = useUserStore()
-const { userId } = storeToRefs(userStore)
 const userIntro = ref('')
 const userData = ref({})
 const userAvatar = ref(default_avatar)
@@ -178,10 +174,30 @@ onMounted(() => {
 
 <template>
   <div class="MemberCenter">
-    <div class="container mt-[46px] flex justify-center px-[42px]">
+    <div class="container mt-[46px] flex flex-col-reverse md:flex-row justify-center px-[42px]">
+      <!-- 自我介紹：手機版 -->
+      <div class="mt-[30px] w-full md:hidden">
+        <p class="font-semibold text-font">自我介紹：</p>
+        <textarea
+          :placeholder="userData.intro"
+          v-model="userIntro"
+          class="w-full h-[353px] border border-font text-font px-8 py-[21px] mt-[10px] leading-[19px] focus:outline-black rounded-md"
+        />
+        <div class="w-full flex justify-center mt-5">
+          <button
+            @click="submit"
+            class="btn bg-secondary font-semibold text-white px-6 py-[9px] hover:bg-font text-base w-full"
+          >
+            儲存
+          </button>
+        </div>
+      </div>
+
       <!-- 個資表單 -->
-      <form class="flex w-[400px] h-[469px] flex-col space-y-[30px] mr-[37px]">
-        <p class="font-semibold text-font">帳號(Email)： {{ userData.account }}</p>
+      <form class="flex md:w-[400px] md:h-[469px] flex-col space-y-[30px] mr-[37px]">
+        <p class="font-semibold text-font">
+          帳號(Email)： <span class="text-sm md:text-base">{{ userData.account }}</span>
+        </p>
 
         <label class="flex items-center" v-for="item in formItems" :key="item.label">
           <template v-if="item.type === 'button'">
@@ -205,8 +221,8 @@ onMounted(() => {
         </label>
       </form>
 
-      <!-- 自我介紹 -->
-      <div class="w-[277px] h-[353px] mr-[59px]">
+      <!-- 自我介紹：電腦版 -->
+      <div class="w-[277px] h-[353px] mr-[59px] hidden md:block">
         <p class="font-semibold text-font">自我介紹：</p>
         <textarea
           :placeholder="userData.intro"
@@ -224,7 +240,7 @@ onMounted(() => {
       </div>
 
       <!-- 大頭貼 -->
-      <div class="min-h-[469px] min-w-[280px] flex flex-col items-center">
+      <div class="min-h-[469px] min-w-[280px] flex flex-col items-center mb-[30px] md:mb-0">
         <p class="text-font font-semibold text-center">更換大頭貼照片</p>
         <div class="w-[150px] h-[150px] mt-[17px] rounded-full overflow-hidden">
           <img

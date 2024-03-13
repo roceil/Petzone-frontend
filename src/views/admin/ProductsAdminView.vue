@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import { get_products_api } from '@/api/ecommerceAdmin'
+import { useRouter } from 'vue-router'
 
 const products = ref([])
 const productName = ref('')
@@ -41,6 +42,28 @@ const filterProducts = async (query, queryValue) => {
   }
 }
 
+const router = useRouter()
+const directToProductPage = (productId, mode) => {
+  if (mode === 'check') {
+    router.push({
+      name: 'adminproduct',
+      query: {
+        productId
+      }
+    })
+  } else if (mode === 'create') {
+    router.push({
+      name: 'adminproduct',
+      query: { mode }
+    })
+  } else if (mode === 'edit') {
+    router.push({
+      name: 'adminproduct',
+      query: { productId, mode }
+    })
+  }
+}
+
 onMounted(async () => {
   const { data } = await get_products_api('page', 1)
   products.value = data.data.products
@@ -53,7 +76,12 @@ onMounted(async () => {
       <!-- 頁面標題 -->
       <div class="flex justify-between">
         <h1 class="text-5xl font-bold">商品管理</h1>
-        <button class="max-w-[125px] btn btn-secondary text-white">新增商品</button>
+        <button
+          class="max-w-[125px] btn btn-secondary text-white"
+          @click="directToProductPage(null, 'create')"
+        >
+          新增商品
+        </button>
       </div>
       <!-- 搜尋、分類區塊 -->
       <div class="flex justify-center mt-4">
@@ -139,10 +167,16 @@ onMounted(async () => {
               </td>
               <td colspan="2">
                 <div class="my-1 button-group">
-                  <button class="mr-3 btn bg-gray-200 border-0 p-0 hover:bg-gray-300">
+                  <button
+                    class="mr-3 btn bg-gray-200 border-0 p-0 hover:bg-gray-300"
+                    @click.prevent="directToProductPage(product._id, 'check')"
+                  >
                     查看詳情
                   </button>
-                  <button class="ml-3 btn text-white bg-secondary p-0 hover:bg-font">
+                  <button
+                    class="ml-3 btn text-white bg-secondary p-0 hover:bg-font"
+                    @click.prevent="directToProductPage(product._id, 'edit')"
+                  >
                     編輯商品
                   </button>
                 </div>

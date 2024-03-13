@@ -31,7 +31,6 @@ const uploadImage = async (e) => {
   const file = e.target.files[0]
 
   const res = await upload_image_api(file)
-  console.log(res)
   addImage(res.imgUrl)
 }
 
@@ -41,7 +40,6 @@ const addImage = (imgUrl) => {
 
 const removeImage = () => {
   product.value.photos.pop()
-  console.log(product.value.photos)
 }
 
 // 表單處理
@@ -67,9 +65,7 @@ const checkInput = async () => {
     informMessage.value = ''
     const newProduct = { ...product.value }
     newProduct.category = parseInt(product.value.category.key)
-    console.log(newProduct)
     const { data } = await post_product_api(newProduct)
-    console.log(data)
     if (data.message === '新增產品成功') {
       alertStore.openAlert('success', data.message)
     } else {
@@ -79,7 +75,6 @@ const checkInput = async () => {
 }
 
 onMounted(async () => {
-  console.log(route.query)
   if (route.query.mode === 'edit') {
     editMode.value = true
     productId.value = route.query.productId

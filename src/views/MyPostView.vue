@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
-import { get_member_data_api } from '@/api/user'
+import { get_post_data_api } from '@/api/user'
 import { get_user_posts_api } from '@/api/community'
 import avatar from '@/assets/avatar.svg'
 import EditPostModal from '@/components/EditPostModal.vue'
@@ -20,9 +20,7 @@ const userData = ref({})
 // 取得使用者資料
 const getMemberData = async () => {
   try {
-    const data = await get_member_data_api(id)
-    console.log('id',id)
-    console.log('data',data)
+    const data = await get_post_data_api(id)
     userData.value = data
   } catch (error) {
     console.error(error)

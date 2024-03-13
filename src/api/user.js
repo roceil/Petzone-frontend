@@ -32,6 +32,17 @@ export const get_member_data_api = async () => {
   }
 }
 
+// 取得貼文資料
+export const get_post_data_api = async (id) => {
+  try {
+    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/userInfo/${id}`)
+    return data
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
 // 更改自己的會員資料
 export const put_member_data_api = async (userData) => {
   try {

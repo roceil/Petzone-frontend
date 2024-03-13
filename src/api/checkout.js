@@ -19,7 +19,6 @@ export const checkout = async (orderId, order) => {
       `${VITE_API_BASE_URL}/api/checkout-session/${orderId}`,
       config(order)
     )
-    console.log('🚀 ~ checkout ~ data:', data)
     return data
   } catch (error) {
     console.error(error)

@@ -1,6 +1,8 @@
 <script setup>
 import { defineAsyncComponent } from 'vue'
-const WaterFallContent = defineAsyncComponent(() => import('../components/waterFall/WaterFallContent.vue'))
+const WaterFallContent = defineAsyncComponent(
+  () => import('../components/waterFall/WaterFallContent.vue')
+)
 </script>
 
 <template>

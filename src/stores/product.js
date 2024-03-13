@@ -7,7 +7,6 @@ import { get_products_by_name_api } from '@/api/ecommerce'
 import { get_product_by_id_api } from '@/api/ecommerce'
 import { get_product_reviews_api } from '@/api/ecommerce'
 
-
 export const productStore = defineStore('productStore', () => {
   // 取得所有產品資料
   const products = ref([])

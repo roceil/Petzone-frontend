@@ -236,7 +236,7 @@ onMounted(() => {
       </div>
     </div>
     <button
-      class="md:hidden btn bg-white fixed bottom-4 left-8 right-8 z-10 max-w-[500px] rounded-md border-font hover:opacity-80 hover:-translate-y-1"
+      class="btn bg-white fixed bottom-4 left-8 right-8 z-10 max-w-[900px] rounded-md border-font hover:opacity-80 hover:-translate-y-1 md:hidden"
       @click.prevent="cartHandler.addToCart(product._id)"
     >
       <p class="font-semibold">加入購物車</p>

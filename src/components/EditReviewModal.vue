@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia'
 import close from '@/assets/header/close-btn.svg'
 import { useUserStore } from '@/stores/user'
 import { post_product_review_api } from '@/api/ecommerce'
-import {useAlertStore} from '@/stores/alert'
+import { useAlertStore } from '@/stores/alert'
 
 const userStore = useUserStore()
 const alertStore = useAlertStore()
@@ -95,4 +95,3 @@ defineExpose({ showModal })
     </div>
   </dialog>
 </template>
-

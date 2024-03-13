@@ -24,8 +24,6 @@ const goLink = (link) => {
     router.push(link)
   }
 }
-
-
 </script>
 
 <template>
@@ -64,4 +62,3 @@ const goLink = (link) => {
     </ul>
   </div>
 </template>
-

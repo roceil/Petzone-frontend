@@ -27,7 +27,7 @@ const handlePayment = async (order) => {
     const url = await checkout(orderId, order)
     window.location.href = url?.url
   } catch (error) {
-    console.log(error)
+    console.error(error)
     alertStore.openAlert('error', '付款失敗')
   }
 }
@@ -65,7 +65,7 @@ onMounted(async () => {
   </div>
 
   <div
-    class="containter w-[370px] text-xs m-auto mb-10 justify-center text-font md:text-base md:w-[900px]"
+    class="container w-[370px] text-xs m-auto mb-10 justify-center text-font md:text-base md:w-[900px]"
   >
     <!-- 訂單編號及狀態 -->
     <p class="text-base font-bold text-right md:text-xl">訂單狀態：{{ order.status }}</p>

@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import close from '@/assets/header/close-btn.svg'
 import { useModalStore } from '@/stores/modal'
-import {useAlertStore} from '@/stores/alert'
+import { useAlertStore } from '@/stores/alert'
 import FormInput from '../validate/FormInput.vue'
 import { sign_up_modal_form_items } from '@/constants'
 import { sign_up_api } from '@/api/auth'

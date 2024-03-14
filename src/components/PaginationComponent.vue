@@ -1,16 +1,20 @@
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
 const props = defineProps(['view', 'pagination', 'filterProducts', 'filterOrders'])
 
+const userStore = useUserStore()
 const currentPage = ref(1)
 
 const changePage = (page) => {
   if (page < 1) {
     page = 1
+    userStore.changeCurrentPage(page)
   } else if (page > props.pagination) {
     page = props.pagination
   }
   currentPage.value = page
+  userStore.changeCurrentPage(page)
 
   if (props.view === 'products') {
     props.filterProducts('page', currentPage.value)
@@ -18,6 +22,10 @@ const changePage = (page) => {
     props.filterOrders('page', currentPage.value)
   }
 }
+
+onMounted(() => {
+  currentPage.value = userStore.currentPage
+})
 </script>
 
 <template>
@@ -43,7 +51,8 @@ const changePage = (page) => {
       <a
         href="#"
         aria-current="page"
-        class="text-font items-center px-4 py-2 text-sm font-semibold"
+        class="text-font items-center px-4 py-2 text-sm font-semibold rounded-[10px]"
+        :class="{ 'bg-font text-white': currentPage === page }"
         v-for="page in pagination"
         :key="page"
         @click.prevent="changePage(page)"

@@ -1,21 +1,22 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import { get_member_data_api } from '@/api/user'
+import { useRoute } from 'vue-router'
+import { get_user_points_history_api } from '@/api/user'
 import MemberCenterDetail from '@/containers/layouts/MemberCenterDetail.vue'
 import PointsHistory from '@/containers/PointsHistory.vue'
-import { useUserStore } from '@/stores/user'
 import { useAlertStore } from '@/stores/alert'
 
 // alert
 const alertStore = useAlertStore()
 
 // 取得使用者資料
-const userStore = useUserStore()
+const route = useRoute()
+const userId = route.params.id
 const userPointsHistory = ref([])
 const getMemberData = async () => {
   try {
-    const { pointsRecord } = await get_member_data_api(userStore.userId)
-    userPointsHistory.value = pointsRecord.reverse()
+    const res = await get_user_points_history_api(userId)
+    userPointsHistory.value = res.reverse()
   } catch (error) {
     console.error(error)
     alertStore.openAlert('error', '取得使用者積分紀錄失敗')

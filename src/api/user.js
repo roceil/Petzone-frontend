@@ -85,3 +85,36 @@ export const get_monthly_donate_rank_api = async () => {
     return Promise.reject(error)
   }
 }
+
+// 取得所有用戶（admin）
+export const get_all_users_api = async (page) => {
+  try {
+    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/allUsers?page=${page}`, config())
+    return data
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 取得特定用戶（admin）
+export const get_user_api = async (id) => {
+  try {
+    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/user/${id}`, config())
+    return data
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 取得特定用戶積分詳情（admin）
+export const get_user_points_history_api = async (id) => {
+  try {
+    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/userPoints/${id}`, config())
+    return data
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}

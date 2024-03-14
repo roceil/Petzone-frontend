@@ -61,6 +61,18 @@ export const useUserStore = defineStore('user', () => {
     Cookies.remove('userPhotoPath')
     resetUserId()
     reset_photo_path()
+    resetCurrentPage()
+  }
+
+  // 當前頁數
+  const currentPage = ref(1)
+
+  const changeCurrentPage = (page) => {
+    currentPage.value = page
+  }
+
+  const resetCurrentPage = () => {
+    currentPage.value = 1
   }
 
   return {
@@ -70,6 +82,9 @@ export const useUserStore = defineStore('user', () => {
     userPhotoPath,
     setUserPhotoPath,
     read_cookie,
-    user_logout
+    user_logout,
+    currentPage,
+    changeCurrentPage,
+    resetCurrentPage
   }
 })

@@ -2,9 +2,10 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
-import { get_product_api, post_product_api } from '@/api/ecommerceAdmin'
+import { get_product_api, post_product_api, put_product_api } from '@/api/ecommerceAdmin'
 import { upload_image_api } from '@/api/upload'
 import { useAlertStore } from '@/stores/alert'
+import EditReviewModal from '@/components/ReviewModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -23,6 +24,7 @@ const product = ref({
   description: '',
   isEnabled: -1
 })
+const reviewModalRef = ref()
 
 // 上傳圖片檔
 const tempImgUrl = ref()
@@ -33,11 +35,9 @@ const uploadImage = async (e) => {
   const res = await upload_image_api(file)
   addImage(res.imgUrl)
 }
-
 const addImage = (imgUrl) => {
   product.value.photos.push(imgUrl)
 }
-
 const removeImage = () => {
   product.value.photos.pop()
 }
@@ -63,18 +63,33 @@ const checkInput = async () => {
     informMessage.value = '請上傳至少一張照片'
   } else {
     informMessage.value = ''
-    const newProduct = { ...product.value }
-    newProduct.category = parseInt(product.value.category.key)
-    const { data } = await post_product_api(newProduct)
-    if (data.message === '新增產品成功') {
-      alertStore.openAlert('success', data.message)
-    } else {
-      alertStore.openAlert('error', data.message)
+    const productInfo = { ...product.value }
+    productInfo.category = parseInt(product.value.category.key)
+    // console.log(productInfo)
+    let message
+    if (route.query.mode === 'create') {
+      const { data } = await post_product_api(productInfo)
+      message = data.message
+      if (message === '新增產品成功') {
+        product.value = { category: { key: 0 }, isEnabled: -1, photos: [] }
+        alertStore.openAlert('success', message)
+      } else if (message !== '') {
+        alertStore.openAlert('error', message)
+      }
+    } else if (route.query.mode === 'edit') {
+      const { data } = await put_product_api(productId.value, productInfo)
+      message = data.message
+      if (message === '更新產品成功') {
+        alertStore.openAlert('success', message)
+      } else if (message !== '') {
+        alertStore.openAlert('error', message)
+      }
     }
   }
 }
 
 onMounted(async () => {
+  // console.log(route.query)
   if (route.query.mode === 'edit') {
     editMode.value = true
     productId.value = route.query.productId
@@ -97,7 +112,11 @@ onMounted(async () => {
       <!-- 頁面標題 -->
       <div class="flex justify-between mt-10">
         <h1 class="text-5xl font-bold">商品詳情</h1>
-        <button class="max-w-[125px] btn bg-third border-0 hover:opacity-80 hover:bg-third">
+        <button
+          class="max-w-[125px] btn bg-third border-0 hover:opacity-80 hover:bg-third"
+          @click="reviewModalRef.showModal()"
+          v-if="!editMode"
+        >
           查看商品評論
         </button>
       </div>
@@ -264,5 +283,6 @@ onMounted(async () => {
       </div>
     </div>
   </div>
+  <EditReviewModal ref="reviewModalRef" :productId="productId"></EditReviewModal>
 </template>
 <style scoped></style>

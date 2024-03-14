@@ -64,16 +64,14 @@ onMounted(async () => {
     <h1 class="text-xl font-bold md:mx-10 md:text-5xl">訂單詳情</h1>
   </div>
 
-  <div
-    class="container w-[370px] text-xs m-auto mb-10 justify-center text-font md:text-base md:w-[900px]"
-  >
+  <div class="container w-[360px] m-auto my-10 text-xs text-font md:text-base md:w-[900px]">
     <!-- 訂單編號及狀態 -->
-    <p class="text-base font-bold text-right md:text-xl">訂單狀態：{{ order.status }}</p>
-    <div class="flex">
-      <p class="w-1/2 text-base md:text-xl">訂單編號：# {{ order.orderId }}</p>
-      <p class="w-1/2 text-base text-right md:text-xl">下單日期：{{ order.createdAt }}</p>
+    <p class="text-xs font-bold text-right md:text-xl">訂單狀態：{{ order.status }}</p>
+    <div class="grid grid-cols-2">
+      <p class="text-xs md:text-xl">訂單編號：# {{ order.orderId }}</p>
+      <p class="text-xs text-right md:text-xl">下單日期：{{ order.createdAt }}</p>
     </div>
-    <table class="w-[370px] text-font rounded-[10px] shadow md:w-[900px]">
+    <table class="w-[328px] text-font rounded-[10px] shadow md:w-[868px]">
       <!-- 購買明細 -->
       <thead class="h-[60px] bg-third">
         <th colspan="5" class="rounded-[10px] text-base text-center md:text-xl">購買明細</th>
@@ -83,7 +81,7 @@ onMounted(async () => {
           <td colspan="5" class="p-3 text-base md:pl-5 md:py-5 md:text-xl">商品明細</td>
         </tr>
         <tr v-for="product in order.products" :key="product._id">
-          <td class="w-[100px]"></td>
+          <td class="md:w-[120px]"></td>
           <td class="py-3 md:py-5">
             <button
               class="link"

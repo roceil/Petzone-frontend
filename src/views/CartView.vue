@@ -70,7 +70,7 @@ onMounted(async () => {
 
   <div class="container text-font" v-if="cartList.length !== 0">
     <!-- 購買商品明細 -->
-    <div class="mt-10">
+    <div class="my-10">
       <table>
         <thead class="h-[60px] bg-third md:text-xl">
           <th class="rounded-l-[10px] text-left px-10">購買商品</th>
@@ -133,7 +133,7 @@ onMounted(async () => {
     </div>
 
     <!-- 訂單摘要 -->
-    <table class="max-w-[350px] mt-6 text-font md:absolute md:top-[30%] md:left-[70%]">
+    <table class="max-w-[350px] my-10 text-font md:absolute md:top-[30%] md:left-[70%]">
       <thead class="h-[60px] bg-third text-center md:text-2xl">
         <th class="rounded-[10px]" colspan="2">訂單摘要</th>
       </thead>
@@ -210,6 +210,6 @@ onMounted(async () => {
       </tbody>
     </table>
   </div>
-  <div class="text-font text-2xl font-bold text-center" v-else>購物車內無產品</div>
+  <div class="mt-10 text-font font-bold text-center md:text-2xl" v-else>購物車內無產品</div>
   <LoginAlertModal ref="loginAlertModalRef"></LoginAlertModal>
 </template>

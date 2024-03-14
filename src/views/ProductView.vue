@@ -88,7 +88,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container mt-5 text-font">
+  <div class="container mt-10 mb-20 text-font">
     <div class="md:flex md:flex-nowrap">
       <!-- 商品圖片 -->
       <div class="md:mt-10 md:mr-10 md:w-6/12">

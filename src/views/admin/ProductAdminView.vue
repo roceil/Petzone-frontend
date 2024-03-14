@@ -5,11 +5,15 @@ import { useRouter } from 'vue-router'
 import { get_product_api, post_product_api, put_product_api } from '@/api/ecommerceAdmin'
 import { upload_image_api } from '@/api/upload'
 import { useAlertStore } from '@/stores/alert'
+import { useLoadingStore } from '@/stores/loading'
+import { storeToRefs } from 'pinia'
 import EditReviewModal from '@/components/ReviewModal.vue'
 
 const route = useRoute()
 const router = useRouter()
 const alertStore = useAlertStore()
+const LoadingStore = useLoadingStore()
+const { LoadingMode } = storeToRefs(LoadingStore)
 
 const editMode = ref(false)
 const productId = ref('')
@@ -29,11 +33,13 @@ const reviewModalRef = ref()
 // 上傳圖片檔
 const tempImgUrl = ref()
 const uploadImage = async (e) => {
+  LoadingMode.value = true
   // console.log(e.target.files[0])
   const file = e.target.files[0]
 
   const res = await upload_image_api(file)
   addImage(res.imgUrl)
+  LoadingMode.value = false
 }
 const addImage = (imgUrl) => {
   product.value.photos.push(imgUrl)

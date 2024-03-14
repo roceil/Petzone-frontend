@@ -1,15 +1,14 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import { onMounted, computed, watch } from 'vue'
-import router from '@/router'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import router from '@/router'
 import Modal from '@/components/modal/Modal.vue'
-import { headerLinks } from '@/constants'
 import { useAuthStore } from '@/stores/auth'
 import { useModalStore } from '@/stores/modal'
 import { useUserStore } from '@/stores/user'
 import { cartStore } from '@/stores/cart'
-import { storeToRefs } from 'pinia'
 import LoginModal from './modal/LoginModal.vue'
 import SignUpModal from './modal/SignUpModal.vue'
 import ResetPasswordModal from './modal/ResetPasswordModal.vue'
@@ -18,8 +17,9 @@ import AvatarDropDownList from './AvatarDropDownList.vue'
 import CartDropDownList from './CartDropDownList.vue'
 import default_user_icon_sm from '@/assets/header/default_user_icon_sm.svg'
 import shopping_cart_icon from '@/assets/header/shopping-cart.svg'
-import { drop_down_links } from '@/constants'
+import { headerLinks } from '@/constants'
 import { useAlertStore } from '@/stores/alert'
+import { render_dropdown_links } from '@/composables'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
@@ -50,7 +50,7 @@ const GotoHome = () => {
 
 // 登出
 const logout = () => {
-  authStore.clear_token()
+  authStore.clear_cookie()
   userStore.resetUserId()
   userStore.user_logout()
   cartList.value = []
@@ -119,7 +119,12 @@ const goLink = (link) => {
 
             <!-- 頭像下拉視窗 -->
             <div v-else class="dropdown dropdown-hover dropdown-end">
-              <AvatarDropDownList :logout="logout" :userPhotoPath="userStore.userPhotoPath" />
+              <AvatarDropDownList
+                :logout="logout"
+                :userPhotoPath="userStore.userPhotoPath"
+                :render_dropdown_links="render_dropdown_links"
+                :goLink="goLink"
+              />
             </div>
           </div>
         </template>
@@ -177,7 +182,7 @@ const goLink = (link) => {
                     <template v-if="authStore.token">
                       <div
                         class="flex justify-end items-center rounded-none py-3"
-                        v-for="link in drop_down_links"
+                        v-for="link in render_dropdown_links"
                         :key="link.sm_name"
                       >
                         <template v-if="link.sm_name !== '會員登出'">

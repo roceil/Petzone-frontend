@@ -10,6 +10,7 @@ export const login_api = async (email, password) => {
       password: password
     })
     if (data) {
+      console.log('login_api', data)
       return data
     }
     throw new Error('登入失敗')

@@ -1,8 +1,5 @@
 <script setup>
-import { drop_down_links } from '@/constants'
 import avatar from '@/assets/avatar.svg'
-import { useRouter } from 'vue-router'
-import { useUserStore } from '../stores/user'
 
 defineProps({
   logout: {
@@ -12,18 +9,16 @@ defineProps({
   userPhotoPath: {
     type: String,
     required: true
+  },
+  render_dropdown_links: {
+    type: Array,
+    required: true
+  },
+  goLink: {
+    type: Function,
+    required: true
   }
 })
-
-const router = useRouter()
-const userStore = useUserStore()
-const goLink = (link) => {
-  if (link === '/mypost') {
-    router.push(`/mypost/${userStore.userId}`)
-  } else {
-    router.push(link)
-  }
-}
 </script>
 
 <template>
@@ -43,7 +38,7 @@ const goLink = (link) => {
       class="dropdown-content z-[1] menu shadow bg-base-100 rounded w-[182px] border border-font text-font p-0 overflow-hidden"
     >
       <li
-        v-for="link in drop_down_links"
+        v-for="link in render_dropdown_links"
         :key="link.name"
         class="hover:bg-[#EEF1F4] h-[43px] flex justify-center"
       >

@@ -15,6 +15,7 @@ const userPointsHistory = ref([])
 const getMemberData = async () => {
   try {
     const { pointsRecord } = await get_member_data_api(userStore.userId)
+    console.log(pointsRecord)
     userPointsHistory.value = pointsRecord.reverse()
   } catch (error) {
     console.error(error)
@@ -28,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="PointsHistory">
+  <div class="PointsHistory col-span-10">
     <MemberCenterDetail title="積分詳情">
       <PointsHistory :userPointsHistory="userPointsHistory" />
     </MemberCenterDetail>

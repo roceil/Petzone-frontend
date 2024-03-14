@@ -31,11 +31,16 @@ const { handleSubmit } = useForm({
 })
 
 const onSubmit = handleSubmit(async ({ email, password }) => {
-  const { accessToken, photo, userId } = await login_api(email, password)
+  const { accessToken, photo, userId, permission } = await login_api(email, password)
   if (!accessToken) {
     alertStore.openAlert('error', '登入失敗，請檢查帳號密碼是否正確')
     return
   }
+
+  if (permission === 'admin') {
+    authStore.set_permissions(permission)
+  }
+  
   authStore.set_token(accessToken)
   userStore.setUserPhotoPath(photo)
   userStore.setUserId(userId)

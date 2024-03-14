@@ -93,7 +93,7 @@ onMounted(async () => {
 
   <div class="container">
     <!-- 購買明細 -->
-    <div class="mt-10 flex justify-center">
+    <div class="my-10 flex justify-center">
       <table class="w-[384px] text-font md:w-[900px]">
         <thead class="h-[60px] bg-third">
           <th colspan="4" class="rounded-[10px] text-center md:text-xl">購買明細</th>

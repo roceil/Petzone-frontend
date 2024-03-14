@@ -66,13 +66,13 @@ const editPostModalRef = ref()
             <p class="text-font font-semibold mt-4 text-center">{{ userData.nickName }}</p>
           </div>
 
-          <div class="text-font leading-5 flex items-center ml-10">
+          <div class="text-font leading-5 flex items-center ml-5 md:ml-10">
             <p>{{ userData.intro }}</p>
           </div>
         </div>
 
         <button
-          class="btn bg-secondary hover:bg-font border-none text-white font-semibold px-6 py-2 text-base"
+          class="btn bg-secondary hover:bg-font border-none text-xs text-white font-semibold md:px-6 md:py-2 md:text-base"
           v-if="userId === userData._id"
           @click="editPostModalRef.showModal(null)"
         >

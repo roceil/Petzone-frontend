@@ -58,3 +58,12 @@ export const delete_product_review_api = async (productId, userId) => {
     console.error(error)
   }
 }
+
+// 後台取得所有訂單資料
+export const get_orders_api = async (query, queryValue) => {
+  try {
+    return axios.get(`${VITE_API_BASE_URL}/api/orders?${query}=${queryValue}`, config())
+  } catch (error) {
+    console.error(error)
+  }
+}

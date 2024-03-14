@@ -1,6 +1,6 @@
 <script setup>
 import { ref, defineProps } from 'vue'
-const props = defineProps(['pagination', 'filterProducts'])
+const props = defineProps(['view', 'pagination', 'filterProducts', 'filterOrders'])
 
 const currentPage = ref(1)
 
@@ -11,7 +11,12 @@ const changePage = (page) => {
     page = props.pagination
   }
   currentPage.value = page
-  props.filterProducts('page', currentPage.value)
+
+  if (props.view === 'products') {
+    props.filterProducts('page', currentPage.value)
+  } else if (props.view === 'orders') {
+    props.filterOrders('page', currentPage.value)
+  }
 }
 </script>
 
@@ -41,7 +46,7 @@ const changePage = (page) => {
         class="text-font items-center px-4 py-2 text-sm font-semibold"
         v-for="page in pagination"
         :key="page"
-        @click.prevent="filterProducts('page', page)"
+        @click.prevent="changePage(page)"
         >{{ page }}</a
       >
       <ul>

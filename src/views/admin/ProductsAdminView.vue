@@ -9,6 +9,7 @@ const productName = ref('')
 const categoryName = ref('請選擇商品類型')
 const isEnabled = ref(1)
 const pagination = ref(1)
+const view = ref('products')
 
 const searchProducts = async (query) => {
   const { data } = await get_products_api(query, productName.value)
@@ -186,6 +187,7 @@ onMounted(async () => {
         </table>
       </div>
       <PaginationComponent
+        :view="view"
         :pagination="pagination"
         :filterProducts="filterProducts"
       ></PaginationComponent>

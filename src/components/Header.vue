@@ -16,6 +16,8 @@ import SetNewPasswordModal from './modal/SetNewPasswordModal.vue'
 import AvatarDropDownList from './AvatarDropDownList.vue'
 import CartDropDownList from './CartDropDownList.vue'
 import default_user_icon_sm from '@/assets/header/default_user_icon_sm.svg'
+import gift from '@/assets/sidebar/gift.svg'
+import post from '@/assets/sidebar/post.svg'
 import shopping_cart_icon from '@/assets/header/shopping-cart.svg'
 import { headerLinks } from '@/constants'
 import { useAlertStore } from '@/stores/alert'
@@ -218,7 +220,7 @@ const goLink = (link) => {
                       class="py-5 border-y shadow-lg border-font rounded-none flex justify-end"
                     >
                       <div class="flex space-x-2 items-center">
-                        <img :src="default_user_icon_sm" alt="userPhotoPath" class="w-4" />
+                        <img :src="gift" alt="shopPhotoPath" class="w-4" />
                         <p class="text-font font-bold text-xl w-full text-right">逛逛商店</p>
                       </div>
                     </RouterLink>
@@ -230,7 +232,7 @@ const goLink = (link) => {
                       class="py-5 border-b shadow-lg border-font rounded-none flex justify-end"
                     >
                       <div class="flex space-x-2 items-center">
-                        <img :src="default_user_icon_sm" alt="userPhotoPath" class="w-4" />
+                        <img :src="post" alt="postPhotoPath" class="w-4" />
                         <p class="text-font font-bold text-xl w-full text-right">看看貼文</p>
                       </div>
                     </RouterLink>

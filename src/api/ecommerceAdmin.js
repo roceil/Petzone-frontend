@@ -36,3 +36,34 @@ export const post_product_api = async (newProduct) => {
     console.error(error)
   }
 }
+
+// 修改產品資料
+export const put_product_api = async (productId, product) => {
+  try {
+    return axios.put(`${VITE_API_BASE_URL}/api/product/${productId}`, product, config())
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 後台刪除產品評論
+export const delete_product_review_api = async (productId, userId) => {
+  try {
+    return await axios
+      .delete(`${VITE_API_BASE_URL}/api/product/admin/review/${productId}/${userId}`, config())
+      .then((res) => {
+        return res.data
+      })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 後台取得所有訂單資料
+export const get_orders_api = async (query, queryValue) => {
+  try {
+    return axios.get(`${VITE_API_BASE_URL}/api/orders?${query}=${queryValue}`, config())
+  } catch (error) {
+    console.error(error)
+  }
+}

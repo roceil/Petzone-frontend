@@ -1,6 +1,15 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
+import router from '@/router'
 import { sidebarLinks } from '@/constants'
+import { useUserStore } from '@/stores/user'
+
+const userStore = useUserStore()
+
+const goAnotherPage = (link) => {
+  userStore.resetCurrentPage()
+  router.push(link)
+}
 </script>
 
 <template>
@@ -15,11 +24,12 @@ import { sidebarLinks } from '@/constants'
               :key="link.name"
             >
               <img :src="link.icon" :alt="link.name" />
-              <RouterLink
-                :to="link.link"
+              <button
+                @click="goAnotherPage(link.link)"
                 class="flex items-center text-2xl font-bold first-letter:hover:text-dark"
-                >{{ link.name }}</RouterLink
               >
+                {{ link.name }}
+              </button>
             </li>
           </ul>
         </div>

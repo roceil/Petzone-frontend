@@ -25,7 +25,14 @@ export const drop_down_links = [
   { name: '我的會員中心', link: '/membercenter', sm_name: '我的資料' },
   { name: '我的歷史訂單', link: '/membercenter/ordershistory', sm_name: '我的訂單' },
   { name: '我的貼文專區', link: '/mypost', sm_name: '我的貼文' },
-  // { name: '後台管理', link: '/item4' },
+  { name: '會員登出', link: '/item5', sm_name: '會員登出' }
+]
+
+export const drop_down_admin_links = [
+  { name: '我的會員中心', link: '/membercenter', sm_name: '我的資料' },
+  { name: '我的歷史訂單', link: '/membercenter/ordershistory', sm_name: '我的訂單' },
+  { name: '我的貼文專區', link: '/mypost', sm_name: '我的貼文' },
+  { name: '後台管理', link: '/admin', sm_name: '後台管理' },
   { name: '會員登出', link: '/item5', sm_name: '會員登出' }
 ]
 

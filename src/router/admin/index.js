@@ -1,5 +1,11 @@
+import Cookies from 'js-cookie'
+
 const beforeEnter = () => {
-  // 權限檢查
+  // 檢查進入 admin 之前 Cookie 是否有 permissions
+  const permissionsCheck = Cookies.get('permissions')
+  if (!permissionsCheck) {
+    return '/'
+  }
 }
 const routes = [
   {
@@ -15,6 +21,14 @@ const routes = [
       {
         path: 'accounts',
         component: () => import('../../views/admin/AccountsAdminView.vue')
+      },
+      {
+        path: 'accountdetails/:id',
+        component: () => import('@/views/admin/AccountsDetailsView.vue')
+      },
+      {
+        path: 'pointshistory/:id',
+        component: () => import('@/views/admin/AccountsPointsHistoryView.vue')
       },
 
       {

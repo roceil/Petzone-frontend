@@ -1,15 +1,56 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import PaginationComponent from '@/components/PaginationComponent.vue'
+import { get_all_users_api } from '@/api/user'
 
-const productName = ref('')
-const isEnabled = ref(-1)
-const pagination = ref(1)
+const renderUserList = ref([])
+const account = ref('')
+const nickName = ref('')
+const permission = ref('')
+const pagination = ref({
+  totalPage: 1,
+  nowPage: 1
+})
 
 const router = useRouter()
 const goAccountDetails = (accountId) => {
   router.push(`/admin/accountdetails/${accountId}`)
+}
+
+const changePage = (page) => {
+  pagination.value.nowPage = page
+  getAllUser()
+}
+const resetSearch = () => {
+  account.value = ''
+  nickName.value = ''
+  permission.value = ''
+  pagination.value.nowPage = 1
+  getAllUser()
+}
+
+const getAllUser = async () => {
+  const params = {
+    page: pagination.value.nowPage,
+    account: account.value || null,
+    nickName: nickName.value || null,
+    permission: permission.value || null
+  }
+  const res = await get_all_users_api(params)
+  renderUserList.value = res.users
+  pagination.value.totalPage = res.totalPages
+}
+
+onMounted(() => {
+  getAllUser()
+})
+
+const filterPermission = (permission) => {
+  if (permission === 'admin') {
+    return '管理者'
+  }
+  return '一般用戶'
 }
 </script>
 
@@ -22,42 +63,30 @@ const goAccountDetails = (accountId) => {
     <!-- 搜尋、分類區塊 -->
     <div class="flex space-x-2 mt-4">
       <div class="flex items-center space-x-2">
-        <label for="name" class="mr-1 text-xl">用戶帳號</label>
+        <label for="account" class="mr-1 text-xl">用戶帳號</label>
         <div class="relative">
           <input
             type="text"
-            id="name"
-            name="name"
+            id="account"
+            name="account"
             class="max-w-[170px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             placeholder="請輸入用戶帳號"
-            v-model="productName"
+            v-model="account"
           />
-          <button
-            class="absolute inset-y-0 right-0 top-0 px-2"
-            @click.prevent="searchProducts('name')"
-          >
-            <img src="../../assets/search.svg" alt="search" />
-          </button>
         </div>
       </div>
 
       <div class="flex items-center space-x-2">
-        <label for="name" class="mr-1 text-xl">用戶暱稱</label>
+        <label for="nickName" class="mr-1 text-xl">用戶暱稱</label>
         <div class="relative">
           <input
             type="text"
-            id="name"
-            name="name"
+            id="nickName"
+            name="nickName"
             class="max-w-[170px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             placeholder="請輸入用戶暱稱"
-            v-model="productName"
+            v-model="nickName"
           />
-          <button
-            class="absolute inset-y-0 right-0 top-0 px-2"
-            @click.prevent="searchProducts('name')"
-          >
-            <img src="../../assets/search.svg" alt="search" />
-          </button>
         </div>
       </div>
 
@@ -66,14 +95,16 @@ const goAccountDetails = (accountId) => {
         <select
           id="isEnabled"
           class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
-          v-model="isEnabled"
-          @click="filterProducts('isEnabled')"
+          v-model="permission"
         >
-          <option value="-1" disabled>請選擇權限</option>
-          <option value="0">管理者</option>
-          <option value="1">一般使用者</option>
+          <option value="" disabled>請選擇權限</option>
+          <option value="admin">管理者</option>
         </select>
       </div>
+    </div>
+    <div class="flex space-x-2 justify-end">
+      <button class="btn btn-sm mt-4" @click="resetSearch">清除</button>
+      <button class="btn btn-sm mt-4" @click="getAllUser">搜尋</button>
     </div>
 
     <!-- 商品列表 -->
@@ -90,20 +121,20 @@ const goAccountDetails = (accountId) => {
 
         <!-- 表格內容 -->
         <tbody class="rounded-[10px] shadow">
-          <tr v-for="(item, index) in 5" :key="index">
+          <tr v-for="(user, index) in renderUserList" :key="index">
             <!-- 用戶帳號 -->
-            <td>abc3213ddas@gmail.com</td>
+            <td>{{ user.account }}</td>
             <!-- 用戶姓名 -->
-            <td>拉拉雄</td>
+            <td>{{ user.name }}</td>
             <!-- 用戶暱稱 -->
-            <td>拉拉雄</td>
+            <td>{{ user.nickName }}</td>
             <!-- 用戶權限 -->
-            <td>管理者</td>
+            <td>{{ filterPermission(user.permission) }}</td>
             <!-- 操作 -->
             <td class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2">
               <button
                 class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
-                @click.prevent="goAccountDetails(123)"
+                @click.prevent="goAccountDetails(user._id)"
               >
                 查看詳情
               </button>
@@ -120,8 +151,9 @@ const goAccountDetails = (accountId) => {
     </div>
 
     <PaginationComponent
-      :pagination="pagination"
-      :filterProducts="filterProducts"
+      :totalPage="pagination.totalPage"
+      :nowPage="pagination.nowPage"
+      @changePage="changePage"
     ></PaginationComponent>
   </div>
 </template>

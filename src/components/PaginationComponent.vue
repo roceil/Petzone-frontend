@@ -1,14 +1,20 @@
 <script setup>
-import { ref, defineProps } from 'vue'
+import { ref, defineProps, onMounted } from 'vue'
+import { useUserStore } from '@/stores/user'
 const props = defineProps(['totalPage', 'nowPage'])
 const emits = defineEmits(['changePage'])
 
+const userStore = useUserStore()
 const currentPage = ref(1)
 
 const changePage = (page) => {
   currentPage.value = page
   emits('changePage', currentPage.value)
 }
+
+onMounted(() => {
+  currentPage.value = userStore.currentPage
+})
 </script>
 
 <template>
@@ -33,8 +39,8 @@ const changePage = (page) => {
       <a
         href="#"
         aria-current="page"
-        class="text-font items-center px-4 py-2 text-sm font-semibold"
-        :class="{ 'text-input_font': page === props.nowPage }"
+        class="text-font items-center px-4 py-2 text-sm font-semibold rounded-[10px]"
+        :class="{ 'bg-font text-white': page === props.nowPage }"
         v-for="page in props.totalPage"
         :key="page"
         @click.prevent="changePage(page)"

@@ -1,15 +1,10 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { get_user_api } from '@/api/user'
+import { useRoute } from 'vue-router'
+import default_avatar from '@/assets/default_avatar.png'
 
-const fakeUserData = {
-  account: 'abc@gmail.com',
-  name: '拉拉熊',
-  nickName: '拉拉熊',
-  phone: '0912345678',
-  address: '台北市信義區信義路五段7號',
-  permission: '管理員',
-  intro: '我是拉拉熊，我是管理員hahahahahahahah'
-}
+const userData = ref({})
 
 const tableLabel = [
   '用戶帳號',
@@ -32,16 +27,34 @@ const labelToKey = {
 }
 
 const renderData = computed(() => {
-  return tableLabel.map((label) => ({ label, value: fakeUserData[labelToKey[label]] }))
+  return tableLabel.map((label) => ({ label, value: userData.value[labelToKey[label]] }))
 })
 
-// 將fakeUserData.permission映射到select選項的value
-const permissionOptions = {
-  管理員: '0',
-  一般使用者: '1'
+const renderPhotoPath = computed(() => {
+  if (userData.value.photo) return userData.value.photo
+  return default_avatar
+})
+
+const isEnabled = computed(() => {
+  if (userData.value.permission) return 0
+  return 1
+})
+
+const route = useRoute()
+const userId = route.params.id
+
+const getUserData = async () => {
+  const res = await get_user_api(userId)
+  userData.value = res
 }
 
-const isEnabled = ref(permissionOptions[fakeUserData.permission])
+const goBack = () => {
+  window.history.back()
+}
+
+onMounted(() => {
+  getUserData()
+})
 </script>
 
 <template>
@@ -78,12 +91,14 @@ const isEnabled = ref(permissionOptions[fakeUserData.permission])
         </ul>
 
         <div class="flex flex-col items-center">
-          <div class="w-[150px] h-[150px] rounded-full bg-red-300"></div>
+          <div class="w-[150px] h-[150px] rounded-full overflow-hidden">
+            <img :src="renderPhotoPath" :alt="userData.name" class="w-full h-full object-cover" />
+          </div>
 
-          <p class="mt-10">可用積分：{{ 50 }} 點</p>
+          <p class="mt-10">可用積分：{{ userData.points || 0 }} 點</p>
 
           <RouterLink
-            to="/admin/pointshistory/123"
+            :to="`/admin/pointshistory/${userData._id}`"
             class="btn bg-third text-font border-none hover:bg-font hover:text-white px-[15px] py-[9px] mt-[23px]"
           >
             查看積分詳情
@@ -91,6 +106,7 @@ const isEnabled = ref(permissionOptions[fakeUserData.permission])
 
           <div class="w-full flex justify-center space-x-4 md:justify-between mt-[93px]">
             <button
+              @click="goBack"
               class="btn bg-third text-font font-semibold rounded px-5 text-base w-1/2 md:w-[125px] border-none hover:opacity-80 hover:bg-third"
             >
               取消

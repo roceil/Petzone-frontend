@@ -45,9 +45,7 @@ const convert = (ordersList) => {
   return ordersList.map((order) => {
     // 時間取年月日
     const createAt = order.createdAt
-    const updatedAt = order.updatedAt
     order.createdAt = createAt.slice(0, 10)
-    order.updatedAt = updatedAt.slice(0, 10)
 
     // 付款方式
     switch (order.status) {
@@ -152,10 +150,7 @@ onMounted(() => {
                 <div
                   class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2"
                 >
-                  <button
-                    class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
-                    @click.prevent="directToProductPage(product._id, 'check')"
-                  >
+                  <button class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300">
                     查看詳情
                   </button>
                 </div>

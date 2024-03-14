@@ -4,6 +4,7 @@ const beforeEnter = () => {
   // 檢查進入 admin 之前 Cookie 是否有 permissions
   const permissionsCheck = Cookies.get('permissions')
   if (!permissionsCheck) {
+    alert('權限不足')
     return '/'
   }
 }

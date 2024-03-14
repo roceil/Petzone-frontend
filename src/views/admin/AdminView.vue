@@ -31,9 +31,7 @@ onUnmounted(() => {
       <div class="col-span-12 h-[calc(100vh-64px)]">
         <img :src="support" alt="" srcset="" />
 
-        <p
-          class="text-center flex justify-center items-center text-font text-lg font-semibold"
-        >
+        <p class="text-center flex justify-center items-center text-font text-lg font-semibold">
           非常抱歉<br />後台只支援解析度高於 992px 的裝置
         </p>
       </div>

@@ -30,7 +30,6 @@ export const useAuthStore = defineStore('auth', () => {
   const permissions = ref('')
 
   const set_permissions = (permissionData) => {
-    console.log('permissionData', permissionData)
     permissions.value = permissionData
     write_cookie()
   }

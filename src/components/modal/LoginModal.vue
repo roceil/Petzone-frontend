@@ -40,7 +40,7 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
   if (permission === 'admin') {
     authStore.set_permissions(permission)
   }
-  
+
   authStore.set_token(accessToken)
   userStore.setUserPhotoPath(photo)
   userStore.setUserId(userId)

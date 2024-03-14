@@ -2,12 +2,17 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 const { VITE_API_BASE_URL } = import.meta.env
-const config = () => {
-  return {
+const config = (params = null) => {
+  const config = {
     headers: {
       authorization: `Bearer ${Cookies.get('token')}`
-    }
+    },
+    params
   }
+  if (params) {
+    config.params = params
+  }
+  return config
 }
 
 // 取得所有會員資料
@@ -87,9 +92,9 @@ export const get_monthly_donate_rank_api = async () => {
 }
 
 // 取得所有用戶（admin）
-export const get_all_users_api = async (page) => {
+export const get_all_users_api = async (params) => {
   try {
-    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/allUsers?page=${page}`, config())
+    const { data } = await axios.get(`${VITE_API_BASE_URL}/api/allUsers`, config(params))
     return data
   } catch (error) {
     console.error(error)

@@ -1,164 +1,159 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import { get_all_users_api } from '@/api/user'
-import { useUserStore } from '@/stores/user'
 
-const productName = ref('')
-const isEnabled = ref(-1)
-const pagination = ref(1)
+const renderUserList = ref([])
+const account = ref('')
+const nickName = ref('')
+const permission = ref('')
+const pagination = ref({
+  totalPage: 1,
+  nowPage: 1
+})
 
 const router = useRouter()
 const goAccountDetails = (accountId) => {
   router.push(`/admin/accountdetails/${accountId}`)
 }
 
-const userStore = useUserStore()
-const renderUserList = ref([])
-const getAllUser = async (newPage) => {
-  const res = await get_all_users_api(newPage)
-  renderUserList.value = res.users
-  pagination.value = res.totalPages
+const changePage = (page) => {
+  pagination.value.nowPage = page
+  getAllUser()
+}
+const resetSearch = () => {
+  account.value = ''
+  nickName.value = ''
+  permission.value = ''
+  pagination.value.nowPage = 1
+  getAllUser()
 }
 
-// 當 userStore.currentPage 變化時，自動重新 fetch 數據
-watch(
-  () => userStore.currentPage,
-  async (newPage) => {
-    await getAllUser(newPage)
-  },
-  { immediate: true }
-) // immediate: true 確保在掛載時也執行一次
-
-// 判斷是管理員還是一般使用者
-const filterProducts = (type) => {
-  let result
-
-  if (!type) {
-    result = '一般用戶'
-  } else {
-    result = '管理員'
+const getAllUser = async () => {
+  const params = {
+    page: pagination.value.nowPage,
+    account: account.value || null,
+    nickName: nickName.value || null,
+    permission: permission.value || null
   }
+  const res = await get_all_users_api(params)
+  renderUserList.value = res.users
+  pagination.value.totalPage = res.totalPages
+}
 
-  return result
+onMounted(() => {
+  getAllUser()
+})
+
+const filterPermission = (permission) => {
+  if (permission === 'admin') {
+    return '管理者'
+  }
+  return '一般用戶'
 }
 </script>
 
 <template>
-  <div class="ml-10 mt-10 flex justify-center col-span-10 text-font">
-    <div class="w-[800px] lg:w-[900px]">
-      <!-- 頁面標題 -->
-      <div class="flex justify-between">
-        <h1 class="text-5xl font-bold">帳號管理</h1>
-      </div>
-      <!-- 搜尋、分類區塊 -->
-      <div class="flex justify-between mt-4">
-        <div class="flex items-center space-x-2">
-          <label for="account" class="mr-1 text-xl">用戶帳號</label>
-          <div class="relative">
-            <input
-              type="text"
-              id="account"
-              name="account"
-              class="max-w-[170px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
-              placeholder="請輸入用戶帳號"
-              v-model="productName"
-            />
-            <button
-              class="absolute inset-y-0 right-0 top-0 px-2"
-              @click.prevent="searchProducts('name')"
-            >
-              <img src="../../assets/search.svg" alt="search" />
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <label for="nickName" class="mr-1 text-xl">用戶暱稱</label>
-          <div class="relative">
-            <input
-              type="text"
-              id="nickName"
-              name="nickName"
-              class="max-w-[170px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
-              placeholder="請輸入用戶暱稱"
-              v-model="productName"
-            />
-            <button
-              class="absolute inset-y-0 right-0 top-0 px-2"
-              @click.prevent="searchProducts('name')"
-            >
-              <img src="../../assets/search.svg" alt="search" />
-            </button>
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-2">
-          <label for="isEnabled" class="mx-1 text-xl">權限</label>
-          <select
-            id="isEnabled"
-            class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
-            v-model="isEnabled"
-            @click="filterProducts('isEnabled')"
-          >
-            <option value="-1" disabled>請選擇權限</option>
-            <option value="0">管理者</option>
-            <option value="1">一般使用者</option>
-          </select>
+  <div class="ml-10 mt-10 col-span-10 text-font">
+    <!-- 頁面標題 -->
+    <div class="flex justify-between">
+      <h1 class="text-5xl font-bold">帳號管理</h1>
+    </div>
+    <!-- 搜尋、分類區塊 -->
+    <div class="flex space-x-2 mt-4">
+      <div class="flex items-center space-x-2">
+        <label for="account" class="mr-1 text-xl">用戶帳號</label>
+        <div class="relative">
+          <input
+            type="text"
+            id="account"
+            name="account"
+            class="max-w-[170px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            placeholder="請輸入用戶帳號"
+            v-model="account"
+          />
         </div>
       </div>
 
-      <!-- 用戶列表 -->
-      <div class="mt-6">
-        <!-- 表格標題 -->
-        <div
-          class="grid grid-cols-12 bg-third h-[60px] items-center px-2 text-base lg:text-xl rounded-[10px] text-center"
+      <div class="flex items-center space-x-2">
+        <label for="nickName" class="mr-1 text-xl">用戶暱稱</label>
+        <div class="relative">
+          <input
+            type="text"
+            id="nickName"
+            name="nickName"
+            class="max-w-[170px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            placeholder="請輸入用戶暱稱"
+            v-model="nickName"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2">
+        <label for="isEnabled" class="mx-1 text-xl">權限</label>
+        <select
+          id="isEnabled"
+          class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+          v-model="permission"
         >
-          <div class="col-span-4">用戶帳號</div>
-          <div class="col-span-2">用戶姓名</div>
-          <div class="col-span-2">用戶暱稱</div>
-          <div class="col-span-1 lg:col-span-2">權限</div>
-          <div class="col-span-3 lg:col-span-2 text-center">操作</div>
-        </div>
+          <option value="" disabled>請選擇權限</option>
+          <option value="admin">管理者</option>
+        </select>
+      </div>
+    </div>
+    <div class="flex space-x-2 justify-end">
+      <button class="btn btn-sm mt-4" @click="resetSearch">清除</button>
+      <button class="btn btn-sm mt-4" @click="getAllUser">搜尋</button>
+    </div>
+
+    <!-- 商品列表 -->
+    <div class="mt-4 overflow-x-auto">
+      <table class="table">
+        <!-- 表格標題 -->
+        <thead class="h-[60px] bg-third text-xl">
+          <th class="rounded-l-[10px]">用戶帳號</th>
+          <th>用戶姓名</th>
+          <th>用戶暱稱</th>
+          <th>權限</th>
+          <th class="rounded-r-[10px]">操作</th>
+        </thead>
 
         <!-- 表格內容 -->
-        <div
-          class="w-full border border-[#9BA5B7] rounded-[10px] custom-shadow py-11 px-2 space-y-5"
-        >
-          <div
-            v-for="user in renderUserList"
-            :key="user._id"
-            class="grid grid-cols-12 items-center text-center"
-          >
+        <tbody class="rounded-[10px] shadow">
+          <tr v-for="(user, index) in renderUserList" :key="index">
             <!-- 用戶帳號 -->
-            <div class="col-span-4">{{ user.account }}</div>
+            <td>{{ user.account }}</td>
             <!-- 用戶姓名 -->
-            <div class="col-span-2">{{ user.name }}</div>
+            <td>{{ user.name }}</td>
             <!-- 用戶暱稱 -->
-            <div class="col-span-2">{{ user.nickName }}</div>
+            <td>{{ user.nickName }}</td>
             <!-- 用戶權限 -->
-            <div class="col-span-1 lg:col-span-2">{{ filterProducts(user.permission) }}</div>
+            <td>{{ filterPermission(user.permission) }}</td>
             <!-- 操作 -->
-            <div class="col-span-3 lg:col-span-2 flex justify-center button-group space-x-3">
+            <td class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2">
               <button
-                class="btn bg-gray-200 border-0 p-0 px-1 hover:bg-gray-300"
+                class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
                 @click.prevent="goAccountDetails(user._id)"
               >
                 查看詳情
               </button>
               <button
-                class="btn text-white bg-secondary p-0 px-1 hover:bg-font"
+                class="btn btn-sm text-white bg-secondary hover:bg-font"
                 @click.prevent="directToProductPage(product._id, 'edit')"
               >
                 刪除用戶
               </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <PaginationComponent :pagination="pagination" />
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+
+    <PaginationComponent
+      :totalPage="pagination.totalPage"
+      :nowPage="pagination.nowPage"
+      @changePage="changePage"
+    ></PaginationComponent>
   </div>
 </template>

@@ -2,18 +2,23 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 const { VITE_API_BASE_URL } = import.meta.env
-const config = () => {
-  return {
+const config = (params = null) => {
+  const config = {
     headers: {
       authorization: `Bearer ${Cookies.get('token')}`
-    }
+    },
+    params
   }
+  if (params) {
+    config.params = params
+  }
+  return config
 }
 
 // 取得所有產品資料
-export const get_products_api = async (query, queryValue) => {
+export const get_products_api = async (params) => {
   try {
-    return axios.get(`${VITE_API_BASE_URL}/api/products/admin?${query}=${queryValue}`, config())
+    return axios.get(`${VITE_API_BASE_URL}/api/products/admin`, config(params))
   } catch (error) {
     console.error(error)
   }
@@ -60,9 +65,9 @@ export const delete_product_review_api = async (productId, userId) => {
 }
 
 // 後台取得所有訂單資料
-export const get_orders_api = async (query, queryValue) => {
+export const get_orders_api = async (params) => {
   try {
-    return axios.get(`${VITE_API_BASE_URL}/api/orders?${query}=${queryValue}`, config())
+    return axios.get(`${VITE_API_BASE_URL}/api/orders`, config(params))
   } catch (error) {
     console.error(error)
   }

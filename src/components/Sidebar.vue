@@ -14,7 +14,7 @@ const goAnotherPage = (link) => {
 
 <template>
   <div class="col-span-2 justify-end">
-    <aside class="w-[200px] h-full border-r border-font">
+    <aside class="h-full border-r border-font">
       <div class="mx-[25px] py-[80px] text-font">
         <div>
           <ul>
@@ -23,10 +23,10 @@ const goAnotherPage = (link) => {
               v-for="link in sidebarLinks"
               :key="link.name"
             >
-              <img :src="link.icon" :alt="link.name" />
+              <img class="hidden lg:block mr-2" :src="link.icon" :alt="link.name" />
               <button
                 @click="goAnotherPage(link.link)"
-                class="flex items-center text-2xl font-bold first-letter:hover:text-dark"
+                class="flex items-center text-xl lg:text-2xl font-bold first-letter:hover:text-dark"
               >
                 {{ link.name }}
               </button>

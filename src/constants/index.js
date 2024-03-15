@@ -4,7 +4,7 @@ import users from '../assets/sidebar/users.svg'
 import gift from '../assets/sidebar/gift.svg'
 import truck from '../assets/sidebar/truck.svg'
 import post from '../assets/sidebar/post.svg'
-import coupon from '../assets/sidebar/coupon.svg'
+// import coupon from '../assets/sidebar/coupon.svg'
 
 // Header 連結
 export const headerLinks = [
@@ -293,10 +293,10 @@ export const sidebarLinks = [
     name: '貼文管理',
     icon: post,
     link: '/admin/posts'
-  },
-  {
-    name: '優惠券管理',
-    icon: coupon,
-    link: '/admin/coupons'
   }
+  // {
+  //   name: '優惠券管理',
+  //   icon: coupon,
+  //   link: '/admin/coupons'
+  // }
 ]

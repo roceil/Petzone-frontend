@@ -28,7 +28,7 @@ export const orderStore = defineStore('orderStore', () => {
   const GetOrder = async (orderId) => {
     const { data } = await get_order_by_id_api(orderId)
     // console.log(data)
-    order.value = JSON.parse(JSON.stringify(data.order[0]))
+    order.value = data.order
     order.value.createdAt = order.value.createdAt.slice(0, 10)
     order.value.updatedAt = order.value.updatedAt.slice(0, 10)
   }

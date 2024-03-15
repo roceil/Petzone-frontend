@@ -57,6 +57,10 @@ const routes = [
         component: () => import('../../views/admin/PostsAdminView.vue')
       },
       {
+        path: 'post/:id',
+        component: () => import('../../views/admin/PostAdminView.vue')
+      },
+      {
         path: 'coupons',
         component: () => import('../../views/admin/CouponsAdminView.vue')
       }

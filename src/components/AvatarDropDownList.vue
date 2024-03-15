@@ -35,7 +35,7 @@ defineProps({
 
     <ul
       tabindex="0"
-      class="dropdown-content z-[1] menu shadow bg-base-100 rounded w-[182px] border border-font text-font p-0 overflow-hidden"
+      class="dropdown-content z-[2] menu shadow bg-base-100 rounded w-[182px] border border-font text-font p-0 overflow-hidden"
     >
       <li
         v-for="link in render_dropdown_links"

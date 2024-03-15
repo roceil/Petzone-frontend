@@ -53,7 +53,7 @@ const deletePost = async () => {
 
 // 點讚
 const isLiked = computed(() => {
-  const like = post.value.likes.find((item) => item.userId === userId.value)
+  const like = post.value.likes.find((item) => item.user === userId.value)
   return like && like.isLiked ? true : false
 })
 const handleClickLike = async () => {
@@ -61,7 +61,7 @@ const handleClickLike = async () => {
     alertStore.openAlert('error', '此為會員限定功能')
     return
   }
-  const like = post.value.likes.find((item) => item.userId === userId.value)
+  const like = post.value.likes.find((item) => item.user === userId.value)
   if (!like) {
     try {
       await post_post_like_api(post.value._id)

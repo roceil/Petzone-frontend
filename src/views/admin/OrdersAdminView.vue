@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import PaginationComponent from '@/components/PaginationComponent.vue'
 import { get_orders_api } from '@/api/ecommerceAdmin'
+import { useRouter } from 'vue-router'
 
 const orders = ref([])
 const orderId = ref('')
@@ -47,7 +48,7 @@ const convert = (ordersList) => {
     const createAt = order.createdAt
     order.createdAt = createAt.slice(0, 10)
 
-    // 付款方式
+    // 訂單狀態
     switch (order.status) {
       case 'unPaid':
         order.status = '未付款'
@@ -64,6 +65,11 @@ const convert = (ordersList) => {
     }
     return order
   })
+}
+
+const router = useRouter()
+const directToOrderPage = (orderId) => {
+  router.push({ name: 'adminorder', query: { orderId } })
 }
 
 onMounted(() => {
@@ -105,9 +111,9 @@ onMounted(() => {
           </div>
         </div>
         <div class="flex items-center">
-          <label for="isEnabled" class="mx-1 text-xl">訂單狀態</label>
+          <label for="status" class="mx-1 text-xl">訂單狀態</label>
           <select
-            id="isEnabled"
+            id="status"
             class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             v-model="status"
           >
@@ -150,7 +156,10 @@ onMounted(() => {
                 <div
                   class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2"
                 >
-                  <button class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300">
+                  <button
+                    class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
+                    @click="directToOrderPage(order._id)"
+                  >
                     查看詳情
                   </button>
                 </div>

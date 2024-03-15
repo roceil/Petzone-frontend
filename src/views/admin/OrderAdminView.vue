@@ -80,7 +80,7 @@ const convert = (order) => {
 onMounted(async () => {
   orderId.value = route.query.orderId
   const { data } = await get_order_by_id_api(orderId.value)
-  console.log(data)
+  // console.log(data)
   order.value = convert(data.order)
 })
 </script>

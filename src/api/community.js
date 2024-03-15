@@ -2,12 +2,17 @@ import axios from 'axios'
 import Cookies from 'js-cookie'
 
 const { VITE_API_BASE_URL } = import.meta.env
-const config = () => {
-  return {
+const config = (params = null) => {
+  const config = {
     headers: {
       authorization: `Bearer ${Cookies.get('token')}`
-    }
+    },
+    params
   }
+  if (params) {
+    config.params = params
+  }
+  return config
 }
 
 // 取得所有 tags
@@ -90,7 +95,7 @@ export const put_post_like_api = async (postId, data) => {
   }
 }
 
-// 留言貼文
+// 新增留言
 export const post_post_comment_api = async (postId, data) => {
   try {
     return await axios.post(`${VITE_API_BASE_URL}/api/post/${postId}/comment`, data, config())
@@ -100,7 +105,7 @@ export const post_post_comment_api = async (postId, data) => {
   }
 }
 
-// 更新留言貼文
+// 更新留言
 export const put_post_comment_api = async (params, data) => {
   try {
     return await axios.put(
@@ -114,6 +119,7 @@ export const put_post_comment_api = async (params, data) => {
   }
 }
 
+// 刪除留言
 export const delete_post_comment_api = async (params) => {
   try {
     return await axios.delete(
@@ -140,6 +146,49 @@ export const get_random_posts_api = async () => {
 export const get_user_posts_api = async (userId) => {
   try {
     return await axios.get(`${VITE_API_BASE_URL}/api/posts/user/${userId}`)
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 後台取得所有貼文
+export const get_posts_api_admin = async (params) => {
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/admin/posts`, config(params))
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 後台取得單一貼文詳情
+export const get_post_api_admin = async (postId) => {
+  try {
+    return await axios.get(`${VITE_API_BASE_URL}/api/admin/post/${postId}`, config())
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 後台刪除貼文
+export const delete_post_api_admin = async (postId) => {
+  try {
+    return await axios.delete(`${VITE_API_BASE_URL}/api/admin/post/${postId}`, config())
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 後台刪除留言
+export const delete_post_comment_api_admin = async (params) => {
+  try {
+    return await axios.delete(
+      `${VITE_API_BASE_URL}/api/admin/post/${params.postId}/comment/${params.commentId}`,
+      config()
+    )
   } catch (error) {
     console.error(error)
     return Promise.reject(error)

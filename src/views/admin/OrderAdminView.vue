@@ -86,11 +86,11 @@ onMounted(async () => {
 </script>
 <template>
   <div class="ml-10 mt-10 col-span-10 text-font">
-    <div>
-      <!-- 頁面標題 -->
-      <h1 class="text-5xl font-bold">訂單詳情</h1>
+    <!-- 頁面標題 -->
+    <h1 class="text-5xl font-bold">訂單詳情</h1>
 
-      <div class="m-auto my-10">
+    <div class="flex justify-center">
+      <div class="my-10 w-[760px]">
         <!-- 訂單編號及狀態 -->
         <div class="flex justify-end">
           <label for="status" class="mx-1 my-3 text-xl">訂單狀態</label>
@@ -112,65 +112,67 @@ onMounted(async () => {
         </div>
 
         <!-- 購買明細 -->
-        <table class="rounded-[10px] w-[760px]">
-          <thead class="h-[60px] bg-third">
-            <th colspan="5" class="rounded-[10px] text-center text-xl">購買明細</th>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="5" class="p-3 pl-5 py-5 text-xl">商品明細</td>
-            </tr>
-            <tr v-for="product in order.products" :key="product._id">
-              <td class="w-[120px]"></td>
-              <td class="py-5">{{ product.name }}</td>
-              <td class="py-5">
-                <p v-if="product.price">NT$ {{ product.price }}</p>
-                <p v-else>NT$ {{ product.originPrice }}</p>
-              </td>
-              <td class="py-5">x {{ product.qty }}</td>
-              <td class="text-right pr-5 py-5">
-                <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
-                <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="w-[100px]"></td>
-              <td class="py-5 border-black border-t-2 text-left" colspan="2">小計</td>
-              <td class="px-5 py-5 border-black border-t-2 text-right" colspan="2">
-                NT$ {{ order.totalPrice }}
-              </td>
-            </tr>
-            <tr v-if="order.finalPrice !== 0">
-              <td colspan="5" class="p-3 pl-5 py-5 text-xl">折抵明細</td>
-            </tr>
-            <tr v-if="order.couponDiscount != 0">
-              <td class="w-[100px]"></td>
-              <td class="py-5" colspan="2">優惠券折扣</td>
-              <td class="px-5 py-5 text-right" colspan="2">-0</td>
-            </tr>
-            <tr v-if="order.pointsDiscount != 0">
-              <td class="w-[100px]"></td>
-              <td class="border-black border-b-2 py-5" colspan="2">會員積分折抵</td>
-              <td class="border-black border-b-2 text-right px-5 py-5" colspan="2">
-                {{ order.pointsDiscount }}
-              </td>
-            </tr>
-            <tr class="border-b-2">
-              <td class="font-bold px-5 py-5 text-2xl" colspan="3">訂單金額</td>
-              <td class="font-bold text-right px-5 py-5 text-2xl" colspan="2">
-                NT$ {{ order.finalPrice ? order.finalPrice : order.totalPrice }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="border rounded-[10px]">
+          <table class="w-[760px]">
+            <thead class="h-[60px] bg-third">
+              <th colspan="5" class="rounded-[10px] text-center text-xl">購買明細</th>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="5" class="p-3 pl-5 py-5 text-xl">商品明細</td>
+              </tr>
+              <tr v-for="product in order.products" :key="product._id">
+                <td class="w-[120px]"></td>
+                <td class="py-5">{{ product.name }}</td>
+                <td class="py-5">
+                  <p v-if="product.price">NT$ {{ product.price }}</p>
+                  <p v-else>NT$ {{ product.originPrice }}</p>
+                </td>
+                <td class="py-5">x {{ product.qty }}</td>
+                <td class="text-right pr-5 py-5">
+                  <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
+                  <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
+                </td>
+              </tr>
+              <tr>
+                <td class="w-[100px]"></td>
+                <td class="py-5 border-black border-t-2 text-left" colspan="2">小計</td>
+                <td class="px-5 py-5 border-black border-t-2 text-right" colspan="2">
+                  NT$ {{ order.totalPrice }}
+                </td>
+              </tr>
+              <tr v-if="order.finalPrice !== 0">
+                <td colspan="5" class="p-3 pl-5 py-5 text-xl">折抵明細</td>
+              </tr>
+              <tr v-if="order.couponDiscount != 0">
+                <td class="w-[100px]"></td>
+                <td class="py-5" colspan="2">優惠券折扣</td>
+                <td class="px-5 py-5 text-right" colspan="2">-0</td>
+              </tr>
+              <tr v-if="order.pointsDiscount != 0">
+                <td class="w-[100px]"></td>
+                <td class="border-black border-b-2 py-5" colspan="2">會員積分折抵</td>
+                <td class="border-black border-b-2 text-right px-5 py-5" colspan="2">
+                  {{ order.pointsDiscount }}
+                </td>
+              </tr>
+              <tr class="border-b-2">
+                <td class="font-bold px-5 py-5 text-2xl" colspan="3">訂單金額</td>
+                <td class="font-bold text-right px-5 py-5 text-2xl" colspan="2">
+                  NT$ {{ order.finalPrice ? order.finalPrice : order.totalPrice }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <!-- 收件人資訊 & 付款方式 -->
         <VForm
-          class="border rounded-[10px]"
+          class="border rounded-[10px] w-[760px]"
           v-slot="{ errors }"
           @submit="onSubmit(recipient, parseInt(paymentType), totalPrice)"
         >
-          <div class="h-[60px] bg-third rounded-[10px] w-[760px]">
+          <div class="h-[60px] bg-third rounded-[10px]">
             <h1 colspan="2" class="font-bold text-center leading-[60px] text-xl">收件人資訊</h1>
           </div>
           <div class="my-5 px-10">

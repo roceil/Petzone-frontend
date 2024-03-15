@@ -142,7 +142,7 @@ onMounted(async () => {
           <td class="text-base font-bold pl-6 py-3 md:text-2xl">商品總計</td>
           <td class="text-right pr-6 py-3 md:text-base">NT$ {{ totalPrice }}</td>
         </tr>
-        <tr>
+        <!-- <tr>
           <td class="font-bold pl-6 py-3 md:text-base">使用優惠代碼</td>
           <td>
             <div class="flex justify-end pr-6 py-3">
@@ -160,7 +160,7 @@ onMounted(async () => {
               </button>
             </div>
           </td>
-        </tr>
+        </tr> -->
         <tr v-if="userId">
           <td colspan="2" class="text-right pr-6 py-3 md:text-base">
             可使用積分: {{ userPoints }} 點

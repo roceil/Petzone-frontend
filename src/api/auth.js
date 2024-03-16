@@ -1,6 +1,14 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 const { VITE_API_BASE_URL } = import.meta.env
+const config = () => {
+  return {
+    headers: {
+      authorization: `Bearer ${Cookies.get('token')}`
+    }
+  }
+}
 
 // 登入 API
 export const login_api = async (email, password) => {
@@ -38,12 +46,16 @@ export const sign_up_api = async (email, password, name, nickName, phone, addres
   }
 }
 
-// 檢查用戶是否存在
+// 檢查會員是否已登入
 export const check_user_api = async () => {
   try {
-    const res = await axios.get(`${VITE_API_BASE_URL}/auth/login/success`, {
-      withCredentials: true
-    })
+    const res = await axios.get(
+      `${VITE_API_BASE_URL}/auth/login/success`,
+      {
+        withCredentials: true
+      },
+      config()
+    )
     return res
   } catch (error) {
     console.error(error)

@@ -92,7 +92,7 @@ const handleInfiniteOnLoad = async () => {
     const res = await get_posts_api(params)
     pagination.value.totalPage = res.data.pagination
     posts.value = [...posts.value, ...res.data.posts]
-    if (res.data.posts.length === 9) {
+    if (res.data.posts.length === 18) {
       scrollDisabled.value = false
     } else {
       scrollDisabled.value = true

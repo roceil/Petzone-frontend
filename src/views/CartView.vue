@@ -65,7 +65,7 @@ onMounted(async () => {
 <template>
   <!-- 頁面標題 -->
   <div class="container mt-10 text-font relative">
-    <h1 class="text-xl font-bold md:mx-10 md:text-5xl">你的購物車</h1>
+    <h1 class="text-xl font-bold md:text-5xl">你的購物車</h1>
   </div>
 
   <div class="container text-font" v-if="cartList.length !== 0">
@@ -139,7 +139,7 @@ onMounted(async () => {
       </thead>
       <tbody class="rounded-[10px] shadow text-xs">
         <tr>
-          <td class="text-base font-bold pl-6 py-3 md:text-2xl">商品總計</td>
+          <td class="text-base font-bold p-6 py-3 md:text-2xl">商品總計</td>
           <td class="text-right pr-6 py-3 md:text-base">NT$ {{ totalPrice }}</td>
         </tr>
         <!-- <tr>
@@ -166,7 +166,7 @@ onMounted(async () => {
             可使用積分: {{ userPoints }} 點
           </td>
         </tr>
-        <tr v-if="userId">
+        <tr class="border-b-2" v-if="userId">
           <td class="text-xs font-bold pl-6 py-3 md:text-base">使用會員積分折抵</td>
           <td class="flex justify-end pr-6 py-3">
             <input
@@ -182,12 +182,12 @@ onMounted(async () => {
           </td>
           <span class="text-red-400" v-if="informMessage">{{ informMessage }}</span>
         </tr>
-        <tr class="border-t-2">
-          <td class="pl-6 pt-6 md:text-sm">優惠券折扣</td>
-          <td class="text-right pr-6 pt-3 md:text-sm">-0</td>
-        </tr>
+        <!-- <tr>
+          <td class="pl-6 pt-3 md:text-sm">優惠券折扣</td>
+          <td class="text-right pr-6 md:text-sm">-0</td>
+        </tr> -->
         <tr v-if="userId">
-          <td class="pl-6 md:text-sm">會員積分折抵</td>
+          <td class="pl-6 pt-3 md:text-sm">會員積分折抵</td>
           <td class="text-right pr-6 md:text-sm">{{ -usePoints / 10 }}</td>
         </tr>
         <tr>

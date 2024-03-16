@@ -104,7 +104,7 @@ const handleInfiniteOnLoad = async () => {
   <div class="Community text-font">
     <section class="container my-10">
       <div class="flex justify-between">
-        <h1 class="text-2xl text-md-5xl font-bold">貼文專區</h1>
+        <h1 class="text-2xl md:text-5xl font-bold">貼文專區</h1>
         <button
           class="fixed bottom-4 left-8 right-8 z-10 md:z-0 max-w-[502px] mx-auto md:mx-0 md:static px-10 text-white btn btn-secondary"
           @click="handleCreatePost"

@@ -113,29 +113,30 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div class="flex justify-center col-span-10 text-font">
-    <div>
-      <!-- 頁面標題 -->
-      <div class="flex justify-between mt-10">
-        <h1 class="text-5xl font-bold">商品詳情</h1>
-        <button
-          class="max-w-[125px] btn bg-third border-0 hover:opacity-80 hover:bg-third"
-          @click="reviewModalRef.showModal()"
-          v-if="!editMode"
-        >
-          查看商品評論
-        </button>
-      </div>
+  <div class="ml-10 mt-10 col-span-10 text-font">
+    <!-- 頁面標題 -->
+    <div class="flex justify-between">
+      <h1 class="text-5xl font-bold">商品詳情</h1>
+      <button
+        class="max-w-[125px] btn bg-third border-0 hover:opacity-80 hover:bg-third"
+        @click="reviewModalRef.showModal()"
+        v-if="!editMode"
+      >
+        查看商品評論
+      </button>
+    </div>
 
-      <!-- 商品資訊 -->
-      <div class="grid grid-cols-4 mt-6">
+    <!-- 商品資訊 -->
+
+    <div class="max-w-[800px]">
+      <div class="grid grid-cols-4 mt-10">
         <div class="col-span-2">
           <label for="name" class="block leading-6 text-xl">商品名稱</label>
           <input
             type="text"
             id="name"
             name="name"
-            class="w-[330px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            class="w-[350px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             placeholder="請輸入商品名稱"
             v-model="product.name"
             :disabled="!editMode"
@@ -166,7 +167,7 @@ onMounted(async () => {
           <label for="isEnabled" class="block leading-6 text-xl">商品狀態</label>
           <select
             id="isEnabled"
-            class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
+            class="w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             v-model="product.isEnabled"
             :disabled="!editMode"
           >
@@ -242,7 +243,7 @@ onMounted(async () => {
       </div>
 
       <!-- 商品圖片 -->
-      <div class="my-3" v-if="editMode">
+      <div class="my-1.5" v-if="editMode">
         <label for="photo" class="block leading-6 text-xl">商品圖片</label>
         <input
           type="text"
@@ -262,7 +263,7 @@ onMounted(async () => {
         <label for="fileInput" class="btn btn-secondary text-white">請選擇圖檔</label>
         <input type="file" id="fileInput" class="hidden" @change="uploadImage($event)" />
       </div>
-      <div class="flex">
+      <div class="flex my-1.5">
         <div class="w-[150px] h-[100px] mr-6 relative" v-for="img in product.photos" :key="img">
           <img :src="img" alt="商品圖" class="w-[150px] h-[100px] rounded-[10px] object-cover" />
           <button

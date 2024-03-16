@@ -29,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="PointsHistory col-span-10">
+  <div class="PointsHistory col-span-10 ml-8">
     <MemberCenterDetail title="積分詳情">
       <PointsHistory :userPointsHistory="userPointsHistory" />
     </MemberCenterDetail>

@@ -116,7 +116,7 @@ onUnmounted(() => {
 <template>
   <div class="OrderHistoryView">
     <MemberCenterDetail title="購買訂單">
-      <div class="flex justify-center items-center mt-6 w-full">
+      <div class="flex justify-center items-center mt-10 w-full">
         <div class="w-full">
           <!-- 按鈕 -->
           <ul class="flex justify-between border-b border-font relative">

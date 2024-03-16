@@ -58,14 +58,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="ml-10 mt-10 flex justify-center col-span-10 text-font">
-    <div class="w-[800px] lg:w-[900px]">
-      <div class="flex justify-between">
-        <h1 class="text-5xl font-bold">用戶詳情</h1>
-      </div>
+  <div class="ml-10 mt-10 col-span-10 text-font">
+    <h1 class="text-5xl font-bold">用戶詳情</h1>
 
-      <div class="flex space-x-[81px] mt-[58px]">
-        <ul class="flex flex-col ml-[46px] space-y-5">
+    <div class="w-[750px] lg:w-[900px]">
+      <div class="flex justify-center my-10">
+        <ul class="flex flex-col space-y-5">
           <li v-for="(item, index) in renderData" :key="index">
             <template v-if="item.label === '用戶權限'">
               <div class="flex space-x-[50px]">

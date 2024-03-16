@@ -61,7 +61,7 @@ onMounted(async () => {
 <template>
   <!-- 頁面標題 -->
   <div class="container mt-10 text-font relative">
-    <h1 class="text-xl font-bold md:mx-10 md:text-5xl">訂單詳情</h1>
+    <h1 class="text-xl font-bold md:text-5xl">訂單詳情</h1>
   </div>
 
   <div class="container w-[360px] m-auto my-10 text-xs text-font md:text-base md:w-[900px]">

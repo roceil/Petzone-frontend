@@ -59,6 +59,9 @@ dependencies:
   vue-router:
     specifier: ^4.2.5
     version: 4.3.0(vue@3.4.21)
+  vue3-infinite-scroll-better:
+    specifier: ^2.2.0
+    version: 2.2.0
   vue3-marquee:
     specifier: ^4.2.0
     version: 4.2.0(vue@3.4.21)
@@ -2819,6 +2822,10 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.6.1
       vue: 3.4.21
+    dev: false
+
+  /vue3-infinite-scroll-better@2.2.0:
+    resolution: {integrity: sha512-tIqY7Ab0Hu9j7SiLLNn9jUR2te2THvfVrDvdOfilx/Qk84mc3YS8rjxMNYM5OAlv7Wk92u2HD3rRqx892JafdA==}
     dev: false
 
   /vue3-marquee@4.2.0(vue@3.4.21):

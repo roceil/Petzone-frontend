@@ -15,17 +15,26 @@ const userStore = useUserStore()
 const { tags, tagsOptions } = storeToRefs(communityStore)
 const { userId } = storeToRefs(userStore)
 
+const pagination = ref({
+  totalPage: 0,
+  nowPage: 1
+})
+
 const posts = ref([])
 const keyword = ref('')
 const searchTag = ref('')
 const getPosts = async () => {
+  pagination.value.nowPage = 1
+  scrollDisabled.value = false
   const params = {
+    page: pagination.value.nowPage,
     nickName: keyword.value,
     tag: searchTag.value
   }
   try {
     const res = await get_posts_api(params)
-    posts.value = res.data
+    pagination.value.totalPage = res.data.pagination
+    posts.value = res.data.posts
     router.replace({
       path: '/community',
       query: {
@@ -69,6 +78,27 @@ onMounted(() => {
 })
 
 const editPostModalRef = ref()
+
+// 下滑載入
+const scrollDisabled = ref(false)
+const handleInfiniteOnLoad = async () => {
+  if (!scrollDisabled.value) {
+    pagination.value.nowPage++
+    const params = {
+      page: pagination.value.nowPage,
+      nickName: keyword.value,
+      tag: searchTag.value
+    }
+    const res = await get_posts_api(params)
+    pagination.value.totalPage = res.data.pagination
+    posts.value = [...posts.value, ...res.data.posts]
+    if (res.data.posts.length === 9) {
+      scrollDisabled.value = false
+    } else {
+      scrollDisabled.value = true
+    }
+  }
+}
 </script>
 <template>
   <div class="Community text-font">
@@ -130,7 +160,15 @@ const editPostModalRef = ref()
         </div>
         <div class="col-span-12 md:col-span-8 md:order-1">
           <div class="text-center" v-if="!posts.length">尚無貼文</div>
-          <div class="grid grid-cols-3 gap-4 md:gap-10" v-else>
+          <div
+            class="grid grid-cols-3 gap-4 md:gap-10"
+            v-else
+            v-infinite-scroll="handleInfiniteOnLoad"
+            :infinite-scroll-immediate-check="false"
+            :infinite-scroll-disabled="scrollDisabled"
+            infinite-scroll-watch-disabled="scrollDisabled"
+            :infinite-scroll-distance="20"
+          >
             <button
               class="relative overflow-hidden rounded-lg aspect-square"
               v-for="post in posts"

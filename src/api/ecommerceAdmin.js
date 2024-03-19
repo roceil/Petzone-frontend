@@ -15,7 +15,7 @@ const config = (params = null) => {
   return config
 }
 
-// 取得所有產品資料
+// 後台取得所有產品資料
 export const get_products_api = async (params) => {
   try {
     return axios.get(`${VITE_API_BASE_URL}/api/products/admin`, config(params))
@@ -24,7 +24,7 @@ export const get_products_api = async (params) => {
   }
 }
 
-// 取得單一產品資料
+// 後台取得單一產品資料
 export const get_product_api = async (productId) => {
   try {
     return axios.get(`${VITE_API_BASE_URL}/api/product/admin/${productId}`, config())
@@ -33,7 +33,7 @@ export const get_product_api = async (productId) => {
   }
 }
 
-// 新增產品
+// 後台新增產品
 export const post_product_api = async (newProduct) => {
   try {
     return axios.post(`${VITE_API_BASE_URL}/api/product`, newProduct, config())
@@ -42,7 +42,7 @@ export const post_product_api = async (newProduct) => {
   }
 }
 
-// 修改產品資料
+// 後台修改產品資料
 export const put_product_api = async (productId, product) => {
   try {
     return axios.put(`${VITE_API_BASE_URL}/api/product/${productId}`, product, config())
@@ -68,6 +68,15 @@ export const delete_product_review_api = async (productId, userId) => {
 export const get_orders_api = async (params) => {
   try {
     return axios.get(`${VITE_API_BASE_URL}/api/orders`, config(params))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// 後台修改訂單資料
+export const update_order_api = async (orderId, orderInfo) => {
+  try {
+    return axios.put(`${VITE_API_BASE_URL}/api/order/${orderId}`, orderInfo, config())
   } catch (error) {
     console.error(error)
   }

@@ -134,7 +134,7 @@ onMounted(async () => {
 
       <!-- 收件人資訊 -->
       <thead class="h-[60px] bg-third">
-        <th colspan="5" class="rounded-[10px] text-xl text-center">收件人資訊</th>
+        <th colspan="5" class="text-base text-center rounded-[10px] md:text-xl">收件人資訊</th>
       </thead>
       <tbody>
         <tr>
@@ -151,7 +151,7 @@ onMounted(async () => {
         </tr>
       </tbody>
       <thead class="h-[60px] bg-third">
-        <th colspan="5" class="rounded-[10px] text-xl text-center">付款資訊</th>
+        <th colspan="5" class="text-base text-center rounded-[10px] md:text-xl">付款資訊</th>
       </thead>
       <tbody>
         <tr>

@@ -3,14 +3,16 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { get_order_by_id_api } from '@/api/ecommerce'
-
+import { update_order_api } from '@/api/ecommerceAdmin'
 import { Form as VForm, Field as VField, ErrorMessage, defineRule, configure } from 'vee-validate'
 import * as AllRules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
+import { useAlertStore } from '@/stores/alert'
 
 const route = useRoute()
 const router = useRouter()
+const alertStore = useAlertStore()
 const orderId = ref('')
 const order = ref({
   recipient: {
@@ -35,14 +37,20 @@ const isTel = (value) => {
   return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
 }
 
-// const onSubmit = async (recipient) => {
-//   console.log(recipient)
-//   const changeOrder = {
-//     recipient: recipient,
-//   }
-//   const message = await orderHandler.addOrder(changeOrder)
-//   console.log(message)
-// }
+const onSubmit = async () => {
+  console.log(order.value.recipient, order.value.paymentType)
+  const OrderInfo = {
+    recipient: order.value.recipient,
+    paymentType: order.value.paymentType
+  }
+  const { data } = await update_order_api(orderId.value, OrderInfo)
+  const message = data.message
+  if (message === '更新訂單成功') {
+    alertStore.openAlert('success', message)
+  } else if (message !== '') {
+    alertStore.openAlert('error', message)
+  }
+}
 
 const convert = (order) => {
   // 時間取年月日
@@ -271,6 +279,7 @@ onMounted(async () => {
             <button
               type="submit"
               class="mx-3 w-[80px] h-[40px] bg-secondary rounded-md text-primary"
+              @click.prevent="onSubmit"
             >
               確認
             </button>

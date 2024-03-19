@@ -96,7 +96,12 @@ onMounted(async () => {
     <div class="my-10 flex justify-center">
       <table class="w-[384px] text-font md:w-[900px]">
         <thead class="h-[60px] bg-third">
-          <th colspan="4" class="rounded-[10px] text-center md:text-xl">購買明細</th>
+          <th
+            colspan="4"
+            class="leading-[60px] rounded-[10px] text-center md:leading-[60px] md:text-xl"
+          >
+            購買明細
+          </th>
         </thead>
         <tbody class="text-xs rounded-[10px] shadow md:text-base">
           <tr v-for="product in cartList" :key="product._id">

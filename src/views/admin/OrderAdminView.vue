@@ -38,7 +38,7 @@ const isTel = (value) => {
 }
 
 const onSubmit = async () => {
-  console.log(order.value.recipient, order.value.paymentType)
+  // console.log(order.value.recipient, order.value.paymentType)
   const OrderInfo = {
     recipient: order.value.recipient,
     paymentType: order.value.paymentType

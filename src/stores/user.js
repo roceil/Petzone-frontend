@@ -38,7 +38,7 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  const reset_photo_path = () => {
+  const resetPhotoPath = () => {
     userPhotoPath.value = ''
   }
 
@@ -59,8 +59,9 @@ export const useUserStore = defineStore('user', () => {
   const user_logout = () => {
     Cookies.remove('userId')
     Cookies.remove('userPhotoPath')
+    Cookies.remove('google')
     resetUserId()
-    reset_photo_path()
+    resetPhotoPath()
     resetCurrentPage()
   }
 

@@ -57,9 +57,9 @@ export const useUserStore = defineStore('user', () => {
 
   // 登出時清除 cookie
   const user_logout = () => {
+    Cookies.remove('type')
     Cookies.remove('userId')
     Cookies.remove('userPhotoPath')
-    Cookies.remove('google')
     resetUserId()
     resetPhotoPath()
     resetCurrentPage()

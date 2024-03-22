@@ -43,7 +43,7 @@ export const cartStore = defineStore('cartStore', () => {
     // console.log(cartList.value)
 
     // 如為會員同時會存入會員資料
-    if (userId != '') {
+    if (userId !== '' && userId !== undefined) {
       const cart = cartList.value.map((item) => {
         return { productId: item._id, qty: item.qty }
       })
@@ -63,7 +63,7 @@ export const cartStore = defineStore('cartStore', () => {
     })
     cartList.value.splice(itemIndex, 1)
 
-    if (userId != '') {
+    if (userId !== '' && userId !== undefined) {
       delete_cart_api(userId, productId)
     }
 
@@ -135,7 +135,10 @@ export const cartStore = defineStore('cartStore', () => {
     const qty = Number(quantity)
     const { userId } = useUserStore()
     const cart = { productId, qty }
-    update_cart_api(userId, cart)
+
+    if (userId !== '' && userId !== undefined) {
+      update_cart_api(userId, cart)
+    }
 
     caculate()
   }

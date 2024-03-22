@@ -22,6 +22,7 @@ import shopping_cart_icon from '@/assets/header/shopping-cart.svg'
 import { headerLinks } from '@/constants'
 import { useAlertStore } from '@/stores/alert'
 import { render_dropdown_links } from '@/composables'
+import { google_logout_api } from '@/api/auth'
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
@@ -51,7 +52,8 @@ const GotoHome = () => {
 }
 
 // 登出
-const logout = () => {
+const logout = async () => {
+  await google_logout_api()
   authStore.clear_cookie()
   userStore.resetUserId()
   userStore.user_logout()

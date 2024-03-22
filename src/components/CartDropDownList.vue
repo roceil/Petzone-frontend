@@ -23,7 +23,7 @@ const { cartList } = storeToRefs(cartHandler)
       <div
         tabindex="0"
         class="dropdown-content z-[2] menu shadow bg-base-100 rounded min-w-[400px] border border-font text-font p-4"
-        v-if="cartList.length"
+        v-if="cartList.length !== 0"
       >
         <div
           class="flex flex-row items-center justify-between w-full flex-nowrap"

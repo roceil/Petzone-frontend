@@ -38,10 +38,22 @@ export const sign_up_api = async (email, password, name, nickName, phone, addres
   }
 }
 
-// 檢查會員是否已登入
-export const check_user_api = async () => {
+// 檢查是否以google登入
+export const check_google_login_api = async () => {
   try {
     const res = await axios.get(`${VITE_API_BASE_URL}/auth/login/success`, {
+      withCredentials: true
+    })
+    return res
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// google登出清除connect_sid
+export const google_logout_api = async () => {
+  try {
+    const res = await axios.get(`${VITE_API_BASE_URL}/auth/logout`, {
       withCredentials: true
     })
     return res

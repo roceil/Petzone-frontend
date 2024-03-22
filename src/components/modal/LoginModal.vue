@@ -14,6 +14,8 @@ import { login_api } from '@/api/auth'
 import FormInput from '../validate/FormInput.vue'
 import { login_modal_form_items } from '@/constants'
 import { closeSidebar } from '@/lib'
+// import { ColorKeyframeTrack } from 'three'
+import Cookies from 'js-cookie'
 
 const { VITE_API_BASE_URL } = import.meta.env
 const modalStore = useModalStore()
@@ -41,6 +43,7 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
     authStore.set_permissions(permission)
   }
 
+  Cookies.set('type', 'nomal')
   authStore.set_token(accessToken)
   userStore.setUserPhotoPath(photo)
   userStore.setUserId(userId)

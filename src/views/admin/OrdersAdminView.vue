@@ -76,6 +76,7 @@ onMounted(() => {
   searchOrders()
 })
 </script>
+
 <template>
   <div class="ml-10 mt-10 col-span-10 text-font">
     <div>
@@ -126,8 +127,8 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex space-x-2 justify-end">
-        <button class="btn btn-sm mt-4" @click="resetSearch">清除</button>
-        <button class="btn btn-sm mt-4" @click="searchOrders">搜尋</button>
+        <button type="button" class="btn btn-sm mt-4" @click="resetSearch">清除</button>
+        <button type="button" class="btn btn-sm mt-4" @click="searchOrders">搜尋</button>
       </div>
 
       <!-- 訂單列表 -->
@@ -157,6 +158,7 @@ onMounted(() => {
                   class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2"
                 >
                   <button
+                    type="button"
                     class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
                     @click="directToOrderPage(order._id)"
                   >
@@ -172,8 +174,7 @@ onMounted(() => {
         :totalPage="pagination.totalPage"
         :nowPage="pagination.nowPage"
         @changePage="changePage"
-      ></PaginationComponent>
+      />
     </div>
   </div>
 </template>
-<style scoped></style>

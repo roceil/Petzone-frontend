@@ -68,6 +68,7 @@ onMounted(() => {
   searchProducts()
 })
 </script>
+
 <template>
   <div class="ml-10 mt-10 col-span-10 text-font">
     <div>
@@ -75,6 +76,7 @@ onMounted(() => {
       <div class="flex justify-between">
         <h1 class="text-5xl font-bold">商品管理</h1>
         <button
+          type="button"
           class="max-w-[125px] btn btn-secondary text-white"
           @click="directToProductPage(null, 'create')"
         >
@@ -130,8 +132,8 @@ onMounted(() => {
         </div>
       </div>
       <div class="flex space-x-2 justify-end">
-        <button class="btn btn-sm mt-4" @click="resetSearch">清除</button>
-        <button class="btn btn-sm mt-4" @click="searchProducts">搜尋</button>
+        <button type="button" class="btn btn-sm mt-4" @click="resetSearch">清除</button>
+        <button type="button" class="btn btn-sm mt-4" @click="searchProducts">搜尋</button>
       </div>
 
       <!-- 商品列表 -->
@@ -164,12 +166,14 @@ onMounted(() => {
                   class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2"
                 >
                   <button
+                    type="button"
                     class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
                     @click.prevent="directToProductPage(product._id, 'check')"
                   >
                     查看詳情
                   </button>
                   <button
+                    type="button"
                     class="btn btn-sm text-white bg-secondary hover:bg-font break-keep"
                     @click.stop="directToProductPage(product._id, 'edit')"
                   >
@@ -185,8 +189,7 @@ onMounted(() => {
         :totalPage="pagination.totalPage"
         :nowPage="pagination.nowPage"
         @changePage="changePage"
-      ></PaginationComponent>
+      />
     </div>
   </div>
 </template>
-<style scoped></style>

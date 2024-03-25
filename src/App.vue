@@ -4,6 +4,7 @@ import { RouterView } from 'vue-router'
 import Header from './components/Header.vue'
 import { useUserStore } from '@/stores/user'
 import { useAuthStore } from '@/stores/auth'
+import { cartStore } from '@/stores/cart'
 import { useLoadingStore } from '@/stores/loading'
 import { storeToRefs } from 'pinia'
 import { check_google_login_api } from '@/api/auth'
@@ -13,6 +14,7 @@ import Cookies from 'js-cookie'
 
 const userStore = useUserStore()
 const authStore = useAuthStore()
+const cartHandler = cartStore()
 const LoadingStore = useLoadingStore()
 const { LoadingMode } = storeToRefs(LoadingStore)
 
@@ -25,6 +27,7 @@ onMounted(async () => {
     authStore.set_token(token)
     userStore.setUserId(userId)
     userStore.setUserPhotoPath(photoPath)
+    cartHandler.getCart()
   } else {
     // google登入
     const { data } = await check_google_login_api()
@@ -34,6 +37,7 @@ onMounted(async () => {
     authStore.set_token(token)
     userStore.setUserId(userId)
     userStore.setUserPhotoPath(photoPath)
+    cartHandler.getCart()
   }
   authStore.read_cookie()
   userStore.read_cookie()

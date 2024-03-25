@@ -38,9 +38,7 @@ const checkInput = () => {
 }
 
 watch(userId, async (newUserId) => {
-  // console.log(newUserId)
   const userInfo = await get_member_data_api(newUserId)
-  // console.log(userInfo)
   userPoints.value = userInfo.points
 })
 
@@ -52,7 +50,6 @@ onMounted(async () => {
   } else {
     // 已登入取得會員購物車及積分資料
     const userInfo = await get_member_data_api()
-    // console.log(userInfo)
     userPoints.value = userInfo.points
   }
 
@@ -211,5 +208,5 @@ onMounted(async () => {
     </table>
   </div>
   <div class="mt-10 text-font font-bold text-center md:text-2xl" v-else>購物車內無產品</div>
-  <LoginAlertModal ref="loginAlertModalRef"></LoginAlertModal>
+  <LoginAlertModal ref="loginAlertModalRef" />
 </template>

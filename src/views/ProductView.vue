@@ -43,7 +43,6 @@ const getRecommendProduct = () => {
 // 點擊推薦商品商品資料更新
 const productId = ref('')
 watch(productId, async (newId) => {
-  // console.log(newId)
   router.push({ name: 'product', query: { productId: newId } })
   await productHandler.userGetProduct(newId)
   await productHandler.getProductReviews(productId.value)
@@ -64,9 +63,7 @@ const directToCartPage = (productId) => {
 // 編輯、刪除目前登入會員自己的評論
 const editMode = ref(false)
 const updateReview = async (score, content) => {
-  // console.log(productId.value, userId.value)
   const newReview = { score, content }
-  // console.log(newReview)
   const message = await update_product_review_api(productId.value, userId.value, newReview)
   alertStore.openAlert('success', message.message)
   editMode.value = false
@@ -79,7 +76,6 @@ const deleteReview = async () => {
 }
 
 onMounted(() => {
-  // console.log(route.query.productId, product)
   productId.value = route.query.productId
   productHandler.userGetProduct(productId.value)
   getRecommendProduct()
@@ -114,7 +110,7 @@ onMounted(() => {
           :watchSlidesProgress="true"
         >
           <swiper-slide v-for="img in product.photos" :key="img"
-            ><img class="rounded-[10px] cursor-pointer" :src="img"
+            ><img class="rounded-[10px] cursor-pointer" :src="img" alt="商品圖"
           /></swiper-slide>
         </swiper>
       </div>
@@ -136,6 +132,7 @@ onMounted(() => {
         <!-- 按鈕區塊 -->
         <div class="hidden md:flex md:justify-evenly md:mt-20">
           <button
+            type="button"
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
             @click.prevent="cartHandler.addToCart(product._id)"
           >
@@ -143,6 +140,7 @@ onMounted(() => {
             <img src="../assets/ecommerce/shopping-cart.svg" alt="shopping-cart" />
           </button>
           <button
+            type="button"
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
             @click.prevent="directToCartPage(product._id)"
           >
@@ -215,6 +213,7 @@ onMounted(() => {
           ></textarea>
           <div class="hidden md:flex md:absolute md:right-40">
             <button
+              type="button"
               class="link m-2"
               @click.prevent="editMode = true"
               v-if="review.userId === userId && !editMode"
@@ -222,13 +221,19 @@ onMounted(() => {
               編輯
             </button>
             <button
+              type="button"
               class="link m-2"
               @click.prevent="updateReview(review.score, review.content)"
               v-if="review.userId === userId && editMode"
             >
               送出
             </button>
-            <button class="link m-2" @click.prevent="deleteReview" v-if="review.userId === userId">
+            <button
+              type="button"
+              class="link m-2"
+              @click.prevent="deleteReview"
+              v-if="review.userId === userId"
+            >
               刪除
             </button>
           </div>
@@ -236,6 +241,7 @@ onMounted(() => {
       </div>
     </div>
     <button
+      type="button"
       class="btn bg-white fixed bottom-4 left-8 right-8 z-10 max-w-[900px] rounded-md border-font hover:opacity-80 hover:-translate-y-1 md:hidden"
       @click.prevent="cartHandler.addToCart(product._id)"
     >

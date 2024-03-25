@@ -38,7 +38,6 @@ const isTel = (value) => {
 }
 
 const onSubmit = async () => {
-  // console.log(order.value.recipient, order.value.paymentType)
   const OrderInfo = {
     recipient: order.value.recipient,
     paymentType: order.value.paymentType
@@ -88,10 +87,10 @@ const convert = (order) => {
 onMounted(async () => {
   orderId.value = route.query.orderId
   const { data } = await get_order_by_id_api(orderId.value)
-  // console.log(data)
   order.value = convert(data.order)
 })
 </script>
+
 <template>
   <div class="ml-10 mt-10 col-span-10 text-font">
     <!-- 頁面標題 -->
@@ -289,4 +288,3 @@ onMounted(async () => {
     </div>
   </div>
 </template>
-<style scoped></style>

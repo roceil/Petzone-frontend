@@ -1,5 +1,4 @@
 <script setup>
-// import axios from 'axios'
 import { watch, onMounted } from 'vue'
 import { productStore } from '@/stores/product'
 import { cartStore } from '@/stores/cart'
@@ -24,7 +23,6 @@ const directToProductPage = (productId) => {
 }
 
 watch(categoryType, async (Type) => {
-  // console.log(Type)
   const category = { categoryType: Type }
   productHandler.userGetProducts(category)
 })
@@ -50,7 +48,7 @@ onMounted(() => {
           class="md:flex justify-center items-center group space-x-2"
         >
           <img :src="link.icon" :alt="link.name" class="group-hover:animate-upDown" />
-          <button @click.prevent="categoryType = link.type">{{ link.name }}</button>
+          <button type="button" @click.prevent="categoryType = link.type">{{ link.name }}</button>
         </div>
       </div>
 
@@ -67,6 +65,7 @@ onMounted(() => {
             @keydown.enter="productHandler.userGetProducts('name')"
           />
           <button
+            type="button"
             class="absolute inset-y-0 right-0 mr-2 top-0 mt-1"
             @click="productHandler.userGetProducts('name')"
           >
@@ -97,6 +96,7 @@ onMounted(() => {
         </div>
         <div class="hidden md:block">
           <button
+            type="button"
             class="btn w-full rounded-md border-2 border-font text-base hover:opacity-80 hover:-translate-y-1"
             @click.prevent="cartHandler.addToCart(product._id)"
           >

@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/multi-word-component-names -->
 <script setup>
 import router from '@/router'
 import { sidebarLinks } from '@/constants'
@@ -25,6 +24,7 @@ const goAnotherPage = (link) => {
             >
               <img class="hidden lg:block mr-2" :src="link.icon" :alt="link.name" />
               <button
+                type="button"
                 @click="goAnotherPage(link.link)"
                 class="flex items-center text-xl lg:text-2xl font-bold first-letter:hover:text-dark"
               >

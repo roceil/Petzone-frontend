@@ -27,6 +27,7 @@ const userStore = useUserStore()
 const { userId } = storeToRefs(userStore)
 const communityStore = useCommunityStore()
 const { tags } = storeToRefs(communityStore)
+import avatar from '@/assets/avatar.svg'
 
 const post = ref(null)
 const getPost = async () => {
@@ -126,13 +127,13 @@ const editPostModalRef = ref()
 <template>
   <div class="CommunityDetail text-font" v-if="post">
     <section class="container flex flex-col justify-center my-10 max-w-[800px] space-y-4">
-      <div class="md:p-10">
+      <div class="py-10">
         <div class="flex items-center mb-4 space-x-4">
           <button
             class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden"
             @click="goUserPage(post.user._id)"
           >
-            <img :src="post.user.photo" alt="" class="w-full h-full object-cover" />
+            <img :src="post.user.photo || avatar" alt="" class="w-full h-full object-cover" />
           </button>
           <button @click="goUserPage(post.user._id)">{{ post.user.nickName }}</button>
           <span>於 {{ dayjs(post.createAt).format('YYYY/MM/DD') }} 分享</span>
@@ -226,7 +227,7 @@ const editPostModalRef = ref()
               class="w-[48px] h-[48px] rounded-full bg-third overflow-hidden"
               @click="goUserPage(comment.user._id)"
             >
-              <img :src="comment.user.photo" alt="" />
+              <img :src="comment.user.photo || avatar" alt="" />
             </button>
             <button @click="goUserPage(comment.user._id)">{{ comment.user.nickName }}</button>
             <p>{{ comment.content }}</p>

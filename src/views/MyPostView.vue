@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { useCommunityStore } from '@/stores/community'
 import { storeToRefs } from 'pinia'
 import { get_post_data_api } from '@/api/user'
 import { get_user_posts_api } from '@/api/community'
@@ -11,6 +12,9 @@ import EditPostModal from '@/components/EditPostModal.vue'
 const route = useRoute()
 const router = useRouter()
 const { id } = route.params
+
+const communityStore = useCommunityStore()
+const { tags } = storeToRefs(communityStore)
 
 // 使用者資料
 const userStore = useUserStore()
@@ -39,6 +43,9 @@ const getPosts = async () => {
 }
 
 onMounted(() => {
+  if (!tags.value.length) {
+    communityStore.getTags()
+  }
   getMemberData()
   getPosts()
 })

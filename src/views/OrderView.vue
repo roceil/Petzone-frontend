@@ -33,9 +33,7 @@ const handlePayment = async (order) => {
 }
 
 onMounted(async () => {
-  // console.log(route.params.id)
   await orderHandler.GetOrder(route.params.id)
-  // console.log(order.value)
   switch (order.value.status) {
     case 'unPaid':
       order.value.status = '未付款'
@@ -58,6 +56,7 @@ onMounted(async () => {
   }
 })
 </script>
+
 <template>
   <!-- 頁面標題 -->
   <div class="container mt-10 text-font relative">
@@ -84,6 +83,7 @@ onMounted(async () => {
           <td class="md:w-[120px]"></td>
           <td class="py-3 md:py-5">
             <button
+              type="button"
               class="link"
               @click="reviewModalRef.showModal(product)"
               v-if="userId && order.status === '已完成'"
@@ -180,5 +180,5 @@ onMounted(async () => {
       </tr>
     </table>
   </div>
-  <EditReviewModal ref="reviewModalRef" :order-id="orderId"></EditReviewModal>
+  <EditReviewModal ref="reviewModalRef" :order-id="orderId" />
 </template>

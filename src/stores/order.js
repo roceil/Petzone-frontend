@@ -15,7 +15,6 @@ export const orderStore = defineStore('orderStore', () => {
 
   // 建立訂單
   const addOrder = async (neworder) => {
-    // console.log(neworder)
     const message = await post_new_order_api(neworder)
     if (message.message === '訂單新增成功') {
       return message
@@ -27,7 +26,6 @@ export const orderStore = defineStore('orderStore', () => {
   // 取得訂單資料
   const GetOrder = async (orderId) => {
     const { data } = await get_order_by_id_api(orderId)
-    // console.log(data)
     order.value = data.order
     order.value.createdAt = order.value.createdAt.slice(0, 10)
     order.value.updatedAt = order.value.updatedAt.slice(0, 10)

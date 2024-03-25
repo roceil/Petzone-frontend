@@ -31,9 +31,7 @@ const cartHandler = cartStore()
 const { cartList } = storeToRefs(cartHandler)
 
 // 購物車效果
-watch(cartList.value, () => {
-  // console.log(cartList.value)
-})
+watch(cartList.value, () => {})
 
 // 判斷前後台
 const route = useRoute()

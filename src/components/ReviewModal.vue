@@ -11,9 +11,8 @@ const alertStore = useAlertStore()
 
 const dialogRef = ref()
 const showModal = async () => {
-  // console.log(props.productId)
   const data = await get_product_reviews_api(props.productId)
-  // console.log(data)
+
   // 時間取年月日
   const reviewData = data.map((review) => {
     const createAt = review.createAt
@@ -23,7 +22,6 @@ const showModal = async () => {
     return review
   })
   reviews.value = reviewData
-  // console.log(reviews.value)
   dialogRef.value.showModal()
 }
 const hideModal = () => {
@@ -40,12 +38,13 @@ const deleteReview = async (userId) => {
   hideModal()
 }
 </script>
+
 <template>
   <dialog ref="dialogRef" class="modal">
     <div class="modal-box flex flex-col items-center relative">
       <!-- 關閉按鈕 -->
       <div class="absolute right-[29px] top-[33px]">
-        <button @click="hideModal"><img :src="close" alt="close-btn" /></button>
+        <button type="button" @click="hideModal"><img :src="close" alt="close-btn" /></button>
       </div>
 
       <!-- 標題 -->

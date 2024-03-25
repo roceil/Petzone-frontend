@@ -14,7 +14,6 @@ const getMonthlyDonateRank = async () => {
   try {
     const res = await get_monthly_donate_rank_api()
     donorList.value = res
-    // console.log(donorList.value)
   } catch (error) {
     console.error(error)
   }

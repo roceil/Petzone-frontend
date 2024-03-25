@@ -34,7 +34,6 @@ const reviewModalRef = ref()
 const tempImgUrl = ref()
 const uploadImage = async (e) => {
   LoadingMode.value = true
-  // console.log(e.target.files[0])
   const file = e.target.files[0]
 
   const res = await upload_image_api(file)
@@ -71,7 +70,6 @@ const checkInput = async () => {
     informMessage.value = ''
     const productInfo = { ...product.value }
     productInfo.category = parseInt(product.value.category.key)
-    // console.log(productInfo)
     let message
     if (route.query.mode === 'create') {
       const { data } = await post_product_api(productInfo)
@@ -95,29 +93,28 @@ const checkInput = async () => {
 }
 
 onMounted(async () => {
-  // console.log(route.query)
   if (route.query.mode === 'edit') {
     editMode.value = true
     productId.value = route.query.productId
     const { data } = await get_product_api(productId.value)
-    // console.log(data)
     product.value = data.product
   } else if (route.query.mode === 'create') {
     editMode.value = true
   } else {
     productId.value = route.query.productId
     const { data } = await get_product_api(productId.value)
-    // console.log(data)
     product.value = data.product
   }
 })
 </script>
+
 <template>
   <div class="ml-10 mt-10 col-span-10 text-font">
     <!-- 頁面標題 -->
     <div class="flex justify-between">
       <h1 class="text-5xl font-bold">商品詳情</h1>
       <button
+        type="button"
         class="max-w-[125px] btn bg-third border-0 hover:opacity-80 hover:bg-third"
         @click="reviewModalRef.showModal()"
         v-if="!editMode"
@@ -127,7 +124,6 @@ onMounted(async () => {
     </div>
 
     <!-- 商品資訊 -->
-
     <div class="max-w-[800px]">
       <div class="grid grid-cols-4 mt-10">
         <div class="col-span-2">
@@ -254,6 +250,7 @@ onMounted(async () => {
           v-model="tempImgUrl"
         />
         <button
+          type="button"
           class="mx-8 btn btn-secondary text-white"
           @click.prevent="addImage(tempImgUrl)"
           :disabled="!tempImgUrl"
@@ -279,17 +276,21 @@ onMounted(async () => {
       <span class="flex justify-end text-red-400" v-if="informMessage">{{ informMessage }}</span>
       <div class="flex justify-end mt-3" v-if="editMode">
         <button
+          type="button"
           class="mx-4 max-w-[125px] btn bg-third border-0 hover:opacity-80 hover:bg-third"
           @click="router.push(`/admin/products`)"
         >
           取消
         </button>
-        <button class="max-w-[125px] btn btn-secondary text-white" @click.prevent="checkInput">
+        <button
+          type="button"
+          class="max-w-[125px] btn btn-secondary text-white"
+          @click.prevent="checkInput"
+        >
           確認
         </button>
       </div>
     </div>
   </div>
-  <EditReviewModal ref="reviewModalRef" :productId="productId"></EditReviewModal>
+  <EditReviewModal ref="reviewModalRef" :productId="productId" />
 </template>
-<style scoped></style>

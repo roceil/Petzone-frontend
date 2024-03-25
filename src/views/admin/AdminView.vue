@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import Sidebar from '@/components/Sidebar.vue'
+import Sidebar from '@/components/AdminSidebar.vue'
 import support from '@/assets/points_history/support.svg'
 
 const isWideScreen = ref(window.innerWidth >= 992)
@@ -22,8 +22,8 @@ onUnmounted(() => {
   <div class="container grid grid-cols-12">
     <!-- 在寬屏時顯示側邊欄和路由視圖 -->
     <template v-if="isWideScreen">
-      <Sidebar></Sidebar>
-      <RouterView></RouterView>
+      <Sidebar />
+      <RouterView />
     </template>
 
     <!-- 在窄屏時顯示提示信息 -->

@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { cartStore } from '@/stores/cart'
 import { orderStore } from '@/stores/order'
 import { useUserStore } from '@/stores/user'
+import { useAlertStore } from '@/stores/alert'
 import { useRouter } from 'vue-router'
 
 import { Form as VForm, Field as VField, ErrorMessage, defineRule, configure } from 'vee-validate'
@@ -21,6 +22,7 @@ const { cartList, totalPrice, usePoints, finalPrice } = storeToRefs(cartHandler)
 const orderHandler = orderStore()
 const userStore = useUserStore()
 const { userId } = storeToRefs(userStore)
+const alertStore = useAlertStore()
 
 const recipient = ref({
   userId: null,
@@ -47,7 +49,6 @@ const isTel = (value) => {
 }
 
 const onSubmit = async (recipient, paymentType) => {
-  // console.log(recipient, paymentType)
   const neworder = {
     products: cartList.value,
     recipient: recipient,
@@ -56,17 +57,21 @@ const onSubmit = async (recipient, paymentType) => {
     pointsDiscount: -usePoints.value / 10,
     finalPrice: finalPrice.value
   }
+
   const message = await orderHandler.addOrder(neworder)
-  // console.log(message)
-  if (message.message === '訂單新增成功') {
+
+  if (userId.value !== '' && userId.value !== undefined) {
     await delete_all_cart_api(userId.value)
-    await cartHandler.getCart()
-    directToOrderPage(message.orderId)
+    cartList.value = []
+  } else {
+    cartList.value = []
   }
+
+  alertStore.openAlert('success', message.message)
+  directToOrderPage(message.orderId)
 }
 
 const directToOrderPage = (orderId) => {
-  // console.log(orderId)
   router.push(`/ecommerce/order/${orderId}`)
 }
 
@@ -74,7 +79,6 @@ onMounted(async () => {
   //確認是否已登入，如已登入自動帶入會員資料
   if (userId.value) {
     const userInfo = await get_member_data_api(userId.value)
-    // console.log(userInfo)
     recipient.value = {
       userId: userInfo._id,
       name: userInfo.name,
@@ -85,6 +89,7 @@ onMounted(async () => {
   }
 })
 </script>
+
 <template>
   <!-- 頁面標題 -->
   <div class="container mt-10 text-font relative">

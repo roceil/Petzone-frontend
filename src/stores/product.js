@@ -15,13 +15,10 @@ export const productStore = defineStore('productStore', () => {
   const userGetProducts = async (search) => {
     if (!search) {
       const { data } = await get_products_api()
-      // console.log(data)
       products.value = data.products
     } else if (Object.keys(search)[0] === 'categoryType') {
-      // console.log(search.categoryType)
       const categoryType = search.categoryType
       const { data } = await get_products_by_type_api(categoryType)
-      // console.log(data)
       products.value = data.products
     } else if (search === 'name') {
       const { data } = await get_products_by_name_api(productName)
@@ -40,7 +37,6 @@ export const productStore = defineStore('productStore', () => {
   const product = ref({})
   const userGetProduct = async (productId) => {
     const { data } = await get_product_by_id_api(productId)
-    // console.log(data)
     product.value = data.product
   }
 
@@ -48,8 +44,8 @@ export const productStore = defineStore('productStore', () => {
   const productReviews = ref([])
   const getProductReviews = async (productId) => {
     const data = await get_product_reviews_api(productId)
+
     // 時間取年月日
-    // console.log(data)
     const reviewData = data.map((review) => {
       const createAt = review.createAt
       const updatedAt = review.updatedAt
@@ -59,14 +55,12 @@ export const productStore = defineStore('productStore', () => {
     })
 
     productReviews.value = CurrentUserReviewOnTop(reviewData)
-    // console.log(productReviews.value)
   }
 
   // 將目前登入會員自己的評論放到最上方
   const CurrentUserReviewOnTop = (reviewData) => {
     const { userId } = useUserStore()
     const currentUserReview = reviewData.find((item) => item.userId === userId)
-    // console.log(currentUserReview)
 
     if (currentUserReview) {
       const currentUserReviewIndex = reviewData.findIndex((item) => item.userId === userId)

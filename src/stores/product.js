@@ -8,6 +8,11 @@ import { get_product_by_id_api } from '@/api/ecommerce'
 import { get_product_reviews_api } from '@/api/ecommerce'
 
 export const productStore = defineStore('productStore', () => {
+  // 加入千分位
+  const addThousandSeparator = (num, separator = ',') => {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+  }
+
   // 取得所有產品資料
   const products = ref([])
   const categoryType = ref('')
@@ -15,21 +20,44 @@ export const productStore = defineStore('productStore', () => {
   const userGetProducts = async (search) => {
     if (!search) {
       const { data } = await get_products_api()
-      products.value = data.products
+      const newProductsList = data.products.map(async (product) => {
+        product.originPrice = addThousandSeparator(product.originPrice)
+        if (product.price !== 0) {
+          product.price = addThousandSeparator(product.price)
+        }
+        return product
+      })
+      const productsList = await Promise.all(newProductsList)
+      products.value = productsList
     } else if (Object.keys(search)[0] === 'categoryType') {
       const categoryType = search.categoryType
       const { data } = await get_products_by_type_api(categoryType)
-      products.value = data.products
+      const newProductsList = data.products.map(async (product) => {
+        product.originPrice = addThousandSeparator(product.originPrice)
+        if (product.price !== 0) {
+          product.price = addThousandSeparator(product.price)
+        }
+        return product
+      })
+      const productsList = await Promise.all(newProductsList)
+      products.value = productsList
     } else if (search === 'name') {
       const { data } = await get_products_by_name_api(productName)
+      const newProductsList = data.products.map(async (product) => {
+        product.originPrice = addThousandSeparator(product.originPrice)
+        if (product.price !== 0) {
+          product.price = addThousandSeparator(product.price)
+        }
+        return product
+      })
+      const productsList = await Promise.all(newProductsList)
+      products.value = productsList
 
       if (data.message === '查無此商品') {
         // alertStore.openAlert('error', '查無此商品')
         alert('查無此商品')
         return
       }
-
-      products.value = data.products
     }
   }
 
@@ -37,7 +65,12 @@ export const productStore = defineStore('productStore', () => {
   const product = ref({})
   const userGetProduct = async (productId) => {
     const { data } = await get_product_by_id_api(productId)
-    product.value = data.product
+    const productInfo = data.product
+    productInfo.originPrice = addThousandSeparator(productInfo.originPrice)
+    if (productInfo.price !== 0) {
+      productInfo.price = addThousandSeparator(productInfo.price)
+    }
+    product.value = productInfo
   }
 
   // 取得商品評論

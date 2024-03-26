@@ -93,13 +93,25 @@ onMounted(async () => {
             <p v-else>{{ product.name }}</p>
           </td>
           <td class="py-3 md:py-5">
-            <p v-if="product.price">NT$ {{ product.price }}</p>
-            <p v-else>NT$ {{ product.originPrice }}</p>
+            <p v-if="product.price">
+              NT$ {{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+            </p>
+            <p v-else>
+              NT$ {{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+            </p>
           </td>
           <td class="py-3 md:py-5">x {{ product.qty }}</td>
           <td class="text-right pr-5 md:py-5">
-            <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
-            <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
+            <p v-if="product.price">
+              NT$
+              {{ (product.price * product.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+            </p>
+            <p v-else>
+              NT$
+              {{
+                (product.originPrice * product.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }}
+            </p>
           </td>
         </tr>
         <tr>
@@ -124,10 +136,11 @@ onMounted(async () => {
             {{ order.pointsDiscount }}
           </td>
         </tr>
-        <tr class="border-b-2">
+        <tr>
           <td class="text-base font-bold px-5 py-3 md:py-5 md:text-2xl" colspan="3">訂單金額</td>
           <td class="text-base font-bold text-right px-5 py-3 md:py-5 md:text-2xl" colspan="2">
-            NT$ {{ order.finalPrice ? order.finalPrice : order.totalPrice }}
+            NT$
+            {{ order.finalPrice ? order.finalPrice : order.totalPrice }}
           </td>
         </tr>
       </tbody>
@@ -138,18 +151,20 @@ onMounted(async () => {
       </thead>
       <tbody>
         <tr>
-          <td colspan="5" class="pl-5 py-5">姓名：{{ order.recipient.name }}</td>
+          <td colspan="5" class="pl-5 pt-5">姓名：{{ order.recipient.name }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-5">信箱：{{ order.recipient.email }}</td>
+          <td colspan="5" class="pl-5 py-2">信箱：{{ order.recipient.email }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-5">電話：{{ order.recipient.phone }}</td>
+          <td colspan="5" class="pl-5 py-2">電話：{{ order.recipient.phone }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-5">地址：{{ order.recipient.address }}</td>
+          <td colspan="5" class="pl-5 pb-5">地址：{{ order.recipient.address }}</td>
         </tr>
       </tbody>
+
+      <!-- 付款資訊 -->
       <thead class="h-[60px] bg-third">
         <th colspan="5" class="text-base text-center rounded-[10px] md:text-xl">付款資訊</th>
       </thead>

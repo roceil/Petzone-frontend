@@ -20,6 +20,7 @@ const userPoints = ref(0)
 const informMessage = ref('')
 const checkPoint = ref(true)
 
+// 確認積分
 const checkInput = () => {
   if (usePoints.value < 0) {
     informMessage.value = '欲使用積分不可為負數'
@@ -70,17 +71,17 @@ onMounted(async () => {
     <div class="my-10">
       <table>
         <thead class="h-[60px] bg-third md:text-xl">
-          <th class="rounded-l-[10px] text-left px-10">購買商品</th>
-          <th class="px-2 md:px-10">售價</th>
-          <th class="px-2 md:px-10">數量</th>
-          <th colspan="2" class="rounded-r-[10px] text-left px-4 md:px-10">金額</th>
+          <th class="pl-6 text-left rounded-tl-[10px]">購買商品</th>
+          <th class="px-6">售價</th>
+          <th class="px-6">數量</th>
+          <th colspan="2" class="pr-6 text-right rounded-tr-[10px]">金額</th>
         </thead>
-        <tbody class="rounded-[10px] shadow text-xs md:text-base">
-          <tr class="md:p-4" v-for="product in cartList" :key="product._id">
-            <td>
-              <div class="flex items-center gap-4 m-2 md:mx-8 md:my-4">
+        <tbody class="shadow rounded-b-[10px] text-xs md:text-base">
+          <tr v-for="product in cartList" :key="product._id">
+            <td class="pl-6 py-6">
+              <div class="flex items-center">
                 <img
-                  class="w-[50px] h-[50px] rounded-[10px] object-cover md:w-[100px] md:h-[100px]"
+                  class="mr-3 w-[50px] h-[50px] rounded-[10px] object-cover md:w-[100px] md:h-[100px]"
                   :src="product.photos[0]"
                   alt="產品圖"
                 />
@@ -88,8 +89,12 @@ onMounted(async () => {
               </div>
             </td>
             <td class="text-center">
-              <p v-if="product.price">$ {{ product.price }}</p>
-              <p v-else>$ {{ product.originPrice }}</p>
+              <p v-if="product.price">
+                $ {{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+              </p>
+              <p v-else>
+                $ {{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+              </p>
             </td>
             <td>
               <div class="flex justify-center">
@@ -98,9 +103,11 @@ onMounted(async () => {
                   type="number"
                   class="block w-[40px] h-[30px] border rounded-lg bg-gray-50 text-center md:w-[60px] md:h-[30px]"
                   placeholder="1"
-                  min="0"
+                  min="1"
+                  step="1"
                   required
-                  v-model="product.qty"
+                  v-model.number="product.qty"
+                  onkeyup="value=value.replace(/[^\d]/g,'')"
                   @change="
                     (e) => {
                       cartHandler.updateCart(product._id, e.target.value)
@@ -109,20 +116,30 @@ onMounted(async () => {
                 />
               </div>
             </td>
-            <td class="rounded-r-[10px]">
-              <div class="flex justify-center">
-                <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
-                <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
+            <td class="pr-6">
+              <div class="flex justify-end">
+                <p v-if="product.price">
+                  NT$
+                  {{
+                    (product.price * product.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  }}
+                </p>
+                <p v-else>
+                  NT$
+                  {{
+                    (product.originPrice * product.qty)
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  }}
+                </p>
+                <button
+                  type="button"
+                  class="w-[16px] h-[16px] md:w-[24px] md:h-[24px]"
+                  @click="cartHandler.deleteFromCart(product._id)"
+                >
+                  <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
+                </button>
               </div>
-            </td>
-            <td>
-              <button
-                type="button"
-                class="w-[16px] h-[16px] md:w-[24px] md:h-[24px]"
-                @click="cartHandler.deleteFromCart(product._id)"
-              >
-                <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
-              </button>
             </td>
           </tr>
         </tbody>
@@ -132,12 +149,14 @@ onMounted(async () => {
     <!-- 訂單摘要 -->
     <table class="max-w-[350px] my-10 text-font md:absolute md:top-[30%] md:left-[70%]">
       <thead class="h-[60px] bg-third text-center md:text-2xl">
-        <th class="rounded-[10px]" colspan="2">訂單摘要</th>
+        <th class="rounded-t-[10px]" colspan="2">訂單摘要</th>
       </thead>
-      <tbody class="rounded-[10px] shadow text-xs">
+      <tbody class="rounded-b-[10px] shadow text-xs">
         <tr>
-          <td class="text-base font-bold p-6 py-3 md:text-2xl">商品總計</td>
-          <td class="text-right pr-6 py-3 md:text-base">NT$ {{ totalPrice }}</td>
+          <td class="text-base font-bold px-6 py-6 md:text-2xl">商品總計</td>
+          <td class="text-right pr-6 py-3 md:text-base">
+            NT$ {{ totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+          </td>
         </tr>
         <!-- <tr>
           <td class="font-bold pl-6 py-3 md:text-base">使用優惠代碼</td>
@@ -189,11 +208,16 @@ onMounted(async () => {
         </tr>
         <tr>
           <td colspan="2" class="text-right text-base font-bold pr-6 py-3 md:text-2xl">
-            NT$ {{ finalPrice ? finalPrice : totalPrice }}
+            NT$
+            {{
+              finalPrice
+                ? finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                : totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+            }}
           </td>
         </tr>
         <tr>
-          <td colspan="2" class="text-right pr-6 py-3">
+          <td colspan="2" class="text-right pr-6 py-6">
             <button
               type="button"
               class="w-[80px] h-[40px] bg-secondary rounded-md text-primary md:text-base"

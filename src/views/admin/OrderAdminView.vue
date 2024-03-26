@@ -9,10 +9,12 @@ import * as AllRules from '@vee-validate/rules'
 import { localize, setLocale } from '@vee-validate/i18n'
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 import { useAlertStore } from '@/stores/alert'
+import OrderChangeModal from '@/components/OrderChangeModal.vue'
 
 const route = useRoute()
 const router = useRouter()
 const alertStore = useAlertStore()
+const OrderChangeModalRef = ref()
 const orderId = ref('')
 const order = ref({
   recipient: {
@@ -23,32 +25,9 @@ const order = ref({
   }
 })
 
-Object.keys(AllRules).forEach((rule) => {
-  defineRule(rule, AllRules[rule])
-})
-configure({
-  generateMessage: localize({ zh_TW: zhTW }),
-  validateOnInput: true
-})
-setLocale('zh_TW')
-
-const isTel = (value) => {
-  const phoneNumber = /^0[2|4]\d{4}\d{4}|^0[3|5-8]\d{3}\d{4}|^09\d{2}(\d{6}|-\d{3}-\d{3})/
-  return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
-}
-
-const onSubmit = async () => {
-  const OrderInfo = {
-    recipient: order.value.recipient,
-    paymentType: order.value.paymentType
-  }
-  const { data } = await update_order_api(orderId.value, OrderInfo)
-  const message = data.message
-  if (message === '更新訂單成功') {
-    alertStore.openAlert('success', message)
-  } else if (message !== '') {
-    alertStore.openAlert('error', message)
-  }
+const getOrder = async () => {
+  const { data } = await get_order_by_id_api(orderId.value)
+  order.value = convert(data.order)
 }
 
 // 加入千分位
@@ -93,10 +72,38 @@ const convert = (order) => {
   return order
 }
 
-onMounted(async () => {
+// 表單驗證
+Object.keys(AllRules).forEach((rule) => {
+  defineRule(rule, AllRules[rule])
+})
+configure({
+  generateMessage: localize({ zh_TW: zhTW }),
+  validateOnInput: true
+})
+setLocale('zh_TW')
+
+const isTel = (value) => {
+  const phoneNumber = /^0[2|4]\d{4}\d{4}|^0[3|5-8]\d{3}\d{4}|^09\d{2}(\d{6}|-\d{3}-\d{3})/
+  return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
+}
+
+const onSubmit = async () => {
+  const OrderInfo = {
+    recipient: order.value.recipient,
+    paymentType: order.value.paymentType
+  }
+  const { data } = await update_order_api(orderId.value, OrderInfo)
+  const message = data.message
+  if (message === '更新訂單成功') {
+    alertStore.openAlert('success', message)
+  } else if (message !== '') {
+    alertStore.openAlert('error', message)
+  }
+}
+
+onMounted(() => {
   orderId.value = route.query.orderId
-  const { data } = await get_order_by_id_api(orderId.value)
-  order.value = convert(data.order)
+  getOrder()
 })
 </script>
 
@@ -114,6 +121,7 @@ onMounted(async () => {
             id="status"
             class="max-w-[100px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             v-model="order.status"
+            @change="OrderChangeModalRef.showModal(order.status)"
           >
             <option value="0" disabled>請選擇訂單狀態</option>
             <option value="1">未付款</option>
@@ -307,4 +315,10 @@ onMounted(async () => {
       </div>
     </div>
   </div>
+  <OrderChangeModal
+    ref="OrderChangeModalRef"
+    :orderId="orderId"
+    :order="order"
+    @getOrder="getOrder"
+  />
 </template>

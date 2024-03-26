@@ -19,6 +19,7 @@ const directToLogin = () => {
   modalStore.openModal('login')
 }
 </script>
+
 <template>
   <dialog ref="dialogRef" class="modal">
     <div class="modal-box relative flex flex-col items-center px-[75px]">
@@ -28,10 +29,13 @@ const directToLogin = () => {
       </div>
 
       <!-- 標題 -->
-      <h3 class="font-bold text-5xl text-font text-center mt-[46px]">目前以訪客身分購物</h3>
+      <h3 class="font-bold text-4xl text-font text-center mt-[46px]">目前以訪客身分購物</h3>
 
       <!-- 文字說明 -->
-      <p class="mt-[25px] text-font leading-[48px] font-bold">登入即可使用會員積分折扣！</p>
+      <p class="mt-[25px] text-font font-bold">
+        登入並完成訂單享有<span class="text-red-500">會員積分回饋!</span>
+      </p>
+      <p class="mt-[25px] text-font font-bold">登入使用會員積分折扣!</p>
 
       <!-- 按鈕 -->
       <div class="w-full flex justify-center space-x-[23px] px-[35px] mt-[46px]">
@@ -52,4 +56,3 @@ const directToLogin = () => {
     </div>
   </dialog>
 </template>
-<style scoped></style>

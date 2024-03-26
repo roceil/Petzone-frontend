@@ -81,3 +81,16 @@ export const update_order_api = async (orderId, orderInfo) => {
     console.error(error)
   }
 }
+
+// 後台修改訂單狀態
+export const update_order_status_api = async (orderId, status) => {
+  try {
+    return axios.put(
+      `${VITE_API_BASE_URL}/api/order/${orderId}/status`,
+      { status: status },
+      config()
+    )
+  } catch (error) {
+    console.error(error)
+  }
+}

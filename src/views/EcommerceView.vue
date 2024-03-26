@@ -33,7 +33,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="container mt-10 text-font">
+  <div class="container my-10 text-font">
     <div class="md:grid md:grid-cols-3 md:gap-8">
       <!-- 頁面標題 -->
       <div>

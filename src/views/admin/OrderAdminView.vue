@@ -33,7 +33,7 @@ configure({
 setLocale('zh_TW')
 
 const isTel = (value) => {
-  const phoneNumber = /(\d{2,3}-?|\(\d{2,3}\))\d{3,4}-?\d{4}|09\d{2}(\d{6}|-\d{3}-\d{3})/
+  const phoneNumber = /^0[2|4]\d{4}\d{4}|^0[3|5-8]\d{3}\d{4}|^09\d{2}(\d{6}|-\d{3}-\d{3})/
   return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
 }
 
@@ -51,10 +51,19 @@ const onSubmit = async () => {
   }
 }
 
+// 加入千分位
+const addThousandSeparator = (num, separator = ',') => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
+}
+
 const convert = (order) => {
-  // 時間取年月日
   const createAt = order.createdAt
   order.createdAt = createAt.slice(0, 10)
+
+  order.totalPrice = addThousandSeparator(order.totalPrice)
+  if (order.finalPrice) {
+    order.finalPrice = addThousandSeparator(order.finalPrice)
+  }
 
   // 訂單狀態
   switch (order.status) {
@@ -119,53 +128,69 @@ onMounted(async () => {
         </div>
 
         <!-- 購買明細 -->
-        <div class="border rounded-[10px]">
+        <div class="border border-b-0 rounded-t-[10px]">
           <table class="w-[760px]">
             <thead class="h-[60px] bg-third">
-              <th colspan="5" class="rounded-[10px] text-center text-xl">購買明細</th>
+              <th colspan="5" class="rounded-t-[10px] text-center text-xl">購買明細</th>
             </thead>
             <tbody>
               <tr>
-                <td colspan="5" class="p-3 pl-5 py-5 text-xl">商品明細</td>
+                <td colspan="5" class="p-3 px-10 py-5 text-xl">商品明細</td>
               </tr>
               <tr v-for="product in order.products" :key="product._id">
-                <td class="w-[120px]"></td>
+                <td class="w-[150px]"></td>
                 <td class="py-5">{{ product.name }}</td>
                 <td class="py-5">
-                  <p v-if="product.price">NT$ {{ product.price }}</p>
-                  <p v-else>NT$ {{ product.originPrice }}</p>
+                  <p v-if="product.price">
+                    NT$ {{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+                  </p>
+                  <p v-else>
+                    NT$ {{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+                  </p>
                 </td>
                 <td class="py-5">x {{ product.qty }}</td>
-                <td class="text-right pr-5 py-5">
-                  <p v-if="product.price">NT$ {{ product.price * product.qty }}</p>
-                  <p v-else>NT$ {{ product.originPrice * product.qty }}</p>
+                <td class="text-right pr-10 py-5">
+                  <p v-if="product.price">
+                    NT$
+                    {{
+                      (product.price * product.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    }}
+                  </p>
+                  <p v-else>
+                    NT$
+                    {{
+                      (product.originPrice * product.qty)
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    }}
+                  </p>
                 </td>
               </tr>
               <tr>
                 <td class="w-[100px]"></td>
                 <td class="py-5 border-black border-t-2 text-left" colspan="2">小計</td>
-                <td class="px-5 py-5 border-black border-t-2 text-right" colspan="2">
+                <td class="pr-10 py-5 border-black border-t-2 text-right" colspan="2">
                   NT$ {{ order.totalPrice }}
                 </td>
               </tr>
               <tr v-if="order.finalPrice !== 0">
-                <td colspan="5" class="p-3 pl-5 py-5 text-xl">折抵明細</td>
+                <td colspan="5" class="p-3 pl-10 py-5 text-xl">折抵明細</td>
               </tr>
               <tr v-if="order.couponDiscount != 0">
                 <td class="w-[100px]"></td>
                 <td class="py-5" colspan="2">優惠券折扣</td>
-                <td class="px-5 py-5 text-right" colspan="2">-0</td>
+                <td class="pr-10 py-5 text-right" colspan="2">-0</td>
               </tr>
               <tr v-if="order.pointsDiscount != 0">
                 <td class="w-[100px]"></td>
                 <td class="border-black border-b-2 py-5" colspan="2">會員積分折抵</td>
-                <td class="border-black border-b-2 text-right px-5 py-5" colspan="2">
+                <td class="border-black border-b-2 text-right pr-10 py-5" colspan="2">
                   {{ order.pointsDiscount }}
                 </td>
               </tr>
-              <tr class="border-b-2">
-                <td class="font-bold px-5 py-5 text-2xl" colspan="3">訂單金額</td>
-                <td class="font-bold text-right px-5 py-5 text-2xl" colspan="2">
+              <tr>
+                <td class="font-bold px-10 py-5 text-2xl" colspan="3">訂單金額</td>
+                <td class="font-bold text-right pr-10 py-5 text-2xl" colspan="2">
                   NT$ {{ order.finalPrice ? order.finalPrice : order.totalPrice }}
                 </td>
               </tr>
@@ -175,9 +200,9 @@ onMounted(async () => {
 
         <!-- 收件人資訊 & 付款方式 -->
         <VForm
-          class="border rounded-[10px] w-[760px]"
+          class="border border-t-0 w-[760px]"
           v-slot="{ errors }"
-          @submit="onSubmit(recipient, parseInt(paymentType), totalPrice)"
+          @submit="onSubmit(recipient, parseInt(paymentType))"
         >
           <div class="h-[60px] bg-third rounded-[10px]">
             <h1 colspan="2" class="font-bold text-center leading-[60px] text-xl">收件人資訊</h1>
@@ -189,7 +214,7 @@ onMounted(async () => {
                 type="text"
                 id="name"
                 name="姓名"
-                class="p-1.5 border rounded-md ml-5 py-1.5 pl-6 pr-20 placeholder:text-gray-400"
+                class="p-1.5 border rounded-md ml-5 py-1.5 pl-3 pr-20 placeholder:text-gray-400"
                 placeholder="請輸入收件人姓名"
                 v-model="order.recipient.name"
                 rules="required"
@@ -203,7 +228,7 @@ onMounted(async () => {
                 type="email"
                 id="email"
                 name="信箱"
-                class="p-1.5 border rounded-md ml-5 py-1.5 pl-6 pr-20 placeholder:text-gray-400"
+                class="p-1.5 border rounded-md ml-5 py-1.5 pl-3 pr-20 placeholder:text-gray-400"
                 placeholder="請輸入收件人信箱"
                 v-model="order.recipient.email"
                 rules="email|required"
@@ -217,7 +242,7 @@ onMounted(async () => {
                 type="tel"
                 id="phone"
                 name="phone"
-                class="p-1.5 border rounded-md ml-5 py-1.5 pl-6 pr-20 placeholder:text-gray-400"
+                class="p-1.5 border rounded-md ml-5 py-1.5 pl-3 pr-20 placeholder:text-gray-400"
                 placeholder="請輸入收件人電話"
                 v-model="order.recipient.phone"
                 :rules="isTel"
@@ -231,14 +256,13 @@ onMounted(async () => {
                 type="text"
                 id="address"
                 name="地址"
-                class="border rounded-md ml-5 py-1.5 pl-6 w-[500px] h-[90px] placeholder:text-gray-400"
+                class="border rounded-md ml-5 py-1.5 pl-3 w-[310px] h-[90px] placeholder:text-gray-400"
                 placeholder="請輸入收件人地址"
                 v-model="order.recipient.address"
                 rules="required"
                 :class="{ 'is-invalid': errors['地址'] }"
-              ></VField
-              ><br />
-              <error-message name="地址" class="invalid-feedback text-red-500"></error-message>
+              ></VField>
+              <error-message name="地址" class="invalid-feedback text-red-500 m-3"></error-message>
             </div>
           </div>
           <div class="h-[60px] bg-third rounded-[10px]">
@@ -275,11 +299,7 @@ onMounted(async () => {
             >
               取消
             </button>
-            <button
-              type="submit"
-              class="mx-3 w-[80px] h-[40px] bg-secondary rounded-md text-primary"
-              @click.prevent="onSubmit"
-            >
+            <button type="submit" class="w-[80px] h-[40px] bg-secondary rounded-md text-primary">
               確認
             </button>
           </div>

@@ -147,7 +147,12 @@ onMounted(() => {
               <td># {{ order.orderId }}</td>
               <td>{{ order.createdAt }}</td>
               <td class="text-center">
-                $ {{ order.finalPrice !== 0 ? order.finalPrice : order.totalPrice }}
+                $
+                {{
+                  order.finalPrice !== 0
+                    ? order.finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    : order.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                }}
               </td>
               <td>{{ order.recipient.email }}</td>
               <td class="text-center">

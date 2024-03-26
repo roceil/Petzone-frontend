@@ -55,11 +55,13 @@ const checkInput = async () => {
   } else if (product.value.category.key === 0) {
     informMessage.value = '商品類型必選擇'
   } else if (product.value.isEnabled === -1) {
-    informMessage.value = '商品類型必選擇'
-  } else if (product.value.originPrice === 0) {
+    informMessage.value = '商品狀態必選擇'
+  } else if (product.value.originPrice === 0 || product.value.originPrice === '') {
     informMessage.value = '請輸入商品原價'
-  } else if (product.value.quantity === 0) {
-    informMessage.value = '請輸入商品庫存量'
+  } else if (product.value.price === '') {
+    informMessage.value = '請輸入商品特價，如無特價請輸入 0'
+  } else if (product.value.quantity === '') {
+    informMessage.value = '請輸入商品庫存量，如無庫存請輸入 0'
   } else if (product.value.unit === '') {
     informMessage.value = '請輸入商品單位'
   } else if (product.value.description === '') {
@@ -184,6 +186,7 @@ onMounted(async () => {
               class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
               placeholder="請輸入商品原價"
               v-model.number="product.originPrice"
+              onkeyup="value=value.replace(/[^\d]/g,'')"
               :disabled="!editMode"
             />
           </div>
@@ -197,6 +200,7 @@ onMounted(async () => {
             class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             placeholder="請輸入商品特價"
             v-model.number="product.price"
+            onkeyup="value=value.replace(/[^\d]/g,'')"
             :disabled="!editMode"
           />
         </div>
@@ -209,6 +213,7 @@ onMounted(async () => {
             class="max-w-[150px] h-[48px] py-1.5 pl-2 border rounded-md border-font focus:outline-none"
             placeholder="請輸入庫存量"
             v-model.number="product.quantity"
+            onkeyup="value=value.replace(/[^\d]/g,'')"
             :disabled="!editMode"
           />
         </div>

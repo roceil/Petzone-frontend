@@ -34,7 +34,9 @@ export const orderStore = defineStore('orderStore', () => {
     const { data } = await get_order_by_id_api(orderId)
     order.value = data.order
     order.value.totalPrice = addThousandSeparator(order.value.totalPrice)
-    order.value.finalPrice = addThousandSeparator(order.value.finalPrice)
+    if (order.value.finalPrice) {
+      order.value.finalPrice = addThousandSeparator(order.value.finalPrice)
+    }
     order.value.createdAt = order.value.createdAt.slice(0, 10)
     order.value.updatedAt = order.value.updatedAt.slice(0, 10)
   }

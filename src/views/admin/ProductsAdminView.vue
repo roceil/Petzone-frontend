@@ -154,7 +154,12 @@ onMounted(() => {
               <td>{{ product.name }}</td>
               <td>{{ product.category.name }}</td>
               <td class="text-right">
-                $ {{ product.price ? product.price : product.originPrice }}
+                $
+                {{
+                  product.price !== 0
+                    ? product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    : product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                }}
               </td>
               <td class="text-center">{{ product.quantity }}</td>
               <td class="text-center">

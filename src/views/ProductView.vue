@@ -118,7 +118,7 @@ onMounted(() => {
       <!-- 商品資訊 -->
       <div class="md:w-6/12">
         <p class="mt-6 text-xl font-bold md:mt-10 md:text-5xl">{{ product.name }}</p>
-        <p class="mt-3 text-xs text-secondary md:mt-10 md:text-2xl">{{ product.description }}</p>
+        <p class="mt-3 text-xs text-secondary md:mt-10 md:text-base">{{ product.description }}</p>
         <div class="flex justify-between mt-3 text-xs md:mt-10 md:text-2xl">
           <p>庫存量： {{ product.quantity }} {{ product.unit }}</p>
           <div>
@@ -130,7 +130,7 @@ onMounted(() => {
         </div>
 
         <!-- 按鈕區塊 -->
-        <div class="hidden md:flex md:justify-evenly md:mt-20">
+        <div class="hidden md:flex md:justify-between md:mt-20">
           <button
             type="button"
             class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
@@ -179,16 +179,16 @@ onMounted(() => {
     <p class="mt-6 text-xl font-bold md:text-2xl md:mt-10" v-if="productReviews.length !== 0">
       商品評論
     </p>
-    <div class="grid justify-items-center md:mx-40">
+    <div class="mt-3 grid justify-items-center md:mx-40">
       <div class="flex md:w-full md:mt-10" v-for="review in productReviews" :key="review">
-        <div class="w-2/12">
+        <div class="w-[50px] h-[50px] rounded-full md:w-[150px] md:h-[150px]">
           <img
-            class="w-[75px] h-[75px] rounded-full object-fill md:w-[150px] md:h-[150px]"
+            class="w-[50px] h-[50px] rounded-full md:w-[150px] md:h-[150px]"
             :src="review.photo"
             alt="會員大頭照"
           />
         </div>
-        <div class="w-10/12 relative">
+        <div class="relative">
           <div class="flex m-4 text-xs md:text-base">
             <p>{{ review.nickName }}</p>
             <p class="mx-2">於{{ review.createAt }}評價</p>
@@ -206,7 +206,7 @@ onMounted(() => {
             </div>
           </div>
           <textarea
-            class="w-10/12 ml-4 p-4 border rounded-[10px] text-xs resize-none outline-none md:text-base"
+            class="w-[240px] ml-4 p-4 border rounded-[10px] text-xs resize-none outline-none md:w-[500px] md:text-base xl:w-[800px]"
             v-model="review.content"
             :readonly="review.userId !== userId || !editMode"
             v-if="review.content || editMode"

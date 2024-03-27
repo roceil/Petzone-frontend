@@ -113,7 +113,7 @@ onMounted(async () => {
             <td class="pl-3 md:px-10 md:py-5">
               {{ product.name }}
             </td>
-            <td class="p-3 md:px-10 md:py-5">
+            <td class="p-3 text-right md:px-10 md:py-5">
               <p v-if="product.price">
                 $ {{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
               </p>
@@ -121,7 +121,7 @@ onMounted(async () => {
                 $ {{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
               </p>
             </td>
-            <td class="p-3 md:px-10 md:py-5">x {{ product.qty }}</td>
+            <td class="p-3 text-center md:px-10 md:py-5">x {{ product.qty }}</td>
             <td class="pr-3 text-right md:px-10 md:py-5">
               <p v-if="product.price">
                 NT$
@@ -145,7 +145,10 @@ onMounted(async () => {
             <td class="pl-3 py-5 md:px-10" colspan="2">會員積分折抵</td>
             <td class="pr-3 py-5 text-right md:px-10" colspan="2">- {{ usePoints / 10 }}</td>
           </tr>
-          <tr class="border-black border-t-2">
+          <tr>
+            <td colspan="4" class="border-t-2"></td>
+          </tr>
+          <tr class="border">
             <td class="p-3 text-base font-bold md:px-10 md:py-5 md:text-2xl" colspan="2">
               訂單金額
             </td>

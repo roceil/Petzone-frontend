@@ -87,7 +87,7 @@ onMounted(() => {
   <div class="container mt-10 mb-20 text-font">
     <div class="md:flex md:flex-nowrap">
       <!-- 商品圖片 -->
-      <div class="md:mt-10 md:mr-10 md:w-6/12">
+      <div class="md:mt-10 md:w-6/12 md:mr-10">
         <Swiper
           class="w-full rounded-[10px] overflow-hidden"
           :navigation="true"
@@ -118,7 +118,7 @@ onMounted(() => {
       <!-- 商品資訊 -->
       <div class="md:w-6/12">
         <p class="mt-6 text-xl font-bold md:mt-10 md:text-5xl">{{ product.name }}</p>
-        <p class="mt-3 text-xs text-secondary md:mt-10 md:text-base">{{ product.description }}</p>
+        <p class="mt-3 text-xs text-secondary md:mt-10 md:text-xl">{{ product.description }}</p>
         <div class="flex justify-between mt-3 text-xs md:mt-10 md:text-2xl">
           <p>庫存量： {{ product.quantity }} {{ product.unit }}</p>
           <div>
@@ -211,7 +211,7 @@ onMounted(() => {
             :readonly="review.userId !== userId || !editMode"
             v-if="review.content || editMode"
           ></textarea>
-          <div class="hidden md:flex md:absolute md:right-40">
+          <div class="hidden md:flex md:absolute md:right-10">
             <button
               type="button"
               class="link m-2"

@@ -151,16 +151,16 @@ onMounted(async () => {
       </thead>
       <tbody>
         <tr>
-          <td colspan="5" class="pl-5 pt-5">姓名：{{ order.recipient.name }}</td>
+          <td colspan="5" class="px-5 pt-5">姓名：{{ order.recipient.name }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-2">信箱：{{ order.recipient.email }}</td>
+          <td colspan="5" class="px-5 py-2">信箱：{{ order.recipient.email }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 py-2">電話：{{ order.recipient.phone }}</td>
+          <td colspan="5" class="px-5 py-2">電話：{{ order.recipient.phone }}</td>
         </tr>
         <tr>
-          <td colspan="5" class="pl-5 pb-5">地址：{{ order.recipient.address }}</td>
+          <td colspan="5" class="px-5 pb-5">地址：{{ order.recipient.address }}</td>
         </tr>
       </tbody>
 
@@ -170,7 +170,7 @@ onMounted(async () => {
       </thead>
       <tbody>
         <tr>
-          <td colspan="5" class="pl-5 py-5">付款方式：{{ order.paymentType }}</td>
+          <td colspan="5" class="p-5">付款方式：{{ order.paymentType }}</td>
         </tr>
       </tbody>
       <tr>

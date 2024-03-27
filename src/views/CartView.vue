@@ -18,29 +18,36 @@ const { userId } = storeToRefs(userStore)
 const loginAlertModalRef = ref()
 const userPoints = ref(0)
 const informMessage = ref('')
-const checkPoint = ref(true)
+const check = ref(true)
 
 // 確認積分
 const checkInput = () => {
-  if (usePoints.value < 0) {
-    informMessage.value = '欲使用積分不可為負數'
-    checkPoint.value = false
-  } else if (usePoints.value > userPoints.value) {
+  if (usePoints.value > userPoints.value) {
     informMessage.value = '欲使用積分不可大於可使用積分'
-    checkPoint.value = false
+    check.value = false
   } else if (usePoints.value % 10 !== 0) {
     informMessage.value = '10點折抵1元，請輸入10的倍數'
-    checkPoint.value = false
+    check.value = false
   } else {
     informMessage.value = ''
     finalPrice.value = totalPrice.value - usePoints.value / 10
-    checkPoint.value = true
+    check.value = true
   }
 }
 
 watch(userId, async (newUserId) => {
-  const userInfo = await get_member_data_api(newUserId)
-  userPoints.value = userInfo.points
+  if (userId.value !== undefined && newUserId !== '') {
+    const userInfo = await get_member_data_api(newUserId)
+    userPoints.value = userInfo.points
+  }
+})
+
+watch(totalPrice, async (newTotalPrice) => {
+  if (newTotalPrice === 0) {
+    check.value = false
+  } else {
+    check.value = true
+  }
 })
 
 onMounted(async () => {
@@ -57,6 +64,10 @@ onMounted(async () => {
   // 清空使用積分及最終價格
   usePoints.value = 0
   finalPrice.value = 0
+
+  if (totalPrice.value === 0) {
+    check.value = false
+  }
 })
 </script>
 
@@ -66,147 +77,149 @@ onMounted(async () => {
     <h1 class="text-xl font-bold md:text-5xl">你的購物車</h1>
   </div>
 
-  <div class="container text-font" v-if="cartList.length !== 0">
+  <div class="container my-10 text-font md:flex md:justify-center" v-if="cartList.length !== 0">
     <!-- 購買商品明細 -->
-    <div class="my-10 md:flex md:justify-center">
-      <table class="border border-separate border-spacing-0 rounded-[10px] shadow mb-10 md:mr-10">
-        <thead class="h-[60px] bg-third md:text-xl">
-          <th class="pl-3 text-left md:pl-6 rounded-tl-[10px]">購買商品</th>
-          <th class="md:px-6">售價</th>
-          <th class="md:px-6">數量</th>
-          <th colspan="2" class="pr-3 text-right rounded-tr-[10px] md:pr-6">金額</th>
-        </thead>
-        <tbody class="rounded-b-[10px] text-xs md:text-base">
-          <tr v-for="product in cartList" :key="product._id">
-            <td class="pl-3 py-3 md:pl-6 md:py-6">
-              <div class="flex items-center">
-                <img
-                  class="mr-3 w-[50px] h-[50px] rounded-[10px] object-cover md:w-[100px] md:h-[100px]"
-                  :src="product.photos[0]"
-                  alt="產品圖"
-                />
-                <p>{{ product.name }}</p>
-              </div>
-            </td>
-            <td class="text-center">
+    <table class="border border-separate border-spacing-0 rounded-[10px] shadow mb-10 md:mr-10">
+      <thead class="h-[60px] bg-third md:text-xl">
+        <th class="p-3 text-left rounded-tl-[10px]">購買商品</th>
+        <th class="p-3">售價</th>
+        <th class="p-3">數量</th>
+        <th colspan="2" class="p-3 text-right rounded-tr-[10px]">金額</th>
+      </thead>
+      <tbody class="rounded-b-[10px] text-xs md:text-base">
+        <tr v-for="product in cartList" :key="product._id">
+          <td class="p-3">
+            <div class="flex items-center">
+              <img
+                class="mr-3 w-[50px] h-[50px] rounded-[10px] object-cover md:w-[100px] md:h-[100px]"
+                :src="product.photos[0]"
+                alt="產品圖"
+              />
+              <p>{{ product.name }}</p>
+            </div>
+          </td>
+          <td class="p-3 text-right">
+            <p v-if="product.price">
+              $ {{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+            </p>
+            <p v-else>
+              $ {{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+            </p>
+          </td>
+          <td class="p-3">
+            <div class="flex justify-center">
+              <input
+                id="number-input"
+                type="number"
+                class="block w-[40px] h-[30px] border rounded-lg bg-gray-50 text-center md:w-[60px] md:h-[30px]"
+                placeholder="1"
+                min="1"
+                step="1"
+                required
+                v-model.number="product.qty"
+                onkeyup="value=value.replace(/^0+|[^\d]/g,'')"
+                @change="
+                  (e) => {
+                    cartHandler.updateCart(product._id, e.target.value)
+                  }
+                "
+              />
+            </div>
+          </td>
+          <td class="p-3">
+            <div class="flex justify-end">
               <p v-if="product.price">
-                $ {{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+                NT$
+                {{ (product.price * product.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
               </p>
               <p v-else>
-                $ {{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+                NT$
+                {{
+                  (product.originPrice * product.qty)
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                }}
               </p>
-            </td>
-            <td>
-              <div class="flex justify-center">
-                <input
-                  id="number-input"
-                  type="number"
-                  class="block w-[40px] h-[30px] border rounded-lg bg-gray-50 text-center md:w-[60px] md:h-[30px]"
-                  placeholder="1"
-                  min="1"
-                  step="1"
-                  required
-                  v-model.number="product.qty"
-                  onkeyup="value=value.replace(/[^\d]/g,'')"
-                  @change="
-                    (e) => {
-                      cartHandler.updateCart(product._id, e.target.value)
-                    }
-                  "
-                />
-              </div>
-            </td>
-            <td class="pr-3 md:pr-6">
-              <div class="flex justify-end">
-                <p v-if="product.price">
-                  NT$
-                  {{
-                    (product.price * product.qty).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                  }}
-                </p>
-                <p v-else>
-                  NT$
-                  {{
-                    (product.originPrice * product.qty)
-                      .toString()
-                      .replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                  }}
-                </p>
-                <button
-                  type="button"
-                  class="w-[16px] h-[16px] md:w-[24px] md:h-[24px]"
-                  @click="cartHandler.deleteFromCart(product._id)"
-                >
-                  <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
-                </button>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <button
+                type="button"
+                class="w-[16px] h-[16px] md:w-[24px] md:h-[24px]"
+                @click="cartHandler.deleteFromCart(product._id)"
+              >
+                <img src="../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-      <!-- 訂單摘要 -->
-      <table class="max-w-[350px] border border-separate border-spacing-0 rounded-[10px] shadow">
+    <!-- 訂單摘要 -->
+    <div>
+      <table class="max-w-[375px] border border-separate border-spacing-0 rounded-[10px] shadow">
         <thead class="h-[60px] bg-third text-center md:text-2xl">
           <th class="rounded-t-[10px]" colspan="2">訂單摘要</th>
         </thead>
         <tbody class="rounded-b-[10px] text-xs">
-          <tr>
-            <td class="p-3 text-base font-bold md:p-6 md:text-2xl">商品總計</td>
-            <td class="p-3 text-right md:p-6 md:text-base">
+          <tr class="h-[60px]">
+            <td class="p-3 text-base font-bold md:text-2xl">商品總計</td>
+            <td class="p-3 text-right md:text-base">
               NT$ {{ totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
             </td>
           </tr>
-          <!-- <tr>
-          <td class="font-bold pl-6 py-3 md:text-base">使用優惠代碼</td>
-          <td>
-            <div class="flex justify-end pr-6 py-3">
-              <input
-                id="coupon-input"
-                type="text"
-                class="block w-[120px] h-[30px] bg-gray-50 border rounded-l-[6px] text-font text-center md:text-base"
-                placeholder="請輸入優惠代碼"
-              />
-              <button
-                type="button"
-                class="w-[50px] h-[30px] bg-secondary rounded-r-[6px] text-primary md:text-base"
-              >
-                確認
-              </button>
-            </div>
-          </td>
-        </tr> -->
-          <tr v-if="userId">
-            <td colspan="2" class="p-3 text-right md:p-6 md:text-base">
-              可使用積分: {{ userPoints }} 點
+          <!-- <tr class="h-[60px]">
+            <td class="p-3 text-xs font-bold md:text-base">使用優惠代碼</td>
+            <td>
+              <div class="p-3 flex justify-end">
+                <input
+                  id="coupon-input"
+                  type="text"
+                  class="block w-[120px] h-[30px] bg-gray-50 border rounded-l-[6px] text-font text-center md:text-base"
+                  placeholder="請輸入優惠代碼"
+                />
+                <button
+                  type="button"
+                  class="w-[50px] h-[30px] bg-secondary rounded-r-[6px] text-primary md:text-base"
+                >
+                  確認
+                </button>
+              </div>
             </td>
+          </tr> -->
+          <tr class="h-[60px]" v-if="userId">
+            <td colspan="2" class="p-3 text-right md:text-base">可使用積分: {{ userPoints }} 點</td>
           </tr>
-          <tr class="border-b-2" v-if="userId">
-            <td class="p-3 text-xs font-bold md:p-6 md:text-base">使用會員積分折抵</td>
-            <td class="p-3 flex justify-end md:p-6">
+          <tr class="h-[60px]" v-if="userId">
+            <td class="p-3 text-xs font-bold md:text-base">使用會員積分折抵</td>
+            <td class="p-3 flex justify-end md:text-base">
               <input
                 id="point-input"
                 type="number"
-                class="block w-[80px] h-[30px] bg-gray-50 border rounded-lg text-font text-center md:text-base"
+                class="p-3 block w-[80px] h-[35px] bg-gray-50 border rounded-lg text-font text-center"
                 placeholder="0"
                 min="0"
                 :max="userPoints"
                 v-model="usePoints"
+                onkeyup="value=value.replace(/[^\d]/g,'')"
                 @change="checkInput()"
               />
             </td>
-            <span class="text-red-400" v-if="informMessage">{{ informMessage }}</span>
           </tr>
-          <!-- <tr>
-          <td class="pl-6 pt-3 md:text-sm">優惠券折扣</td>
-          <td class="text-right pr-6 md:text-sm">-0</td>
-        </tr> -->
-          <tr v-if="userId">
-            <td class="p-3 md:px-6 md:text-sm">會員積分折抵</td>
-            <td class="p-3 text-right md:px-6 md:text-sm">{{ -usePoints / 10 }}</td>
+          <tr v-if="informMessage">
+            <td colspan="2" class="p-3 text-right text-red-400">{{ informMessage }}</td>
           </tr>
           <tr>
-            <td colspan="2" class="p-3 text-right text-base font-bold md:p-6 md:text-2xl">
+            <td colspan="2" class="border-b-2"></td>
+          </tr>
+          <!-- <tr class="h-[60px]">
+            <td class="p-3 md:text-sm">優惠券折扣</td>
+            <td class="p-3 text-right md:text-sm">0</td>
+          </tr> -->
+          <tr class="h-[60px]" v-if="userId">
+            <td class="p-3 md:text-sm">會員積分折抵</td>
+            <td class="p-3 text-right md:text-sm">{{ -usePoints / 10 }}</td>
+          </tr>
+          <tr class="h-[60px]">
+            <td colspan="2" class="p-3 text-right text-base font-bold md:text-2xl">
               NT$
               {{
                 finalPrice
@@ -215,13 +228,13 @@ onMounted(async () => {
               }}
             </td>
           </tr>
-          <tr>
-            <td colspan="2" class="p-3 text-right md:p-6">
+          <tr class="h-[60px]">
+            <td colspan="2" class="p-3 text-end">
               <button
                 type="button"
                 class="w-[80px] h-[40px] bg-secondary rounded-md text-primary md:text-base"
                 @click="router.push(`/ecommerce/checkout`)"
-                :disabled="checkPoint === false"
+                :disabled="check === false"
               >
                 來去結帳
               </button>

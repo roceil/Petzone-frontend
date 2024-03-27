@@ -60,6 +60,7 @@ export const useUserStore = defineStore('user', () => {
     Cookies.remove('type')
     Cookies.remove('userId')
     Cookies.remove('userPhotoPath')
+    localStorage.clear()
     resetUserId()
     resetPhotoPath()
     resetCurrentPage()

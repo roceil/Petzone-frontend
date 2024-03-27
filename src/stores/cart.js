@@ -140,7 +140,7 @@ export const cartStore = defineStore('cartStore', () => {
     } else {
       // 訪客取得購物車
       const cart = JSON.parse(localStorage.getItem('cart'))
-      if (cart.length !== 0) {
+      if (cart) {
         const newCart = cart.map(async (item) => {
           const { data } = await get_product_by_id_api(item.productId)
           const newItem = { ...data.product, qty: item.qty }

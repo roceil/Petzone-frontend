@@ -116,10 +116,8 @@ onMounted(async () => {
         </tr>
         <tr>
           <td class="w-[100px]"></td>
-          <td class="py-5 border-black border-t-2 text-left" colspan="2">小計</td>
-          <td class="px-5 py-5 border-black border-t-2 text-right" colspan="2">
-            NT$ {{ order.totalPrice }}
-          </td>
+          <td class="py-5 border-t-2 text-left" colspan="2">小計</td>
+          <td class="px-5 py-5 border-t-2 text-right" colspan="2">NT$ {{ order.totalPrice }}</td>
         </tr>
         <tr v-if="order.finalPrice !== 0">
           <td colspan="5" class="p-3 text-base md:pl-5 md:py-5 md:text-xl">折抵明細</td>
@@ -131,8 +129,8 @@ onMounted(async () => {
         </tr>
         <tr v-if="order.pointsDiscount != 0">
           <td class="w-[100px]"></td>
-          <td class="py-3 border-black border-b-2 md:py-5" colspan="2">會員積分折抵</td>
-          <td class="border-black border-b-2 text-right px-5 py-3 md:py-5" colspan="2">
+          <td class="py-3 border-b-2 md:py-5" colspan="2">會員積分折抵</td>
+          <td class="border-b-2 text-right px-5 py-3 md:py-5" colspan="2">
             {{ order.pointsDiscount }}
           </td>
         </tr>

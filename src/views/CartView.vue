@@ -62,23 +62,23 @@ onMounted(async () => {
 
 <template>
   <!-- 頁面標題 -->
-  <div class="container mt-10 text-font relative">
+  <div class="container mt-10 text-font">
     <h1 class="text-xl font-bold md:text-5xl">你的購物車</h1>
   </div>
 
   <div class="container text-font" v-if="cartList.length !== 0">
     <!-- 購買商品明細 -->
-    <div class="my-10">
-      <table>
+    <div class="my-10 md:flex md:justify-center">
+      <table class="border border-separate border-spacing-0 rounded-[10px] shadow mb-10 md:mr-10">
         <thead class="h-[60px] bg-third md:text-xl">
-          <th class="pl-6 text-left rounded-tl-[10px]">購買商品</th>
-          <th class="px-6">售價</th>
-          <th class="px-6">數量</th>
-          <th colspan="2" class="pr-6 text-right rounded-tr-[10px]">金額</th>
+          <th class="pl-3 text-left md:pl-6 rounded-tl-[10px]">購買商品</th>
+          <th class="md:px-6">售價</th>
+          <th class="md:px-6">數量</th>
+          <th colspan="2" class="pr-3 text-right rounded-tr-[10px] md:pr-6">金額</th>
         </thead>
-        <tbody class="shadow rounded-b-[10px] text-xs md:text-base">
+        <tbody class="rounded-b-[10px] text-xs md:text-base">
           <tr v-for="product in cartList" :key="product._id">
-            <td class="pl-6 py-6">
+            <td class="pl-3 py-3 md:pl-6 md:py-6">
               <div class="flex items-center">
                 <img
                   class="mr-3 w-[50px] h-[50px] rounded-[10px] object-cover md:w-[100px] md:h-[100px]"
@@ -116,7 +116,7 @@ onMounted(async () => {
                 />
               </div>
             </td>
-            <td class="pr-6">
+            <td class="pr-3 md:pr-6">
               <div class="flex justify-end">
                 <p v-if="product.price">
                   NT$
@@ -144,21 +144,20 @@ onMounted(async () => {
           </tr>
         </tbody>
       </table>
-    </div>
 
-    <!-- 訂單摘要 -->
-    <table class="max-w-[350px] my-10 text-font md:absolute md:top-[30%] md:left-[70%]">
-      <thead class="h-[60px] bg-third text-center md:text-2xl">
-        <th class="rounded-t-[10px]" colspan="2">訂單摘要</th>
-      </thead>
-      <tbody class="rounded-b-[10px] shadow text-xs">
-        <tr>
-          <td class="text-base font-bold px-6 py-6 md:text-2xl">商品總計</td>
-          <td class="text-right pr-6 py-3 md:text-base">
-            NT$ {{ totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
-          </td>
-        </tr>
-        <!-- <tr>
+      <!-- 訂單摘要 -->
+      <table class="max-w-[350px] border border-separate border-spacing-0 rounded-[10px] shadow">
+        <thead class="h-[60px] bg-third text-center md:text-2xl">
+          <th class="rounded-t-[10px]" colspan="2">訂單摘要</th>
+        </thead>
+        <tbody class="rounded-b-[10px] text-xs">
+          <tr>
+            <td class="p-3 text-base font-bold md:p-6 md:text-2xl">商品總計</td>
+            <td class="p-3 text-right md:p-6 md:text-base">
+              NT$ {{ totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+            </td>
+          </tr>
+          <!-- <tr>
           <td class="font-bold pl-6 py-3 md:text-base">使用優惠代碼</td>
           <td>
             <div class="flex justify-end pr-6 py-3">
@@ -177,59 +176,60 @@ onMounted(async () => {
             </div>
           </td>
         </tr> -->
-        <tr v-if="userId">
-          <td colspan="2" class="text-right pr-6 py-3 md:text-base">
-            可使用積分: {{ userPoints }} 點
-          </td>
-        </tr>
-        <tr class="border-b-2" v-if="userId">
-          <td class="text-xs font-bold pl-6 py-3 md:text-base">使用會員積分折抵</td>
-          <td class="flex justify-end pr-6 py-3">
-            <input
-              id="point-input"
-              type="number"
-              class="block w-[80px] h-[30px] bg-gray-50 border rounded-lg text-font text-center md:text-base"
-              placeholder="0"
-              min="0"
-              :max="userPoints"
-              v-model="usePoints"
-              @change="checkInput()"
-            />
-          </td>
-          <span class="text-red-400" v-if="informMessage">{{ informMessage }}</span>
-        </tr>
-        <!-- <tr>
+          <tr v-if="userId">
+            <td colspan="2" class="p-3 text-right md:p-6 md:text-base">
+              可使用積分: {{ userPoints }} 點
+            </td>
+          </tr>
+          <tr class="border-b-2" v-if="userId">
+            <td class="p-3 text-xs font-bold md:p-6 md:text-base">使用會員積分折抵</td>
+            <td class="p-3 flex justify-end md:p-6">
+              <input
+                id="point-input"
+                type="number"
+                class="block w-[80px] h-[30px] bg-gray-50 border rounded-lg text-font text-center md:text-base"
+                placeholder="0"
+                min="0"
+                :max="userPoints"
+                v-model="usePoints"
+                @change="checkInput()"
+              />
+            </td>
+            <span class="text-red-400" v-if="informMessage">{{ informMessage }}</span>
+          </tr>
+          <!-- <tr>
           <td class="pl-6 pt-3 md:text-sm">優惠券折扣</td>
           <td class="text-right pr-6 md:text-sm">-0</td>
         </tr> -->
-        <tr v-if="userId">
-          <td class="pl-6 pt-3 md:text-sm">會員積分折抵</td>
-          <td class="text-right pr-6 md:text-sm">{{ -usePoints / 10 }}</td>
-        </tr>
-        <tr>
-          <td colspan="2" class="text-right text-base font-bold pr-6 py-3 md:text-2xl">
-            NT$
-            {{
-              finalPrice
-                ? finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-                : totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-            }}
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" class="text-right pr-6 py-6">
-            <button
-              type="button"
-              class="w-[80px] h-[40px] bg-secondary rounded-md text-primary md:text-base"
-              @click="router.push(`/ecommerce/checkout`)"
-              :disabled="checkPoint === false"
-            >
-              來去結帳
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          <tr v-if="userId">
+            <td class="p-3 md:px-6 md:text-sm">會員積分折抵</td>
+            <td class="p-3 text-right md:px-6 md:text-sm">{{ -usePoints / 10 }}</td>
+          </tr>
+          <tr>
+            <td colspan="2" class="p-3 text-right text-base font-bold md:p-6 md:text-2xl">
+              NT$
+              {{
+                finalPrice
+                  ? finalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  : totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="p-3 text-right md:p-6">
+              <button
+                type="button"
+                class="w-[80px] h-[40px] bg-secondary rounded-md text-primary md:text-base"
+                @click="router.push(`/ecommerce/checkout`)"
+                :disabled="checkPoint === false"
+              >
+                來去結帳
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="mt-10 text-font font-bold text-center md:text-2xl" v-else>購物車內無產品</div>
   <LoginAlertModal ref="loginAlertModalRef" />

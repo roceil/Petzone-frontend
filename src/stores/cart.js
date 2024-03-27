@@ -42,13 +42,20 @@ export const cartStore = defineStore('cartStore', () => {
       }
     }
 
-    // 如為會員同時會存入會員資料
+    const cart = cartList.value.map((item) => {
+      return { productId: item._id, qty: item.qty }
+    })
+
     if (userId !== '' && userId !== undefined) {
+      // 如為會員存入會員資料
       const cart = cartList.value.map((item) => {
         return { productId: item._id, qty: item.qty }
       })
 
       post_cart_api(userId, cart)
+    } else {
+      // 如為訪客存入localStorage
+      localStorage.setItem('cart', JSON.stringify(cart))
     }
 
     alertStore.openAlert('success', '成功加入購物車')
@@ -58,24 +65,31 @@ export const cartStore = defineStore('cartStore', () => {
   // 刪除購物車
   const deleteFromCart = (productId) => {
     const { userId } = useUserStore()
-
     const itemIndex = cartList.value.findIndex((item) => {
       return item._id === productId
     })
     cartList.value.splice(itemIndex, 1)
 
     if (userId !== '' && userId !== undefined) {
+      // 會員刪除購物車
       delete_cart_api(userId, productId)
+    } else {
+      // 訪客刪除購物車
+      localStorage.setItem('cart', [])
+      const cart = cartList.value.map((item) => {
+        return { productId: item._id, qty: item.qty }
+      })
+      localStorage.setItem('cart', JSON.stringify(cart))
     }
 
     caculate()
   }
 
-  // 取得會員購物車
+  // 取得購物車
   const getCart = async () => {
     const { userId } = useUserStore()
-
     if (userId !== '' && userId !== undefined) {
+      // 會員取得購物車
       const cart = await get_cart_api(userId)
       const { products } = productStore()
       const newCart = cart.map(async (item) => {
@@ -123,18 +137,39 @@ export const cartStore = defineStore('cartStore', () => {
         // 整合購物車
         cartList.value = sameProductList.concat(extraProductList)
       }
-      caculate()
+    } else {
+      // 訪客取得購物車
+      const cart = JSON.parse(localStorage.getItem('cart'))
+      if (cart.length !== 0) {
+        const newCart = cart.map(async (item) => {
+          const { data } = await get_product_by_id_api(item.productId)
+          const newItem = { ...data.product, qty: item.qty }
+          return newItem
+        })
+
+        const userCartList = await Promise.all(newCart)
+        cartList.value = userCartList
+      }
     }
+    caculate()
   }
 
-  // 更新會員購物車
+  // 更新購物車
   const updateCart = async (productId, quantity) => {
     const qty = Number(quantity)
     const { userId } = useUserStore()
     const cart = { productId, qty }
 
     if (userId !== '' && userId !== undefined) {
+      // 會員更新購物車
       update_cart_api(userId, cart)
+    } else {
+      // 訪客更新購物車
+      localStorage.setItem('cart', [])
+      const cart = cartList.value.map((item) => {
+        return { productId: item._id, qty: item.qty }
+      })
+      localStorage.setItem('cart', JSON.stringify(cart))
     }
 
     caculate()

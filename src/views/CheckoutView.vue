@@ -96,8 +96,10 @@ onMounted(async () => {
 
   <div class="container my-10">
     <!-- 購買明細 -->
-    <div class="flex justify-center mb-5">
-      <table class="w-[375px] text-font md:w-[900px]">
+    <div class="flex justify-center mb-5 text-font">
+      <table
+        class="w-[375px] border border-separate border-spacing-0 rounded-[10px] shadow md:w-[900px]"
+      >
         <thead class="h-[60px] bg-third">
           <th
             colspan="4"
@@ -106,7 +108,7 @@ onMounted(async () => {
             購買明細
           </th>
         </thead>
-        <tbody class="rounded-b-[10px] text-xs shadow md:text-base">
+        <tbody class="rounded-b-[10px] text-xs md:text-base">
           <tr v-for="product in cartList" :key="product._id">
             <td class="pl-3 md:px-10 md:py-5">
               {{ product.name }}
@@ -163,7 +165,7 @@ onMounted(async () => {
     <!-- 收件人資訊 & 付款方式 -->
     <div class="flex justify-center">
       <VForm
-        class="w-[343px] text-xs text-font border rounded-[10px] shadow md:w-[900px] md:text-base"
+        class="w-[375px] text-xs text-font border rounded-[10px] shadow md:w-[900px] md:text-base"
         v-slot="{ errors }"
         @submit="onSubmit(recipient, parseInt(paymentType), totalPrice)"
       >
@@ -182,7 +184,7 @@ onMounted(async () => {
               type="text"
               id="name"
               name="姓名"
-              class="p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-3 md:pr-20 placeholder:text-gray-400"
+              class="w-[65%] p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-3 md:pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人姓名"
               v-model="recipient.name"
               rules="required"
@@ -200,7 +202,7 @@ onMounted(async () => {
               type="email"
               id="email"
               name="信箱"
-              class="p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-3 md:pr-20 placeholder:text-gray-400"
+              class="w-[65%] p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-3 md:pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人信箱"
               v-model="recipient.email"
               rules="email|required"
@@ -218,7 +220,7 @@ onMounted(async () => {
               type="tel"
               id="phone"
               name="phone"
-              class="p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-3 md:pr-20 placeholder:text-gray-400"
+              class="w-[65%] p-1.5 border rounded-md md:ml-5 md:py-1.5 md:pl-3 md:pr-20 placeholder:text-gray-400"
               placeholder="請輸入收件人電話"
               v-model="recipient.phone"
               :rules="isTel"
@@ -236,7 +238,7 @@ onMounted(async () => {
               type="text"
               id="address"
               name="地址"
-              class="w-[175px] h-[90px] border rounded-md text- md:ml-5 md:pl-3 md:w-[310px] md:h-[90px] placeholder:text-gray-400"
+              class="w-[65%] p-1.5 border rounded-md md:ml-5 placeholder:text-gray-400"
               placeholder="請輸入收件人地址"
               v-model="recipient.address"
               rules="required"

@@ -37,7 +37,7 @@ onMounted(() => {
     <div class="md:grid md:grid-cols-3 md:gap-8">
       <!-- 頁面標題 -->
       <div>
-        <h1 class="mt-10 text-xl font-bold md:text-5xl">商品專區</h1>
+        <h1 class="text-xl font-bold md:text-5xl">商品專區</h1>
       </div>
 
       <!-- 專區按鈕 -->
@@ -53,7 +53,7 @@ onMounted(() => {
       </div>
 
       <!-- 搜尋欄 -->
-      <div class="my-5 md:flex md:justify-end">
+      <div class="my-5 md:flex md:justify-end md:my-0">
         <div class="relative">
           <input
             type="text"

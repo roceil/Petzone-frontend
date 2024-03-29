@@ -69,7 +69,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div class="ml-10 mt-10 col-span-10 text-font">
+  <div class="ml-10 my-10 col-span-10 text-font">
     <!-- 頁面標題 -->
     <div class="flex justify-between">
       <h1 class="text-5xl font-bold">貼文管理</h1>

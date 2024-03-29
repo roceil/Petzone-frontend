@@ -78,7 +78,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="ml-10 mt-10 col-span-10 text-font">
+  <div class="ml-10 my-10 col-span-10 text-font">
     <div>
       <!-- 頁面標題 -->
       <h1 class="text-5xl font-bold">訂單管理</h1>

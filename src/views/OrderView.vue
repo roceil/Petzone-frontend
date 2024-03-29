@@ -73,7 +73,12 @@ onMounted(async () => {
     <table class="w-[328px] text-font rounded-[10px] shadow md:w-[868px]">
       <!-- 購買明細 -->
       <thead class="h-[60px] bg-third">
-        <th colspan="5" class="rounded-[10px] text-base text-center md:text-xl">購買明細</th>
+        <th
+          colspan="5"
+          class="leading-[60px] rounded-[10px] text-base text-center md:leading-[60px] md:text-xl"
+        >
+          購買明細
+        </th>
       </thead>
       <tbody>
         <tr>
@@ -145,7 +150,12 @@ onMounted(async () => {
 
       <!-- 收件人資訊 -->
       <thead class="h-[60px] bg-third">
-        <th colspan="5" class="text-base text-center rounded-[10px] md:text-xl">收件人資訊</th>
+        <th
+          colspan="5"
+          class="leading-[60px] text-base text-center rounded-[10px] md:leading-[60px] md:text-xl"
+        >
+          收件人資訊
+        </th>
       </thead>
       <tbody>
         <tr>
@@ -164,7 +174,12 @@ onMounted(async () => {
 
       <!-- 付款資訊 -->
       <thead class="h-[60px] bg-third">
-        <th colspan="5" class="text-base text-center rounded-[10px] md:text-xl">付款資訊</th>
+        <th
+          colspan="5"
+          class="leading-[60px] text-base text-center rounded-[10px] md:leading-[60px] md:text-xl"
+        >
+          付款資訊
+        </th>
       </thead>
       <tbody>
         <tr>

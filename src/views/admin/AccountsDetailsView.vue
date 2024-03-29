@@ -58,7 +58,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="ml-10 mt-10 col-span-10 text-font">
+  <div class="ml-10 my-10 col-span-10 text-font">
     <h1 class="text-5xl font-bold">用戶詳情</h1>
 
     <div class="w-[750px] lg:w-[900px]">

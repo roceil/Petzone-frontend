@@ -105,8 +105,8 @@ onMounted(() => {
       </div>
     </div>
     <div class="flex space-x-2 justify-end">
-      <button class="btn btn-sm mt-4" @click="resetSearch">清除</button>
-      <button class="btn btn-sm mt-4" @click="searchPosts">搜尋</button>
+      <button type="button" class="btn btn-sm mt-4" @click="resetSearch">清除</button>
+      <button type="button" class="btn btn-sm mt-4" @click="searchPosts">搜尋</button>
     </div>
 
     <!-- 貼文列表 -->
@@ -124,7 +124,7 @@ onMounted(() => {
         <tbody class="rounded-[10px] shadow">
           <tr v-for="post in posts" :key="post._id">
             <td>
-              <img class="w-[100px] h-[100px] object-cover rounded-md" :src="post.photo" alt="" />
+              <img class="w-[100px] h-[100px] object-cover rounded-md" :src="post.photo" alt="貼文圖片" />
             </td>
             <td>{{ dayjs(post.createdAt).format('YYYY-MM-DD') }}</td>
             <td>{{ post.user }}</td>
@@ -140,12 +140,14 @@ onMounted(() => {
                 class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2"
               >
                 <button
+                  type="button"
                   class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
                   @click="router.push(`/admin/post/${post._id}`)"
                 >
                   查看詳情
                 </button>
                 <button
+                  type="button"
                   class="btn btn-sm text-white bg-secondary hover:bg-font break-keep"
                   @click="deletePost(post._id)"
                 >

@@ -104,6 +104,7 @@ onMounted(() => {
 
           <div class="w-full flex justify-center space-x-4 md:justify-between mt-[93px]">
             <button
+              type="button"
               @click="goBack"
               class="btn bg-third text-font font-semibold rounded px-5 text-base w-1/2 md:w-[125px] border-none hover:opacity-80 hover:bg-third"
             >
@@ -111,6 +112,7 @@ onMounted(() => {
             </button>
 
             <button
+              type="button"
               class="btn bg-secondary hover:bg-font text-white font-semibold rounded px-5 text-base w-1/2 md:w-[125px]"
             >
               確認

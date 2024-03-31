@@ -9,7 +9,9 @@ const modalStore = useModalStore()
   <div class="modal-box relative flex flex-col items-center px-[75px]">
     <!-- 關閉按鈕 -->
     <div class="absolute right-[29px] top-[33px]">
-      <button @click="modalStore.handleCloseModal"><img :src="close" alt="close-btn" /></button>
+      <button type="button" @click="modalStore.handleCloseModal">
+        <img :src="close" alt="close-btn" />
+      </button>
     </div>
 
     <!-- 標題 -->
@@ -35,13 +37,17 @@ const modalStore = useModalStore()
     <!-- 按鈕 -->
     <div class="w-full flex justify-center space-x-[23px] px-[35px] mt-[46px]">
       <button
+        type="button"
         @click="modalStore.handleCloseModal"
         class="btn bg-[#EEF1F4] text-font rounded text-base border-none hover:opacity-80 hover:bg-[#EEF1F4] font-normal"
       >
         取消
       </button>
 
-      <button class="btn bg-secondary hover:bg-font text-white rounded text-base font-normal">
+      <button
+        type="button"
+        class="btn bg-secondary hover:bg-font text-white rounded text-base font-normal"
+      >
         確認
       </button>
     </div>

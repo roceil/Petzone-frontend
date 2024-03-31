@@ -76,7 +76,7 @@ const goLink = (link) => {
     <div class="container hidden md:block">
       <div class="flex justify-between items-center py-[10px] border-b border-font">
         <!-- LOGO -->
-        <button @click="GotoHome" class="w-20 ml-[98px]">
+        <button type="button" @click="GotoHome" class="w-20 ml-[98px]">
           <img src="../assets/logo.svg" alt="logo" />
         </button>
 
@@ -112,6 +112,7 @@ const goLink = (link) => {
 
             <!-- 登入按鈕 -->
             <button
+              type="button"
               v-if="!authStore.token"
               @click="modalStore.openModal('login')"
               class="px-5 py-4 font-bold text-white rounded-full btn btn-primary"
@@ -192,13 +193,17 @@ const goLink = (link) => {
                             link.sm_name
                           }}</RouterLink> -->
 
-                          <button @click="goLink(link.link)" class="text-xl text-font">
+                          <button
+                            type="button"
+                            @click="goLink(link.link)"
+                            class="text-xl text-font"
+                          >
                             <p>{{ link.sm_name }}</p>
                           </button>
                         </template>
 
                         <template v-else>
-                          <button @click="logout" class="text-xl text-font">
+                          <button type="button" @click="logout" class="text-xl text-font">
                             {{ link.sm_name }}
                           </button>
                         </template>
@@ -207,7 +212,11 @@ const goLink = (link) => {
 
                     <template v-else>
                       <div class="flex justify-end items-center rounded-none py-3">
-                        <button @click="modalStore.openModal('login')" class="text-xl text-font">
+                        <button
+                          type="button"
+                          @click="modalStore.openModal('login')"
+                          class="text-xl text-font"
+                        >
                           立即登入
                         </button>
                       </div>
@@ -243,7 +252,7 @@ const goLink = (link) => {
           </div>
         </div>
         <div class="navbar-center">
-          <button @click="GotoHome" class="w-[50px]">
+          <button type="button" @click="GotoHome" class="w-[50px]">
             <img src="../assets/logo.svg" alt="logo" />
           </button>
         </div>

@@ -126,6 +126,7 @@ onUnmounted(() => {
               class="w-1/4 flex justify-center"
             >
               <button
+                type="button"
                 :ref="(el) => setButtonRef(el, index)"
                 class="text-base md:text-2xl text-font font-bold w-full"
                 @click="change_button_status(status, index)"

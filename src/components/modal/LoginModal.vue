@@ -61,7 +61,9 @@ const google_redirect = () => {
   <div class="modal-box relative flex flex-col items-center md:px-20">
     <!-- 關閉按鈕 -->
     <div class="absolute right-[29px] top-[33px]">
-      <button @click="modalStore.handleCloseModal"><img :src="close" alt="close-btn" /></button>
+      <button type="button" @click="modalStore.handleCloseModal">
+        <img :src="close" alt="close-btn" />
+      </button>
     </div>
 
     <!-- 標題 -->
@@ -82,7 +84,11 @@ const google_redirect = () => {
 
     <!-- 忘記密碼 -->
     <div class="w-full flex justify-end mt-4 hover:opacity-80">
-      <button @click="modalStore.openModal('reset_password')" class="underline text-font">
+      <button
+        type="button"
+        @click="modalStore.openModal('reset_password')"
+        class="underline text-font"
+      >
         忘記密碼
       </button>
     </div>
@@ -90,6 +96,7 @@ const google_redirect = () => {
     <!-- 註冊按鈕 -->
     <div class="w-full flex justify-center space-x-4 md:justify-between md:px-[35px] mt-[29px]">
       <button
+        type="button"
         @click="modalStore.openModal('sign_up')"
         class="btn bg-third text-font font-semibold rounded px-5 text-base w-1/2 md:w-[125px] border-none hover:opacity-80 hover:bg-third"
       >
@@ -97,6 +104,7 @@ const google_redirect = () => {
       </button>
 
       <button
+        type="button"
         @click="onSubmit"
         class="btn bg-secondary hover:bg-font text-white font-semibold rounded px-5 text-base w-1/2 md:w-[125px]"
       >
@@ -110,6 +118,7 @@ const google_redirect = () => {
     <!-- 第三方登入 -->
     <div class="w-full flex justify-center mt-[37px]">
       <button
+        type="button"
         @click="google_redirect"
         class="bg-[#EEF1F4] p-[10px] rounded flex items-center space-x-5 text-[#545F71] w-[250px]"
       >

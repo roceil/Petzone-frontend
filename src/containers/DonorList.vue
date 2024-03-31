@@ -70,9 +70,7 @@ onMounted(() => {
       </div>
 
       <!-- 文字區塊 -->
-      <p
-        class="mt-6 text-xs md:text-xl lg:text-2xl md:leading-8 max-w-[300px] md:max-w-[945px] text-secondary"
-      >
+      <p class="mt-6 text-xs md:text-xl md:leading-8 max-w-[300px] md:max-w-[945px] text-secondary">
         在PetZone你可以透過社群互動獲得積分，並選擇捐贈積分給可愛的毛寶寶們，捐贈的積分將提供給XX平台為流浪的毛小孩們提供必要的食物、醫療照護。您的善舉不僅提供了關懷也為牠們點燃了希望的燈火。
       </p>
 
@@ -80,6 +78,7 @@ onMounted(() => {
       <ul class="flex items-center justify-center space-x-2 md:space-x-[100px] mt-6">
         <li v-for="donor in donorList.topDonators" :key="donor">
           <button
+            type="button"
             class="rounded-full overflow-hidden flex justify-center items-center w-20 h-20 md:w-[150px] md:h-[150px] lg:w-[200px] lg:h-[200px]"
             @click="goUserPage(donor.userId)"
           >

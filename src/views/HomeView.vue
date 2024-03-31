@@ -86,8 +86,8 @@ import banner_bottom from '@/assets/home/banner_bottom.svg'
             寵愛無極限，精選商品盡在您的指尖！
           </h1>
 
-          <p class="text-secondary text-xs md:text-2xl leading-4 md:leading-8">
-            寵愛從細節開始，為您的毛小孩挑選最好的一切，讓牠感受到無盡的溫暖!
+          <p class="text-secondary text-xs md:text-xl leading-4 md:leading-8">
+            寵愛從細節開始，為毛小孩挑選最好的，讓牠感受到無盡的溫暖!
             <br />
             PetZone提供多樣化、附品質保證的寵物商品，讓你能夠在輕鬆打造出讓毛小孩最舒適、健康的環境。
           </p>
@@ -95,7 +95,7 @@ import banner_bottom from '@/assets/home/banner_bottom.svg'
       </div>
 
       <!-- banner_bottom -->
-      <img :src="banner_bottom" alt="" class="w-full mt-6 md:mt-16" />
+      <img :src="banner_bottom" alt="裝飾圖片" class="w-full mt-6 md:mt-16" />
     </section>
 
     <!-- 推薦商品 -->

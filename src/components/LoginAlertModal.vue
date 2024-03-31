@@ -25,7 +25,7 @@ const directToLogin = () => {
     <div class="modal-box relative flex flex-col items-center px-[75px]">
       <!-- 關閉按鈕 -->
       <div class="absolute right-[29px] top-[33px]">
-        <button @click="hideModal"><img :src="close" alt="close-btn" /></button>
+        <button type="button" @click="hideModal"><img :src="close" alt="close-btn" /></button>
       </div>
 
       <!-- 標題 -->
@@ -40,6 +40,7 @@ const directToLogin = () => {
       <!-- 按鈕 -->
       <div class="w-full flex justify-center space-x-[23px] px-[35px] mt-[46px]">
         <button
+          type="button"
           class="btn bg-[#EEF1F4] text-font rounded text-base border-none hover:opacity-80 hover:bg-[#EEF1F4] font-normal"
           @click="hideModal"
         >
@@ -47,6 +48,7 @@ const directToLogin = () => {
         </button>
 
         <button
+          type="button"
           @click="directToLogin"
           class="btn bg-secondary hover:bg-font text-white rounded text-base font-normal"
         >

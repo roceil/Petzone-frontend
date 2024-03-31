@@ -130,17 +130,18 @@ const editPostModalRef = ref()
       <div class="py-10">
         <div class="flex items-center mb-4 space-x-4">
           <button
+            type="button"
             class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden"
             @click="goUserPage(post.user._id)"
           >
-            <img :src="post.user.photo || avatar" alt="" class="w-full h-full object-cover" />
+            <img :src="post.user.photo || avatar" alt="使用者圖片" class="w-full h-full object-cover" />
           </button>
-          <button @click="goUserPage(post.user._id)">{{ post.user.nickName }}</button>
+          <button type="button" @click="goUserPage(post.user._id)">{{ post.user.nickName }}</button>
           <span>於 {{ dayjs(post.createAt).format('YYYY/MM/DD') }} 分享</span>
         </div>
         <div class="mb-4 space-x-2 text-end" v-if="userId === post.user._id">
-          <button class="link" @click="editPostModalRef.showModal(post)">編輯</button>
-          <button class="link" @click="deletePost">刪除</button>
+          <button type="button" class="link" @click="editPostModalRef.showModal(post)">編輯</button>
+          <button type="button" class="link" @click="deletePost">刪除</button>
         </div>
         <Swiper
           class="w-full rounded-[10px] overflow-hidden"
@@ -149,7 +150,7 @@ const editPostModalRef = ref()
         >
           <SwiperSlide v-for="(item, index) in post.photos" :key="index">
             <div class="rounded-[10px] bg-third group overflow-hidden">
-              <img class="w-full" :src="item" alt="" />
+              <img class="w-full" :src="item" alt="商品圖片" />
             </div>
           </SwiperSlide>
         </Swiper>
@@ -159,7 +160,7 @@ const editPostModalRef = ref()
       </div>
       <div class="flex items-center justify-between pb-4 border-b">
         <div class="flex items-center space-x-4">
-          <button class="flex space-x-1" @click="handleClickLike">
+          <button type="button" class="flex space-x-1" @click="handleClickLike">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -189,7 +190,7 @@ const editPostModalRef = ref()
 
             <span>{{ post.likes.length }} 個喜愛</span>
           </button>
-          <button @click="commentTextareaRef.focus()">
+          <button type="button" @click="commentTextareaRef.focus()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -224,16 +225,19 @@ const editPostModalRef = ref()
         >
           <div class="flex items-center space-x-4">
             <button
+              type="button"
               class="w-[48px] h-[48px] rounded-full bg-third overflow-hidden"
               @click="goUserPage(comment.user._id)"
             >
-              <img :src="comment.user.photo || avatar" alt="" />
+              <img :src="comment.user.photo || avatar" alt="用戶圖片" />
             </button>
-            <button @click="goUserPage(comment.user._id)">{{ comment.user.nickName }}</button>
+            <button type="button" @click="goUserPage(comment.user._id)">
+              {{ comment.user.nickName }}
+            </button>
             <p>{{ comment.content }}</p>
           </div>
           <div class="space-x-4" v-if="comment.user._id === userId">
-            <button class="link" @click="deleteComment(comment._id)">刪除</button>
+            <button type="button" class="link" @click="deleteComment(comment._id)">刪除</button>
           </div>
         </div>
         <div class="space-y-4">
@@ -245,7 +249,9 @@ const editPostModalRef = ref()
             v-model="commentData.content"
           ></textarea>
           <div class="text-end">
-            <button class="px-8 btn btn-secondary text-white" @click="createComment">留言</button>
+            <button type="button" class="px-8 btn btn-secondary text-white" @click="createComment">
+              留言
+            </button>
           </div>
         </div>
       </div>

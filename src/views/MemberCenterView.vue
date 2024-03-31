@@ -185,6 +185,7 @@ onMounted(() => {
         />
         <div class="w-full flex justify-center mt-5">
           <button
+            type="button"
             @click="submit"
             class="btn bg-secondary font-semibold text-white px-6 py-[9px] hover:bg-font text-base w-full"
           >
@@ -203,6 +204,7 @@ onMounted(() => {
           <template v-if="item.type === 'button'">
             <span class="w-[104px] font-semibold text-font">{{ item.label }}：</span>
             <button
+              type="button"
               class="btn bg-secondary font-semibold text-white px-[30.5px] py-[9px] hover:bg-font text-base"
             >
               {{ item.placeholder }}
@@ -231,6 +233,7 @@ onMounted(() => {
         />
         <div class="w-full flex justify-center mt-5">
           <button
+            type="button"
             @click="submit"
             class="btn bg-secondary font-semibold text-white px-6 py-[9px] hover:bg-font text-base"
           >
@@ -266,6 +269,7 @@ onMounted(() => {
             style="display: none"
           />
           <button
+            type="button"
             @click="triggerFileInput"
             class="btn bg-secondary font-semibold text-white px-2 py-[9px] hover:bg-font text-base border-none"
           >
@@ -287,6 +291,7 @@ onMounted(() => {
               class="input input-bordered w-full max-w-xs border-font text-font"
             />
             <button
+              type="button"
               @click="donateSubmit"
               class="btn absolute bg-secondary font-semibold text-white right-0 top-0 border-none hover:bg-font"
             >

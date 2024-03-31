@@ -59,6 +59,7 @@ const goUserPage = (id) => {
 
 const likesModalRef = ref()
 </script>
+
 <template>
   <div class="ml-10 mt-10 col-span-10 text-font">
     <!-- 頁面標題 -->
@@ -71,16 +72,19 @@ const likesModalRef = ref()
         <div class="md:p-10">
           <div class="flex items-center mb-4 space-x-4">
             <button
+              type="button"
               class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden"
               @click="goUserPage(post.user._id)"
             >
-              <img :src="post.user.photo" alt="" class="w-full h-full object-cover" />
+              <img :src="post.user.photo" alt="用戶圖片" class="w-full h-full object-cover" />
             </button>
-            <button @click="goUserPage(post.user._id)">{{ post.user.nickName }}</button>
+            <button type="button" @click="goUserPage(post.user._id)">
+              {{ post.user.nickName }}
+            </button>
             <span>於 {{ dayjs(post.createAt).format('YYYY/MM/DD') }} 分享</span>
           </div>
           <div class="mb-4 space-x-2 text-end">
-            <button class="link" @click="deletePost">刪除</button>
+            <button type="button" class="link" @click="deletePost">刪除</button>
           </div>
           <Swiper
             class="w-full rounded-[10px] overflow-hidden"
@@ -89,7 +93,7 @@ const likesModalRef = ref()
           >
             <SwiperSlide v-for="(item, index) in post.photos" :key="index">
               <div class="rounded-[10px] bg-third group overflow-hidden">
-                <img class="w-full" :src="item" alt="" />
+                <img class="w-full" :src="item" alt="商品圖片" />
               </div>
             </SwiperSlide>
           </Swiper>
@@ -99,7 +103,11 @@ const likesModalRef = ref()
         </div>
         <div class="flex items-center justify-between pb-4">
           <div class="flex items-center space-x-4">
-            <button class="flex space-x-1" @click="likesModalRef.showModal(post.likes)">
+            <button
+              type="button"
+              class="flex space-x-1"
+              @click="likesModalRef.showModal(post.likes)"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -153,16 +161,19 @@ const likesModalRef = ref()
             >
               <div class="flex items-center space-x-4">
                 <button
+                  type="button"
                   class="w-[48px] h-[48px] rounded-full bg-third overflow-hidden"
                   @click="goUserPage(comment.user._id)"
                 >
-                  <img :src="comment.user.photo" alt="" />
+                  <img :src="comment.user.photo" alt="用戶圖片" />
                 </button>
-                <button @click="goUserPage(comment.user._id)">{{ comment.user.nickName }}</button>
+                <button type="button" @click="goUserPage(comment.user._id)">
+                  {{ comment.user.nickName }}
+                </button>
                 <p>{{ comment.content }}</p>
               </div>
               <div class="space-x-4">
-                <button class="link" @click="deleteComment(comment._id)">刪除</button>
+                <button type="button" class="link" @click="deleteComment(comment._id)">刪除</button>
               </div>
             </div>
           </template>

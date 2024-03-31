@@ -60,6 +60,7 @@ const onSubmit = async (recipient, paymentType) => {
   if (data.message === '訂單新增成功') {
     if (userId.value !== '' && userId.value !== undefined) {
       await delete_all_cart_api(userId.value)
+      localStorage.setItem('cart', [])
       cartList.value = []
     } else {
       cartList.value = []

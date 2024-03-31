@@ -133,7 +133,7 @@ onMounted(() => {
         <div class="hidden md:flex md:justify-between md:mt-20">
           <button
             type="button"
-            class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
+            class="btn w-[45%] h-[48px] rounded-md border-font border-2"
             @click.prevent="cartHandler.addToCart(product._id)"
           >
             <p class="font-semibold">加入購物車</p>
@@ -141,7 +141,7 @@ onMounted(() => {
           </button>
           <button
             type="button"
-            class="btn w-[168px] h-[48px] rounded-md border-font border-2 hover:opacity-80 hover:-translate-y-1"
+            class="btn w-[45%] h-[48px] rounded-md text-white bg-secondary border-2 hover:bg-font"
             @click.prevent="directToCartPage(product._id)"
           >
             <p class="font-semibold">直接購買</p>
@@ -151,35 +151,11 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- 推薦商品 -->
-    <p class="hidden md:block md:text-2xl md:font-bold md:mt-10">你也許也會喜歡...</p>
-    <div class="hidden md:flex md:mt-10">
-      <div class="max-w-[350px] mr-4" v-for="product in recommendProduct" :key="product._id">
-        <button type="button" @click="productId = product._id">
-          <img
-            class="w-[350px] h-[160px] rounded-[10px] object-cover"
-            :src="product.photos[0]"
-            alt="推薦商品圖"
-          />
-        </button>
-
-        <div class="flex justify-between text-2xl">
-          <p>{{ product.name }}</p>
-          <div>
-            <p v-if="!product.price">${{ product.originPrice }}</p>
-            <p v-else>
-              <del>${{ product.originPrice }}</del> / ${{ product.price }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- 商品評論 -->
     <p class="mt-6 text-xl font-bold md:text-2xl md:mt-10" v-if="productReviews.length !== 0">
       商品評論
     </p>
-    <div class="mt-3 grid justify-items-center md:mx-40">
+    <div class="grid justify-items-center md:mx-40">
       <div class="flex md:w-full md:mt-10" v-for="review in productReviews" :key="review">
         <div class="w-[50px] h-[50px] rounded-full md:w-[150px] md:h-[150px]">
           <img
@@ -240,6 +216,32 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <!-- 推薦商品 -->
+    <p class="hidden md:block md:font-bold md:text-2xl md:mt-10">你也許也會喜歡...</p>
+    <div class="hidden md:flex md:mt-10">
+      <div class="max-w-[350px] mr-4" v-for="product in recommendProduct" :key="product._id">
+        <button type="button" @click="productId = product._id">
+          <img
+            class="w-[350px] h-[160px] rounded-[10px] object-cover"
+            :src="product.photos[0]"
+            alt="推薦商品圖"
+          />
+        </button>
+
+        <div class="flex justify-between text-2xl">
+          <p>{{ product.name }}</p>
+          <div>
+            <p v-if="!product.price">${{ product.originPrice }}</p>
+            <p v-else>
+              <del>${{ product.originPrice }}</del> / ${{ product.price }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 手機版按鈕 -->
     <button
       type="button"
       class="btn bg-white fixed bottom-4 left-8 right-8 z-10 max-w-[900px] rounded-md border-font hover:opacity-80 hover:-translate-y-1 md:hidden"

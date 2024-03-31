@@ -79,6 +79,7 @@ const editPostModalRef = ref()
         </div>
 
         <button
+          type="button"
           class="btn bg-secondary hover:bg-font border-none text-xs text-white font-semibold md:px-6 md:py-2 md:text-base"
           v-if="userId === userData._id"
           @click="editPostModalRef.showModal(null)"
@@ -91,6 +92,7 @@ const editPostModalRef = ref()
       <div class="text-center" v-if="!posts.length">尚無貼文</div>
       <div class="grid grid-cols-3 gap-4 md:gap-10 px-4 md:px-20" v-else>
         <button
+          type="button"
           class="relative overflow-hidden rounded-lg aspect-square"
           v-for="post in posts"
           :key="post._id"
@@ -98,7 +100,7 @@ const editPostModalRef = ref()
         >
           <div class="w-full h-full group">
             <div class="w-full h-full transition bg-secondary hover:blur-sm">
-              <img class="w-full h-full object-cover" :src="post.photo" alt="" />
+              <img class="w-full h-full object-cover" :src="post.photo" alt="貼文圖片" />
             </div>
             <div
               class="absolute text-white transition opacity-0 right-2 bottom-2 group-hover:opacity-100"

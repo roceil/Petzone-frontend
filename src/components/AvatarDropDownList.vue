@@ -43,13 +43,13 @@ defineProps({
         class="hover:bg-[#EEF1F4] h-[43px] flex justify-center"
       >
         <template v-if="link.name !== '會員登出'">
-          <button @click="goLink(link.link)">
+          <button type="button" @click="goLink(link.link)">
             <p>{{ link.name }}</p>
           </button>
         </template>
 
         <template v-else>
-          <button @click="logout">
+          <button type="button" @click="logout">
             <p>{{ link.name }}</p>
           </button>
         </template>

@@ -103,8 +103,8 @@ const filterPermission = (permission) => {
       </div>
     </div>
     <div class="flex space-x-2 justify-end">
-      <button class="btn btn-sm mt-4" @click="resetSearch">清除</button>
-      <button class="btn btn-sm mt-4" @click="getAllUser">搜尋</button>
+      <button type="button" class="btn btn-sm mt-4" @click="resetSearch">清除</button>
+      <button type="button" class="btn btn-sm mt-4" @click="getAllUser">搜尋</button>
     </div>
 
     <!-- 商品列表 -->
@@ -133,12 +133,14 @@ const filterPermission = (permission) => {
             <!-- 操作 -->
             <td class="button-group flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2">
               <button
+                type="button"
                 class="btn btn-sm bg-gray-200 border-0 hover:bg-gray-300"
                 @click.prevent="goAccountDetails(user._id)"
               >
                 查看詳情
               </button>
               <button
+                type="button"
                 class="btn btn-sm text-white bg-secondary hover:bg-font"
                 @click.prevent="directToProductPage(product._id, 'edit')"
               >

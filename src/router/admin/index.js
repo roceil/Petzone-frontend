@@ -17,11 +17,11 @@ const routes = [
     meta: {
       admin: true
     },
-    component: () => import('../../views/admin/AdminView.vue'),
+    component: () => import('@/views/admin/AdminView.vue'),
     children: [
       {
         path: 'accounts',
-        component: () => import('../../views/admin/AccountsAdminView.vue')
+        component: () => import('@/views/admin/AccountsAdminView.vue')
       },
       {
         path: 'accountdetails/:id',
@@ -35,34 +35,34 @@ const routes = [
       {
         path: 'products',
         name: 'adminproducts',
-        component: () => import('../../views/admin/ProductsAdminView.vue')
+        component: () => import('@/views/admin/ProductsAdminView.vue')
       },
       {
         path: 'product',
         name: 'adminproduct',
-        component: () => import('../../views/admin/ProductAdminView.vue')
+        component: () => import('@/views/admin/ProductAdminView.vue')
       },
       {
         path: 'orders',
         name: 'adminorders',
-        component: () => import('../../views/admin/OrdersAdminView.vue')
+        component: () => import('@/views/admin/OrdersAdminView.vue')
       },
       {
         path: 'order',
         name: 'adminorder',
-        component: () => import('../../views/admin/OrderAdminView.vue')
+        component: () => import('@/views/admin/OrderAdminView.vue')
       },
       {
         path: 'posts',
-        component: () => import('../../views/admin/PostsAdminView.vue')
+        component: () => import('@/views/admin/PostsAdminView.vue')
       },
       {
         path: 'post/:id',
-        component: () => import('../../views/admin/PostAdminView.vue')
+        component: () => import('@/views/admin/PostAdminView.vue')
       },
       {
         path: 'coupons',
-        component: () => import('../../views/admin/CouponsAdminView.vue')
+        component: () => import('@/views/admin/CouponsAdminView.vue')
       }
     ]
   }

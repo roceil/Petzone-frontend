@@ -29,7 +29,7 @@ onUnmounted(() => {
     <!-- 在窄屏時顯示提示信息 -->
     <template v-else>
       <div class="col-span-12 h-[calc(100vh-64px)]">
-        <img :src="support" alt="" srcset="" />
+        <img :src="support" alt="支援裝置圖片" />
 
         <p class="text-center flex justify-center items-center text-font text-lg font-semibold">
           非常抱歉<br />後台只支援解析度高於 992px 的裝置

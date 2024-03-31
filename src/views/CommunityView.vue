@@ -106,6 +106,7 @@ const handleInfiniteOnLoad = async () => {
       <div class="flex justify-between">
         <h1 class="text-2xl md:text-5xl font-bold">貼文專區</h1>
         <button
+          type="button"
           class="fixed bottom-4 left-8 right-8 z-10 md:z-0 max-w-[502px] mx-auto md:mx-0 md:static px-10 text-white btn btn-secondary"
           @click="handleCreatePost"
         >
@@ -123,7 +124,11 @@ const handleInfiniteOnLoad = async () => {
               placeholder="請輸入貼文作者"
               v-model="keyword"
             />
-            <button class="absolute inset-y-0 flex items-center pr-2 right-2" @click="getPosts">
+            <button
+              type="button"
+              class="absolute inset-y-0 flex items-center pr-2 right-2"
+              @click="getPosts"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -146,6 +151,7 @@ const handleInfiniteOnLoad = async () => {
               <h6 class="text-lg font-bold">{{ tag.type }}</h6>
               <div class="flex flex-wrap mt-4">
                 <button
+                  type="button"
                   class="px-4 py-2 mb-4 border rounded-full me-6"
                   :class="searchTag === name ? 'bg-third' : ''"
                   v-for="name in tag.name"
@@ -170,6 +176,7 @@ const handleInfiniteOnLoad = async () => {
             :infinite-scroll-distance="20"
           >
             <button
+              type="button"
               class="relative overflow-hidden rounded-lg aspect-square"
               v-for="post in posts"
               :key="post._id"
@@ -177,7 +184,7 @@ const handleInfiniteOnLoad = async () => {
             >
               <div class="w-full h-full group">
                 <div class="w-full h-full transition bg-secondary hover:blur-sm">
-                  <img class="w-full h-full object-cover" :src="post.photo" alt="" />
+                  <img class="w-full h-full object-cover" :src="post.photo" alt="貼文圖片" />
                 </div>
                 <div
                   class="absolute text-white transition opacity-0 right-2 bottom-2 group-hover:opacity-100"

@@ -115,7 +115,7 @@ defineExpose({ showModal })
     <div class="relative items-center px-20 modal-box">
       <!-- 關閉按鈕 -->
       <div class="absolute right-[29px] top-[33px]">
-        <button @click="hideModal"><img :src="close" alt="close-btn" /></button>
+        <button type="button" @click="hideModal"><img :src="close" alt="close-btn" /></button>
       </div>
       <!-- 標題 -->
       <h3 class="font-bold text-5xl text-font text-center mt-[46px]">
@@ -143,7 +143,7 @@ defineExpose({ showModal })
             v-for="(tag, index) in postData.tags"
             :key="tag"
           >
-            <button @click="postData.tags.splice(index, 1)">
+            <button type="button" @click="postData.tags.splice(index, 1)">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -174,7 +174,9 @@ defineExpose({ showModal })
           </Swiper>
           <div class="flex items-center justify-between">
             <label>請從電腦中選擇圖檔</label>
-            <button class="btn btn-secondary text-white" @click="chooseFile">選擇照片</button>
+            <button type="button" class="btn btn-secondary text-white" @click="chooseFile">
+              選擇照片
+            </button>
             <input
               class="hidden"
               ref="fileInputRef"
@@ -191,12 +193,14 @@ defineExpose({ showModal })
           v-model="postData.content"
         />
         <div class="text-end">
-          <button class="px-8 btn btn-secondary text-white" @click="handleSend">發佈</button>
+          <button type="button" class="px-8 btn btn-secondary text-white" @click="handleSend">
+            發佈
+          </button>
         </div>
       </form>
     </div>
     <form method="dialog" class="modal-backdrop">
-      <button>close</button>
+      <button type="button">close</button>
     </form>
   </dialog>
 </template>

@@ -274,7 +274,7 @@ onMounted(async () => {
             @click.prevent="removeImage"
             v-if="editMode"
           >
-            <img src="../../assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
+            <img src="@/assets/ecommerce/delete-button.svg" alt="刪除按鈕" />
           </button>
         </div>
       </div>

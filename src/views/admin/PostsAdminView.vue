@@ -124,7 +124,11 @@ onMounted(() => {
         <tbody class="rounded-[10px] shadow">
           <tr v-for="post in posts" :key="post._id">
             <td>
-              <img class="w-[100px] h-[100px] object-cover rounded-md" :src="post.photo" alt="貼文圖片" />
+              <img
+                class="w-[100px] h-[100px] object-cover rounded-md"
+                :src="post.photo"
+                alt="貼文圖片"
+              />
             </td>
             <td>{{ dayjs(post.createdAt).format('YYYY-MM-DD') }}</td>
             <td>{{ post.user }}</td>

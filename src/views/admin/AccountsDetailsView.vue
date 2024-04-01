@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { get_user_api, patch_user_role_api } from '@/api/user'
 import { useRoute } from 'vue-router'
 import default_avatar from '@/assets/default_avatar.png'
@@ -37,32 +37,18 @@ const renderPhotoPath = computed(() => {
   return default_avatar
 })
 
-// const isEnabled = computed(() => {
-//   if (userData.value.permission) {
-//     console.log('觸發更動 0')
-//     return 0
-//   }
-
-//   console.log('觸發更動 1')
-//   return 1
-// })
-
 const isEnabled = ref(null)
 
-// 監聽 isEnabled 的變化，當值變化時調用 API
-watch(isEnabled, async (newVal, oldVal) => {
-  // 透過判斷 oldVal 確保這不是初始設置的調用
-  if (oldVal !== null) {
-    try {
-      const newPermission = newVal === '0' ? 'admin' : 'user'
-      await patch_user_role_api(userData.value._id, newPermission)
-      alertStore.openAlert('success', '使用者權限更改成功')
-    } catch (error) {
-      console.error(error)
-      alertStore.openAlert('error', '使用者權限更改失敗')
-    }
+const updateUserData = async () => {
+  try {
+    const newPermission = isEnabled.value === '0' ? 'admin' : 'user'
+    await patch_user_role_api(userData.value._id, newPermission)
+    alertStore.openAlert('success', '使用者權限更改成功')
+  } catch (error) {
+    console.error(error)
+    alertStore.openAlert('error', '使用者權限更改失敗')
   }
-})
+}
 
 const route = useRoute()
 const userId = route.params.id
@@ -71,10 +57,7 @@ const getUserData = async () => {
   try {
     const res = await get_user_api(userId)
     userData.value = res
-    // 使用 nextTick 確保 DOM 更新後再設置 isEnabled 值
-    nextTick(() => {
-      isEnabled.value = res.permission === 'admin' ? '0' : '1'
-    })
+    isEnabled.value = res.permission === 'admin' ? '0' : '1'
   } catch (error) {
     console.error(error)
     alertStore.openAlert('error', '獲取用戶數據失敗')
@@ -147,6 +130,7 @@ onMounted(() => {
             <button
               type="button"
               class="btn bg-secondary hover:bg-font text-white font-semibold rounded px-5 text-base w-1/2 md:w-[125px]"
+              @click="updateUserData"
             >
               確認
             </button>

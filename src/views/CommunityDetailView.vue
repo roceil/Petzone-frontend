@@ -134,7 +134,11 @@ const editPostModalRef = ref()
             class="h-[80px] w-[80px] bg-third rounded-full overflow-hidden"
             @click="goUserPage(post.user._id)"
           >
-            <img :src="post.user.photo || avatar" alt="使用者圖片" class="w-full h-full object-cover" />
+            <img
+              :src="post.user.photo || avatar"
+              alt="使用者圖片"
+              class="w-full h-full object-cover"
+            />
           </button>
           <button type="button" @click="goUserPage(post.user._id)">{{ post.user.nickName }}</button>
           <span>於 {{ dayjs(post.createAt).format('YYYY/MM/DD') }} 分享</span>

@@ -1,9 +1,8 @@
-import { fileURLToPath, URL } from 'node:url'
-
+/* global process */
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import { fileURLToPath, URL } from 'node:url'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
   resolve: {
@@ -18,7 +17,12 @@ export default defineConfig({
     //     target: 'https://petzone-backend.zeabur.app',
     //     changeOrigin: true,
     //     rewrite: (path) => path.replace(/^\/api/, ''),
-    //   }
-    // }
+    //   },
+    // },
+  },
+  // esbuild 配置
+  esbuild: {
+    // 在生產環境下去除 console 和 debugger
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : []
   }
 })

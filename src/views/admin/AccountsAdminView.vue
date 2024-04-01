@@ -2,8 +2,10 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import PaginationComponent from '@/components/PaginationComponent.vue'
-import { get_all_users_api } from '@/api/user'
+import { get_all_users_api, delete_user_api } from '@/api/user'
+import { useAlertStore } from '@/stores/alert'
 
+const alertStore = useAlertStore()
 const renderUserList = ref([])
 const account = ref('')
 const nickName = ref('')
@@ -52,6 +54,33 @@ const filterPermission = (permission) => {
   }
   return '一般用戶'
 }
+
+const readyToDeleteUser = ref(null)
+
+const openDeleteUserModal = (user) => {
+  const deleteUserModal = document.getElementById('deleteUserModal')
+  readyToDeleteUser.value = user._id
+  deleteUserModal.showModal()
+}
+
+const closeDeleteUserModal = () => {
+  const deleteUserModal = document.getElementById('deleteUserModal')
+  deleteUserModal.close()
+}
+
+const deleteAccount = async () => {
+  try {
+    await delete_user_api(readyToDeleteUser.value)
+    getAllUser()
+    alertStore.openAlert('success', '使用者刪除成功')
+  } catch (error) {
+    console.error(error)
+    alertStore.openAlert('error', '使用者刪除失敗')
+  } finally {
+    closeDeleteUserModal()
+    readyToDeleteUser.value = null
+  }
+}
 </script>
 
 <template>
@@ -99,6 +128,7 @@ const filterPermission = (permission) => {
         >
           <option value="" disabled>請選擇權限</option>
           <option value="admin">管理者</option>
+          <option value="user">一般用戶</option>
         </select>
       </div>
     </div>
@@ -142,7 +172,7 @@ const filterPermission = (permission) => {
               <button
                 type="button"
                 class="btn btn-sm text-white bg-secondary hover:bg-font"
-                @click.prevent="directToProductPage(product._id, 'edit')"
+                @click="openDeleteUserModal(user)"
               >
                 刪除用戶
               </button>
@@ -158,4 +188,28 @@ const filterPermission = (permission) => {
       @changePage="changePage"
     ></PaginationComponent>
   </div>
+
+  <dialog id="deleteUserModal" class="modal">
+    <div class="modal-box">
+      <form method="dialog">
+        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      </form>
+
+      <h3 class="font-bold text-lg">警告!</h3>
+      <p class="py-4">請確認是否刪除該用戶</p>
+
+      <div class="flex justify-end space-x-2">
+        <button
+          type="button"
+          class="btn btn-sm text-white bg-secondary hover:bg-font"
+          @click="deleteAccount"
+        >
+          確認刪除
+        </button>
+      </div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+      <button>close</button>
+    </form>
+  </dialog>
 </template>

@@ -123,3 +123,31 @@ export const get_user_points_history_api = async (id) => {
     return Promise.reject(error)
   }
 }
+
+// 刪除特定用戶（admin）
+export const delete_user_api = async (id) => {
+  try {
+    const { data } = await axios.delete(`${VITE_API_BASE_URL}/api/user/${id}`, config())
+    return data
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}
+
+// 更改特定用戶權限（admin）
+export const patch_user_role_api = async (id, role) => {
+  try {
+    const { data } = await axios.patch(
+      `${VITE_API_BASE_URL}/api/user/${id}`,
+      {
+        permission: role
+      },
+      config()
+    )
+    return data
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
+}

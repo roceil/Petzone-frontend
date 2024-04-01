@@ -6,6 +6,7 @@ import donor_bg from '@/assets/home/donor_bg.svg'
 import donor_bg_sm from '@/assets/home/donor_bg_sm.svg'
 import { get_monthly_donate_rank_api } from '@/api/user'
 import anime from 'animejs'
+import avatar from '@/assets/avatar.svg'
 
 const donorList = ref({})
 const totalDonationRef = ref(null) // 新增一個 ref 來獲取累積金額元素
@@ -82,7 +83,11 @@ onMounted(() => {
             class="rounded-full overflow-hidden flex justify-center items-center w-20 h-20 md:w-[150px] md:h-[150px] lg:w-[200px] lg:h-[200px]"
             @click="goUserPage(donor.userId)"
           >
-            <img :src="donor.photo" :alt="donor.name" class="object-cover w-full h-full" />
+            <img
+              :src="donor.photo || avatar"
+              :alt="donor.name"
+              class="object-cover w-full h-full"
+            />
           </button>
         </li>
       </ul>

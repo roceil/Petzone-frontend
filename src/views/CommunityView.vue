@@ -100,6 +100,7 @@ const handleInfiniteOnLoad = async () => {
   }
 }
 </script>
+
 <template>
   <div class="Community text-font">
     <section class="container my-10">
@@ -234,4 +235,5 @@ const handleInfiniteOnLoad = async () => {
     <EditPostModal ref="editPostModalRef" @getPosts="getPosts" />
   </div>
 </template>
+
 <style></style>

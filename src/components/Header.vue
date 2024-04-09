@@ -68,6 +68,15 @@ const goLink = (link) => {
     router.push(link)
   }
 }
+
+// // active效果
+// const selected = ref(0)
+// const isSelected = (index) => {
+//   return selected.value === index
+// }
+// const select = (index) => {
+//   selected.value = index
+// }
 </script>
 
 <template>
@@ -85,7 +94,11 @@ const goLink = (link) => {
           <!-- Nav -->
           <ul class="flex space-x-12 text-2xl text-font">
             <li v-for="link in headerLinks" :key="link.name">
-              <RouterLink :to="link.link" class="flex relative px-5 py-4 overflow-hidden group">
+              <RouterLink
+                :to="link.link"
+                class="flex relative px-5 py-4 overflow-hidden group"
+                activeClass="border-t-4 border-font"
+              >
                 <p
                   class="absolute left-0 -translate-x-full group-hover:-translate-x-1/2 group-hover:left-1/2 duration-300 ease-in-out"
                 >

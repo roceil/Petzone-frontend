@@ -1,5 +1,5 @@
 <script setup>
-import { watch, onMounted } from 'vue'
+import { watch, onMounted, ref } from 'vue'
 import { productStore } from '@/stores/product'
 import { cartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
@@ -23,6 +23,11 @@ const directToProductPage = (productId) => {
   })
 }
 
+const selected = ref(null)
+const select = (index) => {
+  selected.value = index
+}
+
 watch(categoryType, async (Type) => {
   const category = { categoryType: Type }
   productHandler.userGetProducts(category)
@@ -43,13 +48,25 @@ onMounted(() => {
 
       <!-- 專區按鈕 -->
       <div class="font-bold hidden md:flex md:justify-evenly md:text-2xl">
-        <div
-          v-for="link in ecommerceLinks"
-          :key="link.name"
-          class="md:flex justify-center items-center group space-x-2"
-        >
-          <img :src="link.icon" :alt="link.name" class="group-hover:animate-upDown" />
-          <button type="button" @click.prevent="categoryType = link.type">{{ link.name }}</button>
+        <div v-for="(link, index) in ecommerceLinks" :key="link.name">
+          <button
+            type="button"
+            class="flex items-center relative"
+            @click.prevent="categoryType = link.type"
+            @click="select(index)"
+          >
+            <img
+              :src="link.icon"
+              :alt="link.name"
+              class="mx-2"
+              :class="{ selected: selected === index }"
+            />
+            <div
+              class="w-14 h-14 bg-third rounded-full absolute left-1/2 -z-10"
+              v-if="selected === index"
+            ></div>
+            {{ link.name }}
+          </button>
         </div>
       </div>
 

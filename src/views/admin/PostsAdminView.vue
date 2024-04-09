@@ -68,6 +68,7 @@ onMounted(() => {
   searchPosts()
 })
 </script>
+
 <template>
   <div class="ml-10 my-10 col-span-10 text-font">
     <!-- 頁面標題 -->
@@ -170,4 +171,5 @@ onMounted(() => {
     ></PaginationComponent>
   </div>
 </template>
+
 <style scoped></style>

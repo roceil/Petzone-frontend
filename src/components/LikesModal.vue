@@ -21,6 +21,7 @@ const goUserPage = (id) => {
 
 defineExpose({ showModal })
 </script>
+
 <template>
   <dialog ref="dialogRef" class="modal">
     <div class="max-w-[700px] relative items-center px-20 modal-box">

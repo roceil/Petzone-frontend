@@ -124,6 +124,7 @@ const goUserPage = (id) => {
 
 const editPostModalRef = ref()
 </script>
+
 <template>
   <div class="CommunityDetail text-font" v-if="post">
     <section class="container flex flex-col justify-center my-10 max-w-[800px] space-y-4">
@@ -154,7 +155,7 @@ const editPostModalRef = ref()
         >
           <SwiperSlide v-for="(item, index) in post.photos" :key="index">
             <div class="rounded-[10px] bg-third group overflow-hidden">
-              <img class="w-full" :src="item" alt="商品圖片" />
+              <img class="w-full object-cover" :src="item" alt="圖片" />
             </div>
           </SwiperSlide>
         </Swiper>
@@ -263,4 +264,5 @@ const editPostModalRef = ref()
     <EditPostModal ref="editPostModalRef" @getPost="getPost" />
   </div>
 </template>
+
 <style></style>

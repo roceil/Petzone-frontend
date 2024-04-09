@@ -110,7 +110,7 @@ onMounted(() => {
           :watchSlidesProgress="true"
         >
           <swiper-slide v-for="img in product.photos" :key="img"
-            ><img class="rounded-[10px] cursor-pointer" :src="img" alt="商品圖"
+            ><img class="rounded-[10px] cursor-pointer object-cover" :src="img" alt="商品圖"
           /></swiper-slide>
         </swiper>
       </div>
@@ -159,7 +159,7 @@ onMounted(() => {
       <div class="flex md:w-full md:mt-10" v-for="review in productReviews" :key="review">
         <div class="w-[50px] h-[50px] rounded-full md:w-[150px] md:h-[150px]">
           <img
-            class="w-[50px] h-[50px] rounded-full md:w-[150px] md:h-[150px]"
+            class="w-[50px] h-[50px] rounded-full object-cover md:w-[150px] md:h-[150px]"
             :src="review.photo"
             alt="會員大頭照"
           />

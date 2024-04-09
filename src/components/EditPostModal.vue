@@ -110,6 +110,7 @@ const handleSend = async () => {
 const emit = defineEmits(['getPost', 'getPosts'])
 defineExpose({ showModal })
 </script>
+
 <template>
   <dialog ref="dialogRef" class="modal">
     <div class="relative items-center px-20 modal-box">

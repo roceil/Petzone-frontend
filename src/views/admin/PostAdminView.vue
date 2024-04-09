@@ -183,4 +183,5 @@ const likesModalRef = ref()
     <LikesModal ref="likesModalRef" @getPost="getPost" />
   </div>
 </template>
+
 <style scoped></style>

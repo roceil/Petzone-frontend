@@ -235,7 +235,7 @@ onMounted(async () => {
         </table>
       </div>
     </div>
-    <div class="h-[35vh] mt-10 text-font font-bold text-center md:text-2xl" v-else>
+    <div class="h-[60vh] mt-10 text-font font-bold text-center md:text-2xl" v-else>
       購物車內無產品
     </div>
     <LoginAlertModal ref="loginAlertModalRef" />

@@ -72,7 +72,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="lg:h-[calc(100dvh-97px-30vh)]">
+  <div>
     <!-- 頁面標題 -->
     <div class="container mt-10 text-font">
       <h1 class="text-xl font-bold md:text-5xl">你的購物車</h1>

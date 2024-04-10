@@ -13,7 +13,7 @@ const features = [
   },
   {
     name: '功能 2：',
-    description: '建立貼文後，可以獲得貼文積分，積分可以用來兌換商品或者捐贈給流浪動物。',
+    description: '建立貼文後，可以獲得貼文積分，積分可以用來折抵訂單或者捐贈給流浪動物。',
     icon: FireIcon
   },
   {

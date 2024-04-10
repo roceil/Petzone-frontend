@@ -7,6 +7,7 @@ import { useAlertStore } from '@/stores/alert'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import EditPostModal from '@/components/EditPostModal.vue'
+import Footer from '@/components/Footer.vue'
 const route = useRoute()
 const router = useRouter()
 const communityStore = useCommunityStore()
@@ -234,6 +235,9 @@ const handleInfiniteOnLoad = async () => {
     </section>
     <EditPostModal ref="editPostModalRef" @getPosts="getPosts" />
   </div>
+
+  <!-- Footer -->
+  <Footer />
 </template>
 
 <style></style>

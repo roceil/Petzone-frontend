@@ -13,6 +13,7 @@ import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json'
 
 import { get_member_data_api } from '@/api/user'
 import { delete_all_cart_api } from '@/api/ecommerce'
+import Footer from '@/components/Footer.vue'
 
 const router = useRouter()
 
@@ -301,4 +302,7 @@ onMounted(async () => {
       </VForm>
     </div>
   </div>
+
+  <!-- Footer -->
+  <Footer />
 </template>

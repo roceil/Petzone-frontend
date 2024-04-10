@@ -1,6 +1,6 @@
 <script setup>
 import WaterFall from '@/containers/WaterFall.vue'
-import Footer from '../components/Footer.vue'
+import Footer from '@/components/Footer.vue'
 import ProductSuggestion from '@/containers/ProductSuggestion.vue'
 import DonorList from '@/containers/DonorList.vue'
 import { blocks } from '@/constants'

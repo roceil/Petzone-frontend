@@ -4,6 +4,7 @@ import { useAlertStore } from '@/stores/alert'
 import { get_member_data_api, put_member_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
 import default_avatar from '@/assets/avatar.svg'
+import Footer from '@/components/Footer.vue'
 
 const alertStore = useAlertStore()
 
@@ -311,4 +312,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
+
+  <!-- Footer -->
+  <Footer />
 </template>

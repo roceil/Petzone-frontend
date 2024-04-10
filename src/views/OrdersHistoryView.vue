@@ -123,7 +123,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="OrderHistoryView h-[calc(100vh-97px-30vh)]">
+  <div class="OrderHistoryView">
     <MemberCenterDetail title="購買訂單">
       <div class="flex justify-center items-center mt-10 w-full">
         <div class="w-full">

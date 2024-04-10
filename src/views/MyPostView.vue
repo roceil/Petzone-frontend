@@ -60,7 +60,7 @@ const editPostModalRef = ref()
 </script>
 
 <template>
-  <div class="MyPostView h-[calc(100vh-97px-30vh)]">
+  <div class="MyPostView">
     <div class="container mt-10 max-w-[970px] mb-10">
       <!-- 自我介紹區塊 -->
       <div
@@ -95,7 +95,7 @@ const editPostModalRef = ref()
       </div>
 
       <!-- 貼文區塊 -->
-      <div class="h-[35vh] text-center" v-if="!posts.length">尚無貼文</div>
+      <div class="h-[30vh] text-center" v-if="!posts.length">尚無貼文</div>
       <div class="grid grid-cols-3 gap-4 md:gap-10 px-4 md:px-20" v-else>
         <button
           type="button"

@@ -5,16 +5,16 @@ import donate_explain from '@/assets/donate_explain.png'
 
 const features = [
   {
-    name: '捐款方式：',
+    name: '捐贈方式：',
     description:
-      '登入後，可以在會員中心的頭貼下方輸入要捐贈的點數，點數捐贈的越多，就越有可能出現在首頁的捐贈名單呦！',
+      '登入後，可以在會員中心的頭貼下方輸入要捐贈的點數，點數捐贈的越多，就越有可能出現在首頁的捐贈名單唷！',
     icon: CurrencyDollarIcon
   },
   {
     name: '點數獲得：',
     description:
-      '點數可以透過購買平台商品、撰寫貼文、填寫商品......等方式獲得，除了可以捐贈點數外，在購買商品時也可以當作紅利點數做折抵使用。',
-    icon: FireIcon
+      '點數可以透過購買平台商品、撰寫貼文...等方式獲得。(貼心提醒：除了捐贈點數外，也可以在購物時使用點數折抵唷!)',
+    icon: CurrencyDollarIcon
   }
 ]
 </script>
@@ -32,7 +32,7 @@ const features = [
               點數捐贈說明
             </p>
             <p class="mt-6 text-lg leading-8 text-gray-600">
-              在PetZone你可以透過社群互動獲得積分，並選擇捐贈積分給可愛的毛寶寶們，捐贈的積分將提供給流浪的毛小孩們添購必要的食物、醫療照護。您的善舉不僅提供了關懷也為牠們點燃了希望的燈火。
+              捐贈積分給可愛的毛寶寶們，捐贈的積分將提供給流浪的毛小孩們添購必要的食物、醫療照護。
             </p>
             <dl class="mt-10 max-w-xl space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
               <div v-for="feature in features" :key="feature.name" class="relative pl-9">

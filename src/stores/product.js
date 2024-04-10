@@ -6,8 +6,11 @@ import { get_products_by_type_api } from '@/api/ecommerce'
 import { get_products_by_name_api } from '@/api/ecommerce'
 import { get_product_by_id_api } from '@/api/ecommerce'
 import { get_product_reviews_api } from '@/api/ecommerce'
+import { useLoadingStore } from '@/stores/loading'
 
 export const productStore = defineStore('productStore', () => {
+  const LoadingStore = useLoadingStore()
+
   // 加入千分位
   const addThousandSeparator = (num, separator = ',') => {
     return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
@@ -18,6 +21,7 @@ export const productStore = defineStore('productStore', () => {
   const categoryType = ref('')
   const productName = ref('')
   const userGetProducts = async (search) => {
+    LoadingStore.openLoading()
     if (!search) {
       const { data } = await get_products_api()
       const newProductsList = data.products.map(async (product) => {
@@ -59,11 +63,14 @@ export const productStore = defineStore('productStore', () => {
         return
       }
     }
+
+    LoadingStore.closeLoading()
   }
 
   // 取得單一產品資料
   const product = ref({})
   const userGetProduct = async (productId) => {
+    LoadingStore.openLoading()
     const { data } = await get_product_by_id_api(productId)
     const productInfo = data.product
     productInfo.originPrice = addThousandSeparator(productInfo.originPrice)
@@ -71,6 +78,7 @@ export const productStore = defineStore('productStore', () => {
       productInfo.price = addThousandSeparator(productInfo.price)
     }
     product.value = productInfo
+    LoadingStore.closeLoading()
   }
 
   // 取得商品評論

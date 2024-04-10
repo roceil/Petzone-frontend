@@ -209,5 +209,4 @@ onMounted(async () => {
     </table>
   </div>
   <EditReviewModal ref="reviewModalRef" :order-id="orderId" />
-
 </template>

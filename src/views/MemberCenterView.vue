@@ -4,8 +4,10 @@ import { useAlertStore } from '@/stores/alert'
 import { get_member_data_api, put_member_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
 import default_avatar from '@/assets/avatar.svg'
+import { useLoadingStore } from '@/stores/loading'
 
 const alertStore = useAlertStore()
+const loadingStore = useLoadingStore()
 
 const formItems = ref([
   {
@@ -90,28 +92,36 @@ const userAvatar = ref(default_avatar)
 
 // 取得使用者資料
 const getMemberData = async () => {
-  const data = await get_member_data_api()
+  loadingStore.openLoading()
+  try {
+    const data = await get_member_data_api()
 
-  userData.value = data
+    userData.value = data
 
-  // 將資料填入表單
-  // 1. 姓名
-  formItems.value[1].placeholder = data.name
-  // 2. 暱稱
-  formItems.value[2].placeholder = data.nickName
-  // 3. 電話
-  formItems.value[3].placeholder = data.phone
-  // 4. 地址
-  formItems.value[4].placeholder = data.address
+    // 將資料填入表單
+    // 1. 姓名
+    formItems.value[1].placeholder = data.name
+    // 2. 暱稱
+    formItems.value[2].placeholder = data.nickName
+    // 3. 電話
+    formItems.value[3].placeholder = data.phone
+    // 4. 地址
+    formItems.value[4].placeholder = data.address
 
-  // 更換大頭貼
-  if (data.avatar) {
-    userAvatar.value = data.avatar
+    // 更換大頭貼
+    if (data.avatar) {
+      userAvatar.value = data.avatar
+    }
+  } catch (error) {
+    console.error(error)
+  } finally {
+    loadingStore.closeLoading()
   }
 }
 
 // 更改使用者資料
 const submit = async () => {
+  loadingStore.openLoading()
   try {
     // 檢查是否有選擇新的圖片
     if (fileInput.value && fileInput.value.files[0]) {
@@ -145,6 +155,8 @@ const submit = async () => {
   } catch (error) {
     console.error(error)
     alertStore.openAlert('error', '使用者資料更新失敗')
+  } finally {
+    loadingStore.closeLoading()
   }
 }
 

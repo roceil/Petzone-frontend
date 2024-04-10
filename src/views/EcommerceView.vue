@@ -94,6 +94,8 @@ onMounted(() => {
 
     <!-- 商品列表 -->
     <div class="grid grid-cols-2 gap-6 md:mt-10 md:grid md:grid-cols-3 md:gap-8">
+      <div v-if="products.length === 0" class="text-center h-screen">載入中...</div>
+
       <div class="w-full" v-for="product in products" :key="product.name">
         <a class="cursor-pointer" @click.prevent="directToProductPage(product._id)">
           <img

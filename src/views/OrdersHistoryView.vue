@@ -4,6 +4,7 @@ import dayjs from 'dayjs'
 import MemberCenterDetail from '@/containers/layouts/MemberCenterDetail.vue'
 import { get_order_by_user_api } from '@/api/order.js'
 import { useUserStore } from '@/stores/user'
+import { useLoadingStore } from '@/stores/loading'
 
 const order_history_status_buttons = ['未付款', '已付款', '已完成', '已取消']
 
@@ -11,6 +12,7 @@ const button_status = ref('未付款')
 
 const table_title = ['訂單編號', '下單日期', '購買項目', '訂單金額']
 
+const LoadingStore = useLoadingStore()
 const userStore = useUserStore()
 const userId = userStore.userId
 
@@ -19,8 +21,15 @@ const allOrders = ref([])
 
 // 取得所有訂單
 const getOrders = async () => {
-  const res = await get_order_by_user_api(userId)
-  allOrders.value = res.orders.reverse()
+  LoadingStore.openLoading()
+  try {
+    const res = await get_order_by_user_api(userId)
+    allOrders.value = res.orders.reverse()
+  } catch (error) {
+    console.error(error)
+  } finally {
+    LoadingStore.closeLoading()
+  }
 }
 
 // 判斷要顯示哪種狀態的訂單
@@ -114,7 +123,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="OrderHistoryView">
+  <div class="OrderHistoryView h-[calc(100vh-97px-30vh)]">
     <MemberCenterDetail title="購買訂單">
       <div class="flex justify-center items-center mt-10 w-full">
         <div class="w-full">
@@ -204,5 +213,4 @@ onUnmounted(() => {
       </div>
     </MemberCenterDetail>
   </div>
-
 </template>

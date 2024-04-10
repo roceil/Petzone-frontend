@@ -1,5 +1,5 @@
 <script setup>
-import { FireIcon, CurrencyDollarIcon } from '@heroicons/vue/20/solid'
+import { CurrencyDollarIcon } from '@heroicons/vue/20/solid'
 
 import donate_explain from '@/assets/donate_explain.png'
 

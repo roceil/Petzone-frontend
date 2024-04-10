@@ -19,6 +19,7 @@ import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 import EditPostModal from '@/components/EditPostModal.vue'
 import { useAlertStore } from '@/stores/alert'
+import { useLoadingStore } from '@/stores/loading'
 
 const alertStore = useAlertStore()
 const route = useRoute()
@@ -29,10 +30,18 @@ const communityStore = useCommunityStore()
 const { tags } = storeToRefs(communityStore)
 import avatar from '@/assets/avatar.svg'
 
+const LoadingStore = useLoadingStore()
 const post = ref(null)
 const getPost = async () => {
-  const res = await get_post_api(route.params.id)
-  post.value = res.data
+  LoadingStore.openLoading()
+  try {
+    const res = await get_post_api(route.params.id)
+    post.value = res.data
+  } catch (error) {
+    console.error(error)
+  } finally {
+    LoadingStore.closeLoading()
+  }
 }
 onMounted(async () => {
   if (!tags.value.length) {
@@ -263,7 +272,6 @@ const editPostModalRef = ref()
     </section>
     <EditPostModal ref="editPostModalRef" @getPost="getPost" />
   </div>
-
 </template>
 
 <style></style>

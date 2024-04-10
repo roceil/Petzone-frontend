@@ -9,9 +9,11 @@ import { useAlertStore } from '@/stores/alert'
 import FormInput from '../validate/FormInput.vue'
 import { sign_up_modal_form_items } from '@/constants'
 import { sign_up_api } from '@/api/auth'
+import { useLoadingStore } from '@/stores/loading'
 
 const modalStore = useModalStore()
 const alertStore = useAlertStore()
+const LoadingStore = useLoadingStore()
 
 const validationSchema = z.object({
   email: z.string().email('Email 格式不正確').min(1, '信箱欄位為必填'),
@@ -27,6 +29,7 @@ const { handleSubmit } = useForm({
 })
 
 const onSubmit = handleSubmit(async ({ email, password, name, nickName, phone, address }) => {
+  LoadingStore.openLoading()
   try {
     const status = await sign_up_api(email, password, name, nickName, phone, address)
     if (status === 'success') {
@@ -38,6 +41,8 @@ const onSubmit = handleSubmit(async ({ email, password, name, nickName, phone, a
   } catch (error) {
     console.error(error)
     alertStore.openAlert('error', '註冊失敗')
+  } finally {
+    LoadingStore.closeLoading()
   }
 })
 </script>

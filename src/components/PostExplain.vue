@@ -67,7 +67,7 @@ const features = [
         </div>
 
         <div class="relative">
-          <img :src="post_feature" alt="post_feature" class="relative z-10" />
+          <img :src="post_feature" alt="post_feature" />
         </div>
       </div>
     </div>

@@ -94,7 +94,7 @@ onMounted(() => {
 
       <!-- 累積金額 -->
       <div class="flex items-center w-full mt-4 space-x-4">
-        <p class="mt-6 text-xs md:text-2xl font-bold text-font text-end w-full md:max-w-[1124px]">
+        <p class="text-xs md:text-2xl font-bold text-font text-end w-full md:max-w-[1124px]">
           平台總累積捐贈金額：<span ref="totalDonationRef"
             >NT${{ numberFormatter(donorList.totalDonation) }}</span
           >
@@ -103,7 +103,7 @@ onMounted(() => {
         <RouterLink
           to="/donateexplain"
           type="button"
-          class="px-5 py-4 font-bold text-white rounded-full btn btn-primary"
+          class=" text-sm px-2 py-3 lg:px-5 lg:py-4 font-bold text-white flex-shrink-0 rounded-full bg-secondary lg:hover:bg-font duration-300"
         >
           捐款說明
         </RouterLink>
@@ -120,7 +120,7 @@ onMounted(() => {
     <img
       :src="donor_bg_sm"
       alt="裝飾ICON"
-      class="md:hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[70%] sm:-translate-y-1/2 -z-10"
+      class="md:hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[70%] sm:-translate-y-1/2 -z-10 hidden lg:block"
     />
   </section>
 </template>

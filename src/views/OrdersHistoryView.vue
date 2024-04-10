@@ -4,7 +4,6 @@ import dayjs from 'dayjs'
 import MemberCenterDetail from '@/containers/layouts/MemberCenterDetail.vue'
 import { get_order_by_user_api } from '@/api/order.js'
 import { useUserStore } from '@/stores/user'
-import Footer from '@/components/Footer.vue'
 
 const order_history_status_buttons = ['未付款', '已付款', '已完成', '已取消']
 
@@ -206,6 +205,4 @@ onUnmounted(() => {
     </MemberCenterDetail>
   </div>
 
-  <!-- Footer -->
-  <Footer />
 </template>

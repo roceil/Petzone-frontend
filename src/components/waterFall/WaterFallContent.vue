@@ -21,7 +21,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="container mt-8 md:mt-[200px] relative">
+  <section class="container mt-8 md:mt-20 relative">
     <!-- 背景裝飾 -->
     <img :src="water_green" alt="裝飾ICON" class="hidden md:block absolute -right-11 top-0 -z-10" />
     <img
@@ -43,9 +43,9 @@ onMounted(async () => {
           <RouterLink :to="`community/${item._id}`">
             <div class="rounded-[10px] overflow-hidden relative">
               <div
-                class="hover:opacity-100 opacity-0 absolute bottom-0 left-0 w-full h-full backdrop-blur-sm bg-white/30 rounded-[10px] flex justify-center items-center font-semibold hover:text-4xl text-black duration-300 ease-in-out"
+                class="lg:hover:opacity-100 opacity-0 absolute bottom-0 left-0 w-full h-full backdrop-blur-sm bg-white/30 rounded-[10px] flex justify-center items-center font-semibold lg:hover:text-4xl text-black duration-300 ease-in-out"
               >
-                <p class="group-hover:block">瞧瞧貼文</p>
+                <p class="group-lg:hover:block">瞧瞧貼文</p>
               </div>
               <img :src="item.photos[0]" :alt="item.content" class="w-full h-full" />
             </div>
@@ -60,9 +60,9 @@ onMounted(async () => {
           <RouterLink :to="`community/${item._id}`">
             <div class="rounded-[10px] overflow-hidden relative">
               <div
-                class="hover:opacity-100 opacity-0 absolute bottom-0 left-0 w-full h-full backdrop-blur-sm bg-white/30 rounded-[10px] flex justify-center items-center font-semibold hover:text-4xl text-black duration-300 ease-in-out"
+                class="lg:hover:opacity-100 opacity-0 absolute bottom-0 left-0 w-full h-full backdrop-blur-sm bg-white/30 rounded-[10px] flex justify-center items-center font-semibold lg:hover:text-4xl text-black duration-300 ease-in-out"
               >
-                <p class="group-hover:block">瞧瞧貼文</p>
+                <p class="group-lg:hover:block">瞧瞧貼文</p>
               </div>
               <img :src="item.photos[0]" :alt="item.content" class="w-full h-full" />
             </div>

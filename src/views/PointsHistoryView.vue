@@ -5,7 +5,6 @@ import MemberCenterDetail from '@/containers/layouts/MemberCenterDetail.vue'
 import PointsHistory from '@/containers/PointsHistory.vue'
 import { useUserStore } from '@/stores/user'
 import { useAlertStore } from '@/stores/alert'
-import Footer from '@/components/Footer.vue'
 
 // alert
 const alertStore = useAlertStore()
@@ -35,6 +34,4 @@ onMounted(() => {
     </MemberCenterDetail>
   </div>
 
-  <!-- Footer -->
-  <Footer />
 </template>

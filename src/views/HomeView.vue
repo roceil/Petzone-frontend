@@ -1,7 +1,7 @@
 <script setup>
 import WaterFall from '@/containers/WaterFall.vue'
-import Footer from '@/components/Footer.vue'
 import ProductSuggestion from '@/containers/ProductSuggestion.vue'
+import PostExplain from '@/components/PostExplain.vue'
 import DonorList from '@/containers/DonorList.vue'
 import { blocks } from '@/constants'
 import banner_img from '@/assets/home/banner.jpg'
@@ -44,10 +44,10 @@ import banner_bottom from '@/assets/home/banner_bottom.svg'
     <!-- 捐款者 -->
     <DonorList />
 
+    <!-- 貼文功能 -->
+    <PostExplain />
+
     <!-- 瀑布流圖片牆 -->
     <WaterFall :blocks="blocks" />
-
-    <!-- Footer -->
-    <Footer />
   </div>
 </template>

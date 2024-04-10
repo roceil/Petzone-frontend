@@ -8,7 +8,6 @@ import { useUserStore } from '@/stores/user'
 import EditReviewModal from '@/components/EditReviewModal.vue'
 import { checkout } from '@/api/checkout'
 import { useAlertStore } from '@/stores/alert'
-import Footer from '@/components/Footer.vue'
 
 const alertStore = useAlertStore()
 const route = useRoute()
@@ -211,6 +210,4 @@ onMounted(async () => {
   </div>
   <EditReviewModal ref="reviewModalRef" :order-id="orderId" />
 
-  <!-- Footer -->
-  <Footer />
 </template>

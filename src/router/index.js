@@ -69,6 +69,11 @@ const router = createRouter({
       name: 'mypost',
       component: () => import('@/views/MyPostView.vue')
     },
+    {
+      path: '/donateexplain',
+      name: 'donateexplain',
+      component: () => import('@/views/DonateExplain.vue')
+    },
     ...adminRoutes
   ]
 })

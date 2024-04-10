@@ -5,7 +5,6 @@ import { cartStore } from '@/stores/cart'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { ecommerceLinks } from '@/constants'
-import Footer from '../components/Footer.vue'
 
 const productHandler = productStore()
 const { products, categoryType, productName } = storeToRefs(productHandler)
@@ -125,7 +124,4 @@ onMounted(() => {
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <Footer />
 </template>

@@ -14,7 +14,6 @@ import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import { update_product_review_api, delete_product_review_api } from '@/api/ecommerce'
 import { useAlertStore } from '@/stores/alert'
-import Footer from '@/components/Footer.vue'
 
 const alertStore = useAlertStore()
 const route = useRoute()
@@ -252,7 +251,4 @@ onMounted(() => {
       <img src="../assets/ecommerce/shopping-cart.svg" alt="shopping-cart" />
     </button>
   </div>
-
-  <!-- Footer -->
-  <Footer />
 </template>

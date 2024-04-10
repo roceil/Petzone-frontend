@@ -8,6 +8,7 @@ import { cartStore } from '@/stores/cart'
 import { useLoadingStore } from '@/stores/loading'
 import { storeToRefs } from 'pinia'
 import { check_google_login_api } from '@/api/auth'
+import Footer from '@/components/Footer.vue'
 import Alert from '@/components/alert/Alert.vue'
 import Loading from '@/components/LoadingView.vue'
 import Cookies from 'js-cookie'
@@ -47,6 +48,7 @@ onMounted(async () => {
 <template>
   <Header />
   <RouterView />
+  <Footer />
   <Alert />
   <Loading v-if="LoadingMode" />
 </template>

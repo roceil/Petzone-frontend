@@ -19,7 +19,6 @@ import 'swiper/css/navigation'
 import { Navigation } from 'swiper/modules'
 import EditPostModal from '@/components/EditPostModal.vue'
 import { useAlertStore } from '@/stores/alert'
-import Footer from '@/components/Footer.vue'
 
 const alertStore = useAlertStore()
 const route = useRoute()
@@ -265,8 +264,6 @@ const editPostModalRef = ref()
     <EditPostModal ref="editPostModalRef" @getPost="getPost" />
   </div>
 
-  <!-- Footer -->
-  <Footer />
 </template>
 
 <style></style>

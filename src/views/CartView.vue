@@ -6,7 +6,6 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import LoginAlertModal from '@/components/LoginAlertModal.vue'
 import { get_member_data_api } from '@/api/user'
-import Footer from '@/components/Footer.vue'
 
 const router = useRouter()
 
@@ -262,7 +261,4 @@ onMounted(async () => {
     購物車內無產品
   </div>
   <LoginAlertModal ref="loginAlertModalRef" />
-
-  <!-- Footer -->
-  <Footer />
 </template>

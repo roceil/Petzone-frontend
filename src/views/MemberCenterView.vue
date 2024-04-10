@@ -4,7 +4,6 @@ import { useAlertStore } from '@/stores/alert'
 import { get_member_data_api, put_member_data_api, donate_point_api } from '@/api/user'
 import { upload_image_api } from '@/api/upload'
 import default_avatar from '@/assets/avatar.svg'
-import Footer from '@/components/Footer.vue'
 
 const alertStore = useAlertStore()
 
@@ -225,7 +224,7 @@ onMounted(() => {
       </form>
 
       <!-- 自我介紹：電腦版 -->
-      <div class="w-[277px] h-[353px] mr-[59px] hidden md:block">
+      <div class="w-[277px] h-[calc(100vh-96px-294px)] mr-[59px] hidden md:block">
         <p class="font-semibold text-font">自我介紹：</p>
         <textarea
           :placeholder="userData.intro"
@@ -312,7 +311,4 @@ onMounted(() => {
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
-  <Footer />
 </template>

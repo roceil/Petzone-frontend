@@ -8,7 +8,6 @@ import { get_post_data_api } from '@/api/user'
 import { get_user_posts_api } from '@/api/community'
 import avatar from '@/assets/avatar.svg'
 import EditPostModal from '@/components/EditPostModal.vue'
-import Footer from '@/components/Footer.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -149,6 +148,4 @@ const editPostModalRef = ref()
     <EditPostModal ref="editPostModalRef" @getPosts="getPosts" />
   </div>
 
-  <!-- Footer -->
-  <Footer />
 </template>

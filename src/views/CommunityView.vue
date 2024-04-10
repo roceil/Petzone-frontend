@@ -7,12 +7,14 @@ import { useAlertStore } from '@/stores/alert'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import EditPostModal from '@/components/EditPostModal.vue'
+import { useLoadingStore } from '@/stores/loading'
 
 const route = useRoute()
 const router = useRouter()
 const communityStore = useCommunityStore()
 const alertStore = useAlertStore()
 const userStore = useUserStore()
+const LoadingStore = useLoadingStore()
 const { tags, tagsOptions } = storeToRefs(communityStore)
 const { userId } = storeToRefs(userStore)
 
@@ -25,6 +27,7 @@ const posts = ref([])
 const keyword = ref('')
 const searchTag = ref('')
 const getPosts = async () => {
+  LoadingStore.openLoading()
   pagination.value.nowPage = 1
   scrollDisabled.value = false
   const params = {
@@ -45,6 +48,8 @@ const getPosts = async () => {
     })
   } catch (error) {
     console.error(error)
+  } finally {
+    LoadingStore.closeLoading()
   }
 }
 
@@ -235,7 +240,6 @@ const handleInfiniteOnLoad = async () => {
     </section>
     <EditPostModal ref="editPostModalRef" @getPosts="getPosts" />
   </div>
-
 </template>
 
 <style></style>

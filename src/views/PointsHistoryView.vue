@@ -33,5 +33,4 @@ onMounted(() => {
       <PointsHistory :userPointsHistory="userPointsHistory" />
     </MemberCenterDetail>
   </div>
-
 </template>

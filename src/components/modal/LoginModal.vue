@@ -14,8 +14,9 @@ import { login_api } from '@/api/auth'
 import FormInput from '../validate/FormInput.vue'
 import { login_modal_form_items } from '@/constants'
 import { closeSidebar } from '@/lib'
-// import { ColorKeyframeTrack } from 'three'
 import Cookies from 'js-cookie'
+import { useLoadingStore } from '@/stores/loading'
+import { storeToRefs } from 'pinia'
 
 const { VITE_API_BASE_URL } = import.meta.env
 const modalStore = useModalStore()
@@ -23,6 +24,8 @@ const authStore = useAuthStore()
 const userStore = useUserStore()
 const cartHandler = cartStore()
 const alertStore = useAlertStore()
+const LoadingStore = useLoadingStore()
+const { LoadingMode } = storeToRefs(LoadingStore)
 
 const validationSchema = z.object({
   email: z.string().email('Email 格式不正確').min(1, '信箱欄位為必填'),
@@ -33,9 +36,11 @@ const { handleSubmit } = useForm({
 })
 
 const onSubmit = handleSubmit(async ({ email, password }) => {
+  LoadingMode.value = true
   const { accessToken, photo, userId, permission } = await login_api(email, password)
   if (!accessToken) {
     alertStore.openAlert('error', '登入失敗，請檢查帳號密碼是否正確')
+    LoadingMode.value = false
     return
   }
 
@@ -50,6 +55,8 @@ const onSubmit = handleSubmit(async ({ email, password }) => {
   cartHandler.getCart()
   closeSidebar()
   alertStore.openAlert('success', '登入成功')
+  modalStore.handleCloseModal()
+  LoadingMode.value = false
 })
 
 const google_redirect = () => {

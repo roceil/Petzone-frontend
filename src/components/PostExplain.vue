@@ -1,5 +1,5 @@
 <script setup>
-import { FireIcon, SparklesIcon } from '@heroicons/vue/20/solid'
+import { FireIcon } from '@heroicons/vue/20/solid'
 import { useModalStore } from '@/stores/modal'
 import post_feature from '@/assets/home/post_feature.png'
 
@@ -29,7 +29,7 @@ const features = [
   <div class="mt-8 md:mt-[200px] bg-secondary">
     <div class="mx-auto container">
       <div
-        class="relative isolate flex flex-col gap-10 overflow-hidden px-6 py-8 sm:px-24 xl:flex-row xl:items-center"
+        class="relative isolate flex flex-col gap-10 overflow-hidden px-6 py-8 sm:px-24 md:flex-row md:items-center"
       >
         <div class="w-full text-white">
           <h2
@@ -66,7 +66,7 @@ const features = [
           </p>
         </div>
 
-        <div class="relative">
+        <div class="relative max-w-[460px]">
           <img :src="post_feature" alt="post_feature" />
         </div>
       </div>

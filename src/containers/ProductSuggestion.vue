@@ -6,15 +6,25 @@ import VueMarquee from '@/components/VueMarquee.vue'
 import crown from '@/assets/home/crown.svg'
 import left_decorate from '@/assets/home/suggestion_dec_left.svg'
 import right_decorate from '@/assets/home/suggestion_dec_right.svg'
+import { useLoadingStore } from '@/stores/loading'
+
+const LoadingStore = useLoadingStore()
 
 const upSuggestProductList = ref([])
 const downSuggestProductList = ref([])
 
 // 取得推薦商品
 const getRecommendProduct = async () => {
-  const { products } = await get_recommend_product_api()
-  upSuggestProductList.value = products.slice(0, 5)
-  downSuggestProductList.value = products.slice(5, 10)
+  LoadingStore.openLoading()
+  try {
+    const { products } = await get_recommend_product_api()
+    upSuggestProductList.value = products.slice(0, 5)
+    downSuggestProductList.value = products.slice(5, 10)
+  } catch (error) {
+    console.error(error)
+  } finally {
+    LoadingStore.closeLoading()
+  }
 }
 
 onMounted(() => {

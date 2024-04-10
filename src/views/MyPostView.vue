@@ -8,6 +8,9 @@ import { get_post_data_api } from '@/api/user'
 import { get_user_posts_api } from '@/api/community'
 import avatar from '@/assets/avatar.svg'
 import EditPostModal from '@/components/EditPostModal.vue'
+import { useLoadingStore } from '@/stores/loading'
+
+const LoadingStore = useLoadingStore()
 
 const route = useRoute()
 const router = useRouter()
@@ -34,11 +37,14 @@ const getMemberData = async () => {
 // 取得貼文資料
 const posts = ref([])
 const getPosts = async () => {
+  LoadingStore.openLoading()
   try {
     const res = await get_user_posts_api(id)
     posts.value = res.data
   } catch (error) {
     console.error(error)
+  } finally {
+    LoadingStore.closeLoading()
   }
 }
 
@@ -54,7 +60,7 @@ const editPostModalRef = ref()
 </script>
 
 <template>
-  <div class="MyPostView">
+  <div class="MyPostView h-[calc(100vh-97px-30vh)]">
     <div class="container mt-10 max-w-[970px] mb-10">
       <!-- 自我介紹區塊 -->
       <div
@@ -147,5 +153,4 @@ const editPostModalRef = ref()
     </div>
     <EditPostModal ref="editPostModalRef" @getPosts="getPosts" />
   </div>
-
 </template>

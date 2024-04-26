@@ -106,12 +106,8 @@ onMounted(async () => {
                 </div>
               </td>
               <td class="p-3 text-right">
-                <p v-if="product.price">
-                  $ {{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
-                </p>
-                <p v-else>
-                  $ {{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
-                </p>
+                <p v-if="product.price">$ {{ product.price }}</p>
+                <p v-else>$ {{ product.originPrice }}</p>
               </td>
               <td class="p-3">
                 <div class="flex justify-center">

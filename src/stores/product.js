@@ -11,11 +11,6 @@ import { useLoadingStore } from '@/stores/loading'
 export const productStore = defineStore('productStore', () => {
   const LoadingStore = useLoadingStore()
 
-  // 加入千分位
-  const addThousandSeparator = (num, separator = ',') => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)
-  }
-
   // 取得所有產品資料
   const products = ref([])
   const categoryType = ref('')
@@ -24,39 +19,14 @@ export const productStore = defineStore('productStore', () => {
     LoadingStore.openLoading()
     if (!search) {
       const { data } = await get_products_api()
-      const newProductsList = data.products.map(async (product) => {
-        product.originPrice = addThousandSeparator(product.originPrice)
-        if (product.price !== 0) {
-          product.price = addThousandSeparator(product.price)
-        }
-        return product
-      })
-      const productsList = await Promise.all(newProductsList)
-      products.value = productsList
+      products.value = data.products
     } else if (Object.keys(search)[0] === 'categoryType') {
       const categoryType = search.categoryType
       const { data } = await get_products_by_type_api(categoryType)
-      const newProductsList = data.products.map(async (product) => {
-        product.originPrice = addThousandSeparator(product.originPrice)
-        if (product.price !== 0) {
-          product.price = addThousandSeparator(product.price)
-        }
-        return product
-      })
-      const productsList = await Promise.all(newProductsList)
-      products.value = productsList
+      products.value = data.products
     } else if (search === 'name') {
       const { data } = await get_products_by_name_api(productName)
-      const newProductsList = data.products.map(async (product) => {
-        product.originPrice = addThousandSeparator(product.originPrice)
-        if (product.price !== 0) {
-          product.price = addThousandSeparator(product.price)
-        }
-        return product
-      })
-      const productsList = await Promise.all(newProductsList)
-      products.value = productsList
-
+      products.value = data.products
       if (data.message === '查無此商品') {
         // alertStore.openAlert('error', '查無此商品')
         alert('查無此商品')
@@ -72,12 +42,7 @@ export const productStore = defineStore('productStore', () => {
   const userGetProduct = async (productId) => {
     LoadingStore.openLoading()
     const { data } = await get_product_by_id_api(productId)
-    const productInfo = data.product
-    productInfo.originPrice = addThousandSeparator(productInfo.originPrice)
-    if (productInfo.price !== 0) {
-      productInfo.price = addThousandSeparator(productInfo.price)
-    }
-    product.value = productInfo
+    products.value = data.products
     LoadingStore.closeLoading()
   }
 

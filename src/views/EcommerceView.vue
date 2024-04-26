@@ -107,9 +107,12 @@ onMounted(() => {
         <div class="flex justify-between my-3 text-xs md:my-4 md:text-2xl">
           <p class="mx-2 font-bold">{{ product.name }}</p>
           <div>
-            <p v-if="!product.price">${{ product.originPrice }}</p>
+            <p v-if="!product.price">
+              ${{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
+            </p>
             <p v-else>
-              <del>${{ product.originPrice }}</del> / ${{ product.price }}
+              <del>${{ product.originPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}</del>
+              / ${{ product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') }}
             </p>
           </div>
         </div>

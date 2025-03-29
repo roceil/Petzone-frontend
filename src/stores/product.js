@@ -42,7 +42,7 @@ export const productStore = defineStore('productStore', () => {
   const userGetProduct = async (productId) => {
     LoadingStore.openLoading()
     const { data } = await get_product_by_id_api(productId)
-    products.value = data.products
+    product.value = data.product
     LoadingStore.closeLoading()
   }
 

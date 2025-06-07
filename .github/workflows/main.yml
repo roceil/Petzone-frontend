@@ -14,7 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
 
       - name: Install Dependencies
         run: |
@@ -28,4 +28,3 @@ jobs:
         run: |
           echo "====== 檢查單元測試、ESlint、Console.log ======"
           npm run check
-

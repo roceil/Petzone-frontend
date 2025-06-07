@@ -32,8 +32,14 @@ const recipient = ref({
 
 const paymentType = ref()
 
-Object.keys(AllRules).forEach((rule) => {
-  defineRule(rule, AllRules[rule])
+Object.entries(AllRules).forEach(([ruleName, ruleFn]) => {
+  if (ruleName === 'default' || ruleName === 'all') {
+    return // 排除 default 和 all 屬性
+  } else if (typeof ruleFn === 'function') {
+    defineRule(ruleName, ruleFn)
+  } else {
+    console.warn(`跳過規則 '${ruleName}'，因為它不是函式`)
+  }
 })
 configure({
   generateMessage: localize({ zh_TW: zhTW }),
@@ -42,6 +48,9 @@ configure({
 setLocale('zh_TW')
 
 const isTel = (value) => {
+  if (!value) {
+    return '電話號碼 為必填'
+  }
   const phoneNumber = /^0[2|4]\d{4}\d{4}|^0[3|5-8]\d{3}\d{4}|^09\d{2}(\d{6}|-\d{3}-\d{3})/
   return phoneNumber.test(value) ? true : '請輸入正確的電話號碼'
 }

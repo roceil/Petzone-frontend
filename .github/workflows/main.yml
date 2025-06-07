@@ -14,7 +14,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
+          node-version: '22.x'
 
       - name: Install Dependencies
         run: |
@@ -22,10 +22,9 @@ jobs:
           echo "node 版本： $(node -v)"
           npm install -g pnpm
           echo "pnpm 版本： $(pnpm -v)"
-          npm install
+          pnpm install
 
       - name: Run Check
         run: |
           echo "====== 檢查單元測試、ESlint、Console.log ======"
-          npm run check
-
+          pnpm run check
